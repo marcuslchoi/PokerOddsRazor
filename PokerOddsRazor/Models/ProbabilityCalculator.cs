@@ -123,7 +123,7 @@ namespace PokerOddsRazor.Models
                 //pc.roundText.text = "CHANCES ON THE FLOP";
 
                 //IF I HAVE A HIGH CARD WITH MY POCKET CARDS
-                if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(MyHand.pokerHandsArray, "HIGH_CARD"))
+                if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(Constants.POKER_HANDS, "HIGH_CARD"))
                 {
                     //3 cards could pair with first pocket card and 3 with the second
                     cardsForPair = 6;
@@ -246,7 +246,7 @@ namespace PokerOddsRazor.Models
 
                 } //CLOSE HIGH CARD, PREFLOP
 
-                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(MyHand.pokerHandsArray, "PAIR"))
+                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(Constants.POKER_HANDS, "PAIR"))
                 {
 
                     //HIDE HIGH CARD CHANCE TEXT
@@ -311,7 +311,7 @@ namespace PokerOddsRazor.Models
 
                 //CHANGED
                 //high card
-                if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(MyHand.pokerHandsArray, "HIGH_CARD"))
+                if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(Constants.POKER_HANDS, "HIGH_CARD"))
                 {
                     if (CurrentRound == Rounds.isFlop)
                     {
@@ -347,7 +347,7 @@ namespace PokerOddsRazor.Models
 
                 //CHANGED
                 //if pair
-                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(MyHand.pokerHandsArray, "PAIR"))
+                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(Constants.POKER_HANDS, "PAIR"))
                 {
 
                     //HIDE HIGH CARD CHANCE TEXT IF ALREADY HAVE A PAIR
@@ -387,7 +387,7 @@ namespace PokerOddsRazor.Models
 
                 }
                 //two pair
-                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(MyHand.pokerHandsArray, "TWO_PAIR"))
+                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(Constants.POKER_HANDS, "TWO_PAIR"))
                 {
 
                     Debug.WriteLine("Case: two pair on flop/turn");
@@ -424,7 +424,7 @@ namespace PokerOddsRazor.Models
 
                 }
                 //3 of a kind
-                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(MyHand.pokerHandsArray, "THREE_OF_A_KIND"))
+                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(Constants.POKER_HANDS, "THREE_OF_A_KIND"))
                 {
 
 
@@ -453,7 +453,7 @@ namespace PokerOddsRazor.Models
 
                 }
                 //straight
-                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(MyHand.pokerHandsArray, "STRAIGHT"))
+                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
                 {
 
                     for (int i = 0; i <= 3; i++)
@@ -469,7 +469,7 @@ namespace PokerOddsRazor.Models
 
                 }
                 //flush
-                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(MyHand.pokerHandsArray, "FLUSH"))
+                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(Constants.POKER_HANDS, "FLUSH"))
                 {
 
                     for (int i = 0; i <= 4; i++)
@@ -485,7 +485,7 @@ namespace PokerOddsRazor.Models
 
                 }
                 //full house
-                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(MyHand.pokerHandsArray, "FULL_HOUSE"))
+                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(Constants.POKER_HANDS, "FULL_HOUSE"))
                 {
 
                     for (int i = 0; i <= 5; i++)
@@ -507,7 +507,7 @@ namespace PokerOddsRazor.Models
 
                 }
                 //four of a kind
-                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(MyHand.pokerHandsArray, "FOUR_OF_A_KIND"))
+                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(Constants.POKER_HANDS, "FOUR_OF_A_KIND"))
                 {
 
                     for (int i = 0; i <= 6; i++)
@@ -521,7 +521,7 @@ namespace PokerOddsRazor.Models
                     chanceFourKind = 1;
                 }
                 //straight flush
-                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(MyHand.pokerHandsArray, "STRAIGHT_FLUSH"))
+                else if (Math.Floor((float)myHand.getRank()) == System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT_FLUSH"))
                 {
 
                     for (int i = 0; i <= 7; i++)
@@ -531,7 +531,7 @@ namespace PokerOddsRazor.Models
                     }
 
                     //if my hand is a king high straight flush
-                    if (myHand.getRank() == System.Array.IndexOf(MyHand.pokerHandsArray, "STRAIGHT_FLUSH") + 0.13)
+                    if (myHand.getRank() == System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT_FLUSH") + 0.13)
                     {
 
                         if (CurrentRound == Rounds.isFlop)
@@ -544,7 +544,7 @@ namespace PokerOddsRazor.Models
                         }
                     }
                     //if my hand is a royal flush
-                    else if (myHand.getRank() == System.Array.IndexOf(MyHand.pokerHandsArray, "STRAIGHT_FLUSH") + 0.14)
+                    else if (myHand.getRank() == System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT_FLUSH") + 0.14)
                     {
 
                         chanceRoyalFlush = 1;
@@ -576,7 +576,7 @@ namespace PokerOddsRazor.Models
                 MyHand my3FlushHand = new MyHand();
 
                 //chance for flush
-                if (CurrentRound == Rounds.isFlop && Math.Floor((float)myHand.getRank()) < System.Array.IndexOf(MyHand.pokerHandsArray, "FLUSH"))
+                if (CurrentRound == Rounds.isFlop && Math.Floor((float)myHand.getRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "FLUSH"))
                 {
                     //if there is exactly 3 card flush (also for checking for straight flush)
                     //CHANGED
@@ -627,7 +627,7 @@ namespace PokerOddsRazor.Models
                     }
 
                 }
-                else if (CurrentRound == Rounds.isTurn && Math.Floor((float)myHand.getRank()) < System.Array.IndexOf(MyHand.pokerHandsArray, "FLUSH"))
+                else if (CurrentRound == Rounds.isTurn && Math.Floor((float)myHand.getRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "FLUSH"))
                 {
                     //must have 4 flush cards for possible flush
                     //Hand my4FlushHand = new Hand ();
@@ -655,7 +655,7 @@ namespace PokerOddsRazor.Models
                 }
 
                 //CHANCE FOR STRAIGHT if have 4 of 5 straight cards already
-                if (myHand.isAlmostStraight && Math.Floor((float)myHand.getRank()) < System.Array.IndexOf(MyHand.pokerHandsArray, "STRAIGHT"))
+                if (myHand.isAlmostStraight && Math.Floor((float)myHand.getRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
                 {
 
                     //STRAIGHT IS POSSIBLE
@@ -703,7 +703,7 @@ namespace PokerOddsRazor.Models
                 }
 
                 //chance for straight if have 3 of 5 straight cards already (only in flop round)
-                else if (myHand.is3AlmostStraight && CurrentRound == Rounds.isFlop && Math.Floor((float)myHand.getRank()) < System.Array.IndexOf(MyHand.pokerHandsArray, "STRAIGHT"))
+                else if (myHand.is3AlmostStraight && CurrentRound == Rounds.isFlop && Math.Floor((float)myHand.getRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
                 {
                     Debug.WriteLine("INSIDE IS3ALMOSTSTRAIGHT " + myHand.numberOfPossStraightsWithMy3Cards);
                     //STRAIGHT IS POSSIBLE
@@ -741,7 +741,7 @@ namespace PokerOddsRazor.Models
 
                 }
                 //there are not 4 of 5 straight cards present, or 3 straight in the flop round
-                else if (Math.Floor((float)myHand.getRank()) < System.Array.IndexOf(MyHand.pokerHandsArray, "STRAIGHT"))
+                else if (Math.Floor((float)myHand.getRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
                 {
                     chanceStraight = 0;
                 }
