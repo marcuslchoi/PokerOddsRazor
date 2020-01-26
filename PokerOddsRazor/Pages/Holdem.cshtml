@@ -1,0 +1,13 @@
+﻿@page
+@model HoldemModel
+@{
+}
+<h1>Play Texas Holdem!</h1>
+<form method="post">
+    <input type="text" asp-for="Hand.MyCard0Id" placeholder="card 0" />
+    <input type="text" asp-for="Hand.MyCard1Id" placeholder="card 1" />
+    <button type="submit">submit!</button>
+</form>
+
+<p>@Model.Card0, @Model.Card1</p>
+<p>Probabilities: </p>

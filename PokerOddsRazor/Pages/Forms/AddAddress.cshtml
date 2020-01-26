@@ -1,0 +1,10 @@
+﻿@page
+@model AddAddressModel
+@{
+}
+<h1>add address!</h1>
+<form method="post">
+    <input type="text" asp-for="Address.Street" placeholder="street address" />
+    <input type="text" asp-for="Address.City" placeholder="city" />
+    <button type="submit">submit!</button>
+</form>
