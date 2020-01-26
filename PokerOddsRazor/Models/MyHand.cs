@@ -753,7 +753,7 @@ namespace PokerOddsRazor.Models
             return handRank;
         }
 
-        public double getRank()
+        public double GetRank()
         {
 
             if (Math.Floor((float)checkForStraightFlush()) == System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT_FLUSH"))
