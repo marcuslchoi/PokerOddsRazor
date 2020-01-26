@@ -44,7 +44,6 @@ namespace PokerOddsRazor.Models
 
             //	pc.chanceTexts [i].enabled = false;
             //}
-
         }
 
         public static void FindChancesOfPokerHands(MyHand myHand)
@@ -396,7 +395,6 @@ namespace PokerOddsRazor.Models
                     //HIDE CHANCE TEXTS FOR HIGH CARD, PAIR, THREE KIND
                     for (int i = 0; i <= 3; i++)
                     {
-
                         //don't hide 2 pair
                         if (i != 2)
                         {
