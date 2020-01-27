@@ -809,60 +809,6 @@ namespace PokerOddsRazor.Models
             //ONLY GOOD IF YOU HAVE ANOTHER HIGH CARD FOR POSSIBLE KICKER)
             //HAND STRENGTH INDICATOR: DEPENDS ON WHETHER YOUR CARDS COME INTO PLAY, HOW HIGH IN PLAY 
             //(IE HIGHEST CARD IN STRAIGHT, LOW OR HIGH COMPLETION OF FLUSH, ETC)
-
-            //		MyHand myHand = new MyHand (MyHand.myCardIds);
-
-            //ProbabilityCalculator pc = GameObject.Find ("ProbabilityCalculator").GetComponent<ProbabilityCalculator> ();
-
-            //enable the round text and chance texts
-            //pc.roundText.enabled = true;
-            //for (int i = 0; i < pc.chanceTexts.Count; i++) {
-
-            //	pc.chanceTexts [i].enabled = true;
-            //}
-
-            //just the ranks of the pocket hand, sorted from high to low
-            //List<int> myPocketRanks = myHand.GetPocketCardRanksHighToLow();
-
-            //just the suits of the pocket hand
-            //List<string> myPocketSuits = myHand.GetPocketSuits();
-            //bool cardsAreSuited = myPocketSuits[0] == myPocketSuits[1];
-
-            //var deckSize = 52;
-
-            //var flopSize = 3;
-
-            //number of cards still in deck that can be used to pair with a pocket card
-            //var cardsForPair = new double();
-            //var cardsForTriple = new double();
-
-            //var chanceHighCard = new double();
-            //var chancePair = new double();
-            //var chanceTwoPair = new double();
-            //var chanceThreeKind = new double();
-            //var chanceStraight = new double();
-            //var chanceFlush = new double();
-            //var chanceFullHouse = new double();
-            //var chanceFourKind = new double();
-            //var chanceStraightFlush = new double();
-            //var chanceRoyalFlush = new double();
-
-            var numberPlayers = 1;  //CHANGE THIS TO PLAYERLIST.COUNT? NO NEED
-
-            //number of cards left in the deck in each round
-            //if (CurrentRound == Rounds.isPreFlop)
-            //{
-            //    cardsLeft = Constants.DECK_SIZE - 2 * numberPlayers;
-            //}
-            //else if (CurrentRound == Rounds.isFlop)
-            //{
-            //    cardsLeft = Constants.DECK_SIZE - 2 * numberPlayers - Constants.HOLDEM_FLOPSIZE;
-            //}
-            //else if (CurrentRound == Rounds.isTurn)
-            //{
-            //    cardsLeft = Constants.DECK_SIZE - 2 * numberPlayers - Constants.HOLDEM_FLOPSIZE - 1;
-            //}
-
             ProbabilityViewModel vm = null;
 
             //http://poker.stackexchange.com/questions/1474/formula-for-making-a-single-pair-on-the-flop
@@ -895,66 +841,6 @@ namespace PokerOddsRazor.Models
             }
 
             return vm;
-
-            //below is UI stuff
-
-            //List<float> chancesList = new List<float> { (float)chanceHighCard, (float)chancePair, (float)chanceTwoPair, (float)chanceThreeKind, (float)chanceStraight, (float)chanceFlush, (float)chanceFullHouse, (float)chanceFourKind, (float)chanceStraightFlush, (float)chanceRoyalFlush };
-            //List<string> chancesListStr = new List<string>();
-
-            //for (int i = 0; i < chancesList.Count; i++)
-            //{
-
-            //    chancesList[i] *= 100;
-            //    //chancesList[i] = Math.Round (chancesList[i] * 1000) / 1000;
-            //    chancesListStr.Add(chancesList[i].ToString("N1"));
-
-            //    if (chancesListStr[i] == "100.0")
-            //    {
-
-            //        chancesListStr[i] = "CURRENT HAND";
-            //    }
-            //}
-
-        //    List<string> pokerHandsList = new List<string> {
-        //    "HIGH CARD",
-        //    "PAIR",
-        //    "TWO PAIR",
-        //    "THREE OF A KIND",
-        //    "STRAIGHT",
-        //    "FLUSH",
-        //    "FULL HOUSE",
-        //    "FOUR OF A KIND",
-        //    "STRAIGHT FLUSH",
-        //    "ROYAL FLUSH"
-        //};
-
-         //   string lastCharacter;
-            //for (int i = 0; i < pc.chanceTexts.Count-1; i++) 
-            //{
-
-            //	if (chancesListStr [i] == "CURRENT HAND") {
-
-            //		lastCharacter = "";
-
-            //	} else {
-
-            //		lastCharacter = "%";
-            //	}
-
-            //	pc.chanceTexts [i].text = pokerHandsList [i] + ": "+ "<color=#" + strNumberColor + ">" + chancesListStr [i] + lastCharacter + "</color>";
-
-            //}
-
-            //if (CurrentRound == Rounds.isRiver)
-            //{
-
-                //for (int i = 0; i < pc.chanceTexts.Count-1; i++) 
-                //{
-                //	pc.chanceTexts [i].text = pokerHandsList [i];
-                //}
-
-            //}
-
         }
 
         static public void SetHandStrength(float fStr)
