@@ -109,18 +109,15 @@ namespace PokerOddsRazor.Models
 
                 //todo this should be 1 - all other chances
                 chanceHighCard = 1;
-
             }
 
             else if (IsMyPokerHand(myHand, "PAIR"))
             {
-
                 //HIDE HIGH CARD CHANCE TEXT IF ALREADY HAVE A PAIR
                 //pc.chanceTexts [0].enabled = false;
 
                 if (CurrentRound == Rounds.isFlop)
                 {
-
                     // 9/47 * 38/46 * 2 = 31.6%
                     chanceTwoPair = 9d / cardsLeft * (cardsLeft - 9d) / (cardsLeft - 1) * 2;
 
@@ -133,11 +130,9 @@ namespace PokerOddsRazor.Models
 
                     //.09%
                     chanceFourKind = 2d / cardsLeft * 1d / (cardsLeft - 1);
-
                 }
                 else //if (GameState.currentRound == GameState.Rounds.isTurn) 
                 {
-
                     //3 * 3 possible cards to pair with
                     chanceTwoPair = 9d / cardsLeft;
 
@@ -147,15 +142,11 @@ namespace PokerOddsRazor.Models
                     chanceFullHouse = 0;
                     chanceFourKind = 0;
                 }
-
                 chancePair = 1;
-
             }
             else if (IsMyPokerHand(myHand, "TWO_PAIR"))
             {
-
                 Debug.WriteLine("Case: two pair on flop/turn");
-
                 //HIDE CHANCE TEXTS FOR HIGH CARD, PAIR, THREE KIND
                 for (int i = 0; i <= 3; i++)
                 {
@@ -172,89 +163,67 @@ namespace PokerOddsRazor.Models
                     chanceFullHouse = 4d / cardsLeft * (cardsLeft - 4) / (cardsLeft - 1) * 2;
 
                     chanceFourKind = 4d / cardsLeft * 1d / (cardsLeft - 1);
-
                 }
                 else
                 {
-
                     chanceFullHouse = 4d / cardsLeft;
                     chanceFourKind = 0;
                 }
                 //if 2 pair, a triple would give a full house
                 chanceThreeKind = 0;
-
-
                 chanceTwoPair = 1;
-
             }
             //3 of a kind
             else if (IsMyPokerHand(myHand, "THREE_OF_A_KIND"))
             {
-
-
                 for (int i = 0; i <= 2; i++)
                 {
-
                     //pc.chanceTexts [i].enabled = false;
                 }
 
                 if (CurrentRound == Rounds.isFlop)
                 {
-
                     // 6/47 * 41/46 * 2
                     chanceFullHouse = 6d / cardsLeft * (cardsLeft - 6d) / (cardsLeft - 1) * 2;
                     chanceFourKind = 1d / cardsLeft * 2;
-
                 }
                 else
                 {
-
                     chanceFullHouse = 6d / cardsLeft;
                     chanceFourKind = 1d / cardsLeft;
                 }
 
                 chanceThreeKind = 1;
-
             }
             //straight
             else if (IsMyPokerHand(myHand, "STRAIGHTS"))
             {
-
                 for (int i = 0; i <= 3; i++)
                 {
-
                     //pc.chanceTexts [i].enabled = false;
                 }
 
                 chanceFullHouse = 0;
                 chanceFourKind = 0;
-
                 chanceStraight = 1;
-
             }
             //flush
             else if (IsMyPokerHand(myHand, "FLUSH"))
             {
-
                 for (int i = 0; i <= 4; i++)
                 {
-
                     //pc.chanceTexts [i].enabled = false;
                 }
 
                 chanceFullHouse = 0;
                 chanceFourKind = 0;
-
                 chanceFlush = 1;
-
             }
             //full house
             else if (IsMyPokerHand(myHand, "FULL_HOUSE"))
             {
-
                 for (int i = 0; i <= 5; i++)
                 {
-
                     //pc.chanceTexts [i].enabled = false;
                 }
 
@@ -268,7 +237,6 @@ namespace PokerOddsRazor.Models
                 }
 
                 chanceFullHouse = 1;
-
             }
             //four of a kind
             else if (IsMyPokerHand(myHand, "FOUR_OF_A_KIND"))
