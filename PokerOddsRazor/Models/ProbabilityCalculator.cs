@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 //using UnityEngine.UI;
 
-public enum Rounds { isPreDeal, isPreFlop, isFlop, isTurn, isRiver, isShowdown }
-
 namespace PokerOddsRazor.Models
 {
 
