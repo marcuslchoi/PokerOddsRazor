@@ -10,15 +10,16 @@ namespace PokerOddsRazor.Models
     public class ProbabilityCalculator
     {
         //public static Rounds CurrentRound;
-        public static Rounds CurrentRound { get { return TableGameMediator.CurrentRound; } }
+        static Rounds CurrentRound { get { return TableGameMediator.CurrentRound; } }
 
         //public Text roundText;
-        public static string strNumberColor = "0271D9FF";//"00ffff";
+        //public static string strNumberColor = "0271D9FF";//"00ffff";
 
         //public List<Text> chanceTexts = new List<Text>();
 
         //number of cards left in deck at any round
-        static int cardsLeft;
+        //static int CardsLeft;
+        static int CardsLeft { get { return TableGameMediator.CardsLeftInDeck; } }
 
         #region Singleton
         private static ProbabilityCalculator instance;
@@ -86,20 +87,20 @@ namespace PokerOddsRazor.Models
                     cardsForPair = 15;
 
                     // 15/47 * 32/46 * 2
-                    chancePair = cardsForPair / cardsLeft * (cardsLeft - cardsForPair) / (cardsLeft - 1) * 2;
+                    chancePair = cardsForPair / CardsLeft * (CardsLeft - cardsForPair) / (CardsLeft - 1) * 2;
 
                     // 15/47 * 12/46
-                    chanceTwoPair = cardsForPair / cardsLeft * (cardsForPair - 3) / (cardsLeft - 1);
+                    chanceTwoPair = cardsForPair / CardsLeft * (cardsForPair - 3) / (CardsLeft - 1);
 
                     // 15/47 * 2/46 (there are 2 cards left after pair that could make a triple)
-                    chanceThreeKind = cardsForPair / cardsLeft * 2 / (cardsLeft - 1);
+                    chanceThreeKind = cardsForPair / CardsLeft * 2 / (CardsLeft - 1);
                 }
                 else if (CurrentRound == Rounds.isTurn)
                 {
 
                     cardsForPair = 18;
 
-                    chancePair = cardsForPair / cardsLeft;
+                    chancePair = cardsForPair / CardsLeft;
                     chanceTwoPair = 0;
                     chanceThreeKind = 0;
                 }
@@ -119,25 +120,25 @@ namespace PokerOddsRazor.Models
                 if (CurrentRound == Rounds.isFlop)
                 {
                     // 9/47 * 38/46 * 2 = 31.6%
-                    chanceTwoPair = 9d / cardsLeft * (cardsLeft - 9d) / (cardsLeft - 1) * 2;
+                    chanceTwoPair = 9d / CardsLeft * (CardsLeft - 9d) / (CardsLeft - 1) * 2;
 
                     // 2/47 * 45/46 * 2 = 8%
-                    chanceThreeKind = 2d / cardsLeft * (cardsLeft - 2d) / (cardsLeft - 1) * 2;
+                    chanceThreeKind = 2d / CardsLeft * (CardsLeft - 2d) / (CardsLeft - 1) * 2;
 
                     //triple, then pair
                     // 2/47 * 9/46 * 2 = 1.7%
-                    chanceFullHouse = 2d / cardsLeft * 9d / (cardsLeft - 1) * 2;
+                    chanceFullHouse = 2d / CardsLeft * 9d / (CardsLeft - 1) * 2;
 
                     //.09%
-                    chanceFourKind = 2d / cardsLeft * 1d / (cardsLeft - 1);
+                    chanceFourKind = 2d / CardsLeft * 1d / (CardsLeft - 1);
                 }
                 else //if (GameState.currentRound == GameState.Rounds.isTurn) 
                 {
                     //3 * 3 possible cards to pair with
-                    chanceTwoPair = 9d / cardsLeft;
+                    chanceTwoPair = 9d / CardsLeft;
 
                     //triple with pocket cards
-                    chanceThreeKind = 2d / cardsLeft;
+                    chanceThreeKind = 2d / CardsLeft;
 
                     chanceFullHouse = 0;
                     chanceFourKind = 0;
@@ -160,13 +161,13 @@ namespace PokerOddsRazor.Models
                 if (CurrentRound == Rounds.isFlop)
                 {
                     // 4/47 * 43/46 * 2 = 16%
-                    chanceFullHouse = 4d / cardsLeft * (cardsLeft - 4) / (cardsLeft - 1) * 2;
+                    chanceFullHouse = 4d / CardsLeft * (CardsLeft - 4) / (CardsLeft - 1) * 2;
 
-                    chanceFourKind = 4d / cardsLeft * 1d / (cardsLeft - 1);
+                    chanceFourKind = 4d / CardsLeft * 1d / (CardsLeft - 1);
                 }
                 else
                 {
-                    chanceFullHouse = 4d / cardsLeft;
+                    chanceFullHouse = 4d / CardsLeft;
                     chanceFourKind = 0;
                 }
                 //if 2 pair, a triple would give a full house
@@ -184,13 +185,13 @@ namespace PokerOddsRazor.Models
                 if (CurrentRound == Rounds.isFlop)
                 {
                     // 6/47 * 41/46 * 2
-                    chanceFullHouse = 6d / cardsLeft * (cardsLeft - 6d) / (cardsLeft - 1) * 2;
-                    chanceFourKind = 1d / cardsLeft * 2;
+                    chanceFullHouse = 6d / CardsLeft * (CardsLeft - 6d) / (CardsLeft - 1) * 2;
+                    chanceFourKind = 1d / CardsLeft * 2;
                 }
                 else
                 {
-                    chanceFullHouse = 6d / cardsLeft;
-                    chanceFourKind = 1d / cardsLeft;
+                    chanceFullHouse = 6d / CardsLeft;
+                    chanceFourKind = 1d / CardsLeft;
                 }
 
                 chanceThreeKind = 1;
@@ -229,11 +230,11 @@ namespace PokerOddsRazor.Models
 
                 if (CurrentRound == Rounds.isFlop)
                 {
-                    chanceFourKind = 1d / cardsLeft * 2;
+                    chanceFourKind = 1d / CardsLeft * 2;
                 }
                 else
                 {
-                    chanceFourKind = 1d / cardsLeft;
+                    chanceFourKind = 1d / CardsLeft;
                 }
 
                 chanceFullHouse = 1;
@@ -268,11 +269,11 @@ namespace PokerOddsRazor.Models
 
                     if (CurrentRound == Rounds.isFlop)
                     {
-                        chanceRoyalFlush = 1d / cardsLeft + (cardsLeft - 1d) / cardsLeft * 1d / (cardsLeft - 1);
+                        chanceRoyalFlush = 1d / CardsLeft + (CardsLeft - 1d) / CardsLeft * 1d / (CardsLeft - 1);
                     }
                     else
                     {
-                        chanceRoyalFlush = 1d / cardsLeft;
+                        chanceRoyalFlush = 1d / CardsLeft;
                     }
                 }
                 //if my hand is a royal flush
@@ -319,7 +320,7 @@ namespace PokerOddsRazor.Models
                     //if (myFourFlushSuit == "N") {
 
                     Debug.WriteLine("exactly 3 flush cards");
-                    chanceFlush = 9d / cardsLeft * 8d / (cardsLeft - 1);
+                    chanceFlush = 9d / CardsLeft * 8d / (CardsLeft - 1);
                     //}
 
 
@@ -342,7 +343,7 @@ namespace PokerOddsRazor.Models
                     //9 cards left in deck of same flush suit
                     //chance of both new cards flushing + chance of exactly 1 card flushing
                     // 9/47 * 8/46 + (9/47 * 38/46)*2 = 35%
-                    chanceFlush = 9d / cardsLeft * 8d / (cardsLeft - 1) + 2 * (9d / cardsLeft * (cardsLeft - 9d) / (cardsLeft - 1));
+                    chanceFlush = 9d / CardsLeft * 8d / (CardsLeft - 1) + 2 * (9d / CardsLeft * (CardsLeft - 9d) / (CardsLeft - 1));
 
 
                     List<string> myFourFlushCards = myHand.getFlushCards(myFourFlushSuit);
@@ -370,7 +371,7 @@ namespace PokerOddsRazor.Models
 
                     Debug.WriteLine("four flush");
                     //9 cards left in deck of same flush suit
-                    chanceFlush = 9d / cardsLeft;
+                    chanceFlush = 9d / CardsLeft;
 
                     List<string> myFourFlushCards = myHand.getFlushCards(myFourFlushSuit);
 
@@ -401,11 +402,11 @@ namespace PokerOddsRazor.Models
                     {
                         //first card straights and second card either does or doesn't + only 2nd card straights
                         // 8/47 * 1 + 39/47 * 8/46 = 31.5%
-                        chanceStraight = 8d / cardsLeft + (cardsLeft - 8d) / cardsLeft * 8d / (cardsLeft - 1);
+                        chanceStraight = 8d / CardsLeft + (CardsLeft - 8d) / CardsLeft * 8d / (CardsLeft - 1);
                     }
                     else //turn round
                     {
-                        chanceStraight = 8d / cardsLeft;
+                        chanceStraight = 8d / CardsLeft;
                     }
                 }
                 //chance with 4 possible cards to finish straight
@@ -417,18 +418,18 @@ namespace PokerOddsRazor.Models
                         if (myHand.is3AlmostStraight)
                         {
                             //chance of completing the 4 straight + chance of completing the 3 straight
-                            chanceStraight = (4d / cardsLeft + (cardsLeft - 4d) / cardsLeft * 4d / (cardsLeft - 1)) + 8d / cardsLeft * 4d / (cardsLeft - 1);
+                            chanceStraight = (4d / CardsLeft + (CardsLeft - 4d) / CardsLeft * 4d / (CardsLeft - 1)) + 8d / CardsLeft * 4d / (CardsLeft - 1);
 
                         }
                         else
                         {
                             // 4/47 * 1 + 43/47 * 4/46
-                            chanceStraight = 4d / cardsLeft + (cardsLeft - 4d) / cardsLeft * 4d / (cardsLeft - 1);
+                            chanceStraight = 4d / CardsLeft + (CardsLeft - 4d) / CardsLeft * 4d / (CardsLeft - 1);
                         }
                     }
                     else  //turn round
                     {
-                        chanceStraight = 4d / cardsLeft;
+                        chanceStraight = 4d / CardsLeft;
                     }
                 }
 
@@ -447,7 +448,7 @@ namespace PokerOddsRazor.Models
                     //first card has 2 poss ranks to make 4 in a row, then 2 poss ranks for 2nd card +
                     //first card has 2 poss ranks to make 4 in poss straight (with gap), then 1 poss rank (gap card)
                     // 8/47 * 8/46 + 8/47 * 4/46
-                    chanceStraight = 8d / cardsLeft * 8d / (cardsLeft - 1) + 8d / cardsLeft * 4d / (cardsLeft - 1);
+                    chanceStraight = 8d / CardsLeft * 8d / (CardsLeft - 1) + 8d / CardsLeft * 4d / (CardsLeft - 1);
 
                 }
                 else if (myHand.numberOfPossStraightsWithMy3Cards == 2)
@@ -459,7 +460,7 @@ namespace PokerOddsRazor.Models
                     Debug.WriteLine("2 diff poss straights");
                     //1 poss rank for 4 in a row (the gap), then 2 poss ranks (2 ways this can happen) 
                     // 4/47 * 8/46 * 2
-                    chanceStraight = 4d / cardsLeft * 8d / (cardsLeft - 1) * 2;
+                    chanceStraight = 4d / CardsLeft * 8d / (CardsLeft - 1) * 2;
 
                 }
                 else if (myHand.numberOfPossStraightsWithMy3Cards == 1)
@@ -467,7 +468,7 @@ namespace PokerOddsRazor.Models
                     Debug.WriteLine("1 poss straight");
                     //2 poss ranks then 1 poss rank
                     // 8/47 * 4/46
-                    chanceStraight = 8d / cardsLeft * 4d / (cardsLeft - 1);
+                    chanceStraight = 8d / CardsLeft * 4d / (CardsLeft - 1);
 
                 }
 
@@ -495,11 +496,11 @@ namespace PokerOddsRazor.Models
 
                     if (CurrentRound == Rounds.isFlop)
                     {
-                        chanceRoyalFlush = 1d / cardsLeft * 2;
+                        chanceRoyalFlush = 1d / CardsLeft * 2;
                     }
                     else
                     {
-                        chanceRoyalFlush = 1d / cardsLeft;
+                        chanceRoyalFlush = 1d / CardsLeft;
                     }
                 }
                 //check if there is possible Royal Flush w 3 of the 5 poss cards
@@ -507,7 +508,7 @@ namespace PokerOddsRazor.Models
                 {
 
                     Debug.WriteLine("is3almosthighstraight with a 4+ card flush (also is almost straight flush)");
-                    chanceRoyalFlush = 2d / cardsLeft * 1d / (cardsLeft - 1);
+                    chanceRoyalFlush = 2d / CardsLeft * 1d / (CardsLeft - 1);
                 }
 
                 //STRAIGHT FLUSH POSSIBILITY: chance with 2 possible cards to finish straight flush
@@ -516,11 +517,11 @@ namespace PokerOddsRazor.Models
 
                     if (CurrentRound == Rounds.isFlop)
                     {
-                        chanceStraightFlush = 2d / cardsLeft + (cardsLeft - 2d) / cardsLeft * 2d / (cardsLeft - 1);
+                        chanceStraightFlush = 2d / CardsLeft + (CardsLeft - 2d) / CardsLeft * 2d / (CardsLeft - 1);
                     }
                     else
                     {
-                        chanceStraightFlush = 2d / cardsLeft;
+                        chanceStraightFlush = 2d / CardsLeft;
                     }
 
                 }
@@ -534,17 +535,17 @@ namespace PokerOddsRazor.Models
                         {
 
                             //chance of completing the 4 straight + chance of completing the 3 straight
-                            chanceStraightFlush = (1d / cardsLeft * 2) + 2d / cardsLeft * 1d / (cardsLeft - 1);
+                            chanceStraightFlush = (1d / CardsLeft * 2) + 2d / CardsLeft * 1d / (CardsLeft - 1);
                         }
                         else
                         {
-                            chanceStraightFlush = 1d / cardsLeft + (cardsLeft - 1d) / cardsLeft * 1d / (cardsLeft - 1);
+                            chanceStraightFlush = 1d / CardsLeft + (CardsLeft - 1d) / CardsLeft * 1d / (CardsLeft - 1);
                         }
 
                     }
                     else
                     {
-                        chanceStraightFlush = 1d / cardsLeft;
+                        chanceStraightFlush = 1d / CardsLeft;
                     }
 
                 }
@@ -564,7 +565,7 @@ namespace PokerOddsRazor.Models
                     //first card has 2 poss ranks to make 4 in a row, then 2 poss ranks for 2nd card +
                     //first card has 2 poss ranks to make 4 in poss straight (with gap), then 1 poss rank (gap card)
                     // 2/47 * 2/46 + 2/47 * 1/46
-                    chanceStraightFlush = 2d / cardsLeft * 2d / (cardsLeft - 1) + 2d / cardsLeft * 1d / (cardsLeft - 1);
+                    chanceStraightFlush = 2d / CardsLeft * 2d / (CardsLeft - 1) + 2d / CardsLeft * 1d / (CardsLeft - 1);
 
                 }
                 else if (my3FlushHand.numberOfPossStraightsWithMy3Cards == 2)
@@ -573,7 +574,7 @@ namespace PokerOddsRazor.Models
                     Debug.WriteLine("2 diff poss straight flushes");
                     //1 poss rank for 4 in a row (the gap), then 2 poss ranks (2 ways this can happen) 
                     // 1/47 * 2/46 * 2
-                    chanceStraightFlush = 1d / cardsLeft * 2d / (cardsLeft - 1) * 2;
+                    chanceStraightFlush = 1d / CardsLeft * 2d / (CardsLeft - 1) * 2;
 
                 }
                 else if (my3FlushHand.numberOfPossStraightsWithMy3Cards == 1)
@@ -581,7 +582,7 @@ namespace PokerOddsRazor.Models
                     Debug.WriteLine("1 poss straight flush");
                     //2 poss ranks then 1 poss rank
                     // 2/47 * 1/46
-                    chanceStraightFlush = 2d / cardsLeft * 1d / (cardsLeft - 1);
+                    chanceStraightFlush = 2d / CardsLeft * 1d / (CardsLeft - 1);
 
                 }
 
@@ -589,7 +590,7 @@ namespace PokerOddsRazor.Models
                 {
 
                     Debug.WriteLine("is3almosthighstraight!!!!!!!!");
-                    chanceRoyalFlush = 2d / cardsLeft * 1d / (cardsLeft - 1);
+                    chanceRoyalFlush = 2d / CardsLeft * 1d / (CardsLeft - 1);
                 }
             }
             else
@@ -642,27 +643,27 @@ namespace PokerOddsRazor.Models
 
                 //flop0 pairs, flop1 doesnt, flop2 doesnt
                 //6/50 * 44/49 * (43-3)/48. The 3 represents the number of ranks left matching flop1
-                chancePair = cardsForPair / cardsLeft * ((cardsLeft - 1) - (cardsForPair - 1)) / (cardsLeft - 1) * ((cardsLeft - 2) - (cardsForPair - 1) - 3) / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
+                chancePair = cardsForPair / CardsLeft * ((CardsLeft - 1) - (cardsForPair - 1)) / (CardsLeft - 1) * ((CardsLeft - 2) - (cardsForPair - 1) - 3) / (CardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
 
 
                 //TWO PAIR SECTION --------------------------------------------------------
 
                 //chance of first card pairing with a pocket card, 2nd card not pairing, 3rd card pairing with 2nd card
                 //6/50 * 44/49 * 3/48
-                double chanceTwoPairComm = 6d / cardsLeft * 44d / (cardsLeft - 1) * 3d / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
+                double chanceTwoPairComm = 6d / CardsLeft * 44d / (CardsLeft - 1) * 3d / (CardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
 
                 //chance of first card pairing with a pocket card, 2nd card pairing with other pocket card, 3rd card not pairing
                 //6/50 * 3/49 * 44/48
-                chanceTwoPair = cardsForPair / cardsLeft * 3d / (cardsLeft - 1) * ((cardsLeft - 2) - (cardsForPair - 2)) / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE + chanceTwoPairComm;
+                chanceTwoPair = cardsForPair / CardsLeft * 3d / (CardsLeft - 1) * ((CardsLeft - 2) - (cardsForPair - 2)) / (CardsLeft - 2) * Constants.HOLDEM_FLOPSIZE + chanceTwoPairComm;
 
 
                 //chance of all 3 comm cards same rank (not same as either pocket card)
                 //(50-6)/50 * 3/49 * 2/48
-                double chanceThreeKindComm = (cardsLeft - cardsForPair) / cardsLeft * 3d / (cardsLeft - 1) * 2d / (cardsLeft - 2);
+                double chanceThreeKindComm = (CardsLeft - cardsForPair) / CardsLeft * 3d / (CardsLeft - 1) * 2d / (CardsLeft - 2);
 
                 //chance flop0 pairing, flop1 pairing with flop0, flop3 not pairing
                 //6/50 * 2/49 * 44/48 * Constants.HOLDEM_FLOPSIZE + chanceThreeKindComm
-                chanceThreeKind = cardsForPair / cardsLeft * 2d / (cardsLeft - 1) * ((cardsLeft - 2) - (cardsForPair - 2)) / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE + chanceThreeKindComm;
+                chanceThreeKind = cardsForPair / CardsLeft * 2d / (CardsLeft - 1) * ((CardsLeft - 2) - (cardsForPair - 2)) / (CardsLeft - 2) * Constants.HOLDEM_FLOPSIZE + chanceThreeKindComm;
 
 
                 //STRAIGHT AND STRAIGHT FLUSH POSSIBILITY --------------------------------------------
@@ -684,14 +685,14 @@ namespace PokerOddsRazor.Models
                     if (myPocketRanks[0] - myPocketRanks[1] < 4 && !hasAce)
                     {
                         //8d / 50d * 4d / 49d * 4d / 48d * 3d*2d;
-                        chanceStraight = 2d * ranksPerSuit / cardsLeft * ranksPerSuit / (cardsLeft - 1) * ranksPerSuit / (cardsLeft - 2) * 3d * 2d;
+                        chanceStraight = 2d * ranksPerSuit / CardsLeft * ranksPerSuit / (CardsLeft - 1) * ranksPerSuit / (CardsLeft - 2) * 3d * 2d;
                     }
                     else
                     {
                         //ranks are at the ends of the straight so there is only one possible straight
                         //since they are all different ranks, there are 3! (3*2) different orders for them to be dealt
                         //4d / 50d * 4d / 49d * 4d / 48d * 3d*2d;
-                        chanceStraight = ranksPerSuit / cardsLeft * ranksPerSuit / (cardsLeft - 1) * ranksPerSuit / (cardsLeft - 2) * 3d * 2d;
+                        chanceStraight = ranksPerSuit / CardsLeft * ranksPerSuit / (CardsLeft - 1) * ranksPerSuit / (CardsLeft - 2) * 3d * 2d;
                     }
 
                     //if cards are suited, there's a chance of straight flush on flop
@@ -699,7 +700,7 @@ namespace PokerOddsRazor.Models
                     {
                         //straight flush is also possible on flop
                         //1d / 50d * 1d / 49d * 1d / 48d * 3d * 2d;
-                        chanceStraightFlush = 1d / cardsLeft * 1d / (cardsLeft - 1) * 1d / (cardsLeft - 2) * 3d * 2d;
+                        chanceStraightFlush = 1d / CardsLeft * 1d / (CardsLeft - 1) * 1d / (CardsLeft - 2) * 3d * 2d;
 
                         //Royal flush chance
                         bool bothRankedAtLeastTen = myPocketRanks[0] >= 10 && myPocketRanks[1] >= 10;
@@ -724,7 +725,7 @@ namespace PokerOddsRazor.Models
                     var flushCardsLeft = 11d;
                     //flop0 is flushcard, flop1 is flushcard, flop2 is flushcard (only one way to order this) 
                     //11d / 50d * 10d / 49d * 9d / 48d;
-                    chanceFlush = flushCardsLeft / cardsLeft * (flushCardsLeft - 1) / (cardsLeft - 1) * (flushCardsLeft - 2) / (cardsLeft - 2);
+                    chanceFlush = flushCardsLeft / CardsLeft * (flushCardsLeft - 1) / (CardsLeft - 1) * (flushCardsLeft - 2) / (CardsLeft - 2);
                 }
                 else
                 {
@@ -736,13 +737,13 @@ namespace PokerOddsRazor.Models
 
                 //chance of pairing on flop0, triple on flop1, pairing with other pocket card on flop2
                 //6d / 50d * 2d / 49d * 3d / 48d * Constants.HOLDEM_FLOPSIZE;
-                chanceFullHouse = cardsForPair / cardsLeft * 2d / (cardsLeft - 1) * 3d / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
+                chanceFullHouse = cardsForPair / CardsLeft * 2d / (CardsLeft - 1) * 3d / (CardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
 
                 //FOUR OF A KIND POSSIBILITY--------------------------------------------
 
                 //first card has 6 possibilities for pairing, then only 2 for triple, then 1 for quad
                 //6 / 50 * 2 / 49 * 1 / 48
-                chanceFourKind = cardsForPair / cardsLeft * 2d / (cardsLeft - 1) * 1d / (cardsLeft - 2);
+                chanceFourKind = cardsForPair / CardsLeft * 2d / (CardsLeft - 1) * 1d / (CardsLeft - 2);
 
                 //starts from 1 (pair) through straight flush (count-1) because royal flush is a type of straight flush
                 chanceHighCard = 1;
@@ -758,7 +759,7 @@ namespace PokerOddsRazor.Models
 
                 //chance of first card not tripling with pocket cards, 2nd card not tripling or pairing with 1st, 3rd card pairing with 2nd card
                 //48/50 * (47-3)/49 * 3/48 * 3
-                chanceTwoPair = 48d / cardsLeft * 44d / (cardsLeft - 1) * 3d / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
+                chanceTwoPair = 48d / CardsLeft * 44d / (CardsLeft - 1) * 3d / (CardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
 
                 //THREE KIND SECTION
 
@@ -766,7 +767,7 @@ namespace PokerOddsRazor.Models
 
                 //chance flop0 tripling, flop1 no multiple, flop2 no multiple
                 //2/50 * 48/49 * (47-3)/48 * Constants.HOLDEM_FLOPSIZE
-                chanceThreeKind = cardsForTriple / cardsLeft * ((cardsLeft - 1) - (cardsForTriple - 1)) / (cardsLeft - 1) * ((cardsLeft - 2) - (cardsForTriple - 1) - 3d) / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
+                chanceThreeKind = cardsForTriple / CardsLeft * ((CardsLeft - 1) - (cardsForTriple - 1)) / (CardsLeft - 1) * ((CardsLeft - 2) - (cardsForTriple - 1) - 3d) / (CardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
 
                 //STRAIGHT, FLUSH, AND STRAIGHT FLUSH NOT POSSIBLE --------------------------------------------
 
@@ -778,7 +779,7 @@ namespace PokerOddsRazor.Models
 
                 //chance of all 3 comm cards same rank (not same as either pocket card)
                 //(50-2)/50 * 3/49 * 2/48
-                double chanceThreeKindComm = (cardsLeft - cardsForTriple) / cardsLeft * 3d / (cardsLeft - 1) * 2d / (cardsLeft - 2);
+                double chanceThreeKindComm = (CardsLeft - cardsForTriple) / CardsLeft * 3d / (CardsLeft - 1) * 2d / (CardsLeft - 2);
 
                 //TODO: RECODE
                 //flop0 triples, flop1 other rank, flop2 pairs with flop1
@@ -849,18 +850,18 @@ namespace PokerOddsRazor.Models
             var numberPlayers = 1;  //CHANGE THIS TO PLAYERLIST.COUNT? NO NEED
 
             //number of cards left in the deck in each round
-            if (CurrentRound == Rounds.isPreFlop)
-            {
-                cardsLeft = Constants.DECK_SIZE - 2 * numberPlayers;
-            }
-            else if (CurrentRound == Rounds.isFlop)
-            {
-                cardsLeft = Constants.DECK_SIZE - 2 * numberPlayers - Constants.HOLDEM_FLOPSIZE;
-            }
-            else if (CurrentRound == Rounds.isTurn)
-            {
-                cardsLeft = Constants.DECK_SIZE - 2 * numberPlayers - Constants.HOLDEM_FLOPSIZE - 1;
-            }
+            //if (CurrentRound == Rounds.isPreFlop)
+            //{
+            //    cardsLeft = Constants.DECK_SIZE - 2 * numberPlayers;
+            //}
+            //else if (CurrentRound == Rounds.isFlop)
+            //{
+            //    cardsLeft = Constants.DECK_SIZE - 2 * numberPlayers - Constants.HOLDEM_FLOPSIZE;
+            //}
+            //else if (CurrentRound == Rounds.isTurn)
+            //{
+            //    cardsLeft = Constants.DECK_SIZE - 2 * numberPlayers - Constants.HOLDEM_FLOPSIZE - 1;
+            //}
 
             ProbabilityViewModel vm = null;
 
