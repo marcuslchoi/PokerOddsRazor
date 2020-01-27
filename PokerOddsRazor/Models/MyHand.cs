@@ -55,6 +55,12 @@ namespace PokerOddsRazor.Models
             return pocketSuits;
         }
 
+        public bool PocketCardsAreSuited()
+        {
+            var pocketSuits = this.GetPocketSuits();
+            return pocketSuits[0] == pocketSuits[1];
+        }
+
         public List<int> GetPocketCardRanksHighToLow()
         {
             var pocketCards = new List<string> { this.MyCard0Id, this.MyCard1Id };

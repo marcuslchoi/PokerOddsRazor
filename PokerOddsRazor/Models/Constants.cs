@@ -10,5 +10,6 @@ namespace PokerOddsRazor.Models
           "STRAIGHT", "FLUSH", "FULL_HOUSE", "FOUR_OF_A_KIND", "STRAIGHT_FLUSH" };
 
         public static int HOLDEM_FLOPSIZE = 3;
+        public static int DECK_SIZE = 52;
     }
 }
