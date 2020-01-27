@@ -902,8 +902,8 @@ namespace PokerOddsRazor.Models
                 i++;
             }
 
-            ProbabilityCalculator.FindChancesOfPokerHands(this);
-            //TableGameMediator.GetInstance().GetWinningChance();
+            //ProbabilityCalculator.FindChancesOfPokerHands(this);
+           
             TableGameMediator.GetWinningChance();
         }
     }

@@ -17,5 +17,21 @@ namespace PokerOddsRazor.Models
         public ProbabilityViewModel()
         {
         }
+
+        public ProbabilityViewModel(double highCard, double pair,
+            double twoPair, double threeKind, double straight, double flush,
+            double fullHouse, double fourKind, double straightFlush, double royalFlush)
+        {
+            HighCard = highCard;
+            Pair = pair;
+            TwoPair = twoPair;
+            ThreeOfAKind = threeKind;
+            Straight = straight;
+            Flush = flush;
+            FullHouse = fullHouse;
+            FourOfAKind = fourKind;
+            StraightFlush = straightFlush;
+            RoyalFlush = royalFlush;
+        }
     }
 }

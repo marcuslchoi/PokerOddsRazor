@@ -20,22 +20,23 @@ namespace PokerOddsRazor.Models
         //number of cards left in deck at any round
         static int cardsLeft;
 
-        static ProbabilityCalculator pInstance;
+        #region Singleton
+        private static ProbabilityCalculator instance;
+        private ProbabilityCalculator() { }
+        public static ProbabilityCalculator Instance { get { return ProbabilityCalculator.instance; } }
+        #endregion
 
-        public static ProbabilityCalculator GetInstance()
+        #region Init
+        public static void Initialize()
         {
-            return pInstance;
+            ProbabilityCalculator.instance = new ProbabilityCalculator();
         }
-
-        public void Awake()
-        {
-            pInstance = this;
-        }
+        #endregion
 
         //called when cards are returned to deck
         public static void ClearAllTexts()
         {
-            ProbabilityCalculator pc = GetInstance();
+            //ProbabilityCalculator pc = GetInstance();
 
             //pc.roundText.text = "WAITING...";
             //for (int i = 0; i < pc.chanceTexts.Count; i++) {
@@ -50,7 +51,201 @@ namespace PokerOddsRazor.Models
                 System.Array.IndexOf(Constants.POKER_HANDS, pokerHand));
         }
 
-        public static void FindChancesOfPokerHands(MyHand myHand)
+        private ProbabilityViewModel GetPreFlopChances(MyHand myHand)
+        {
+            //pc.roundText.text = "CHANCES ON THE FLOP";
+
+            List<int> myPocketRanks = myHand.GetPocketCardRanksHighToLow();
+
+            //just the suits of the pocket hand
+            List<string> myPocketSuits = myHand.GetPocketSuits();
+            bool cardsAreSuited = myPocketSuits[0] == myPocketSuits[1];
+
+            var cardsForPair = new double();
+            var cardsForTriple = new double();
+
+            var chanceHighCard = new double();
+            var chancePair = new double();
+            var chanceTwoPair = new double();
+            var chanceThreeKind = new double();
+            var chanceStraight = new double();
+            var chanceFlush = new double();
+            var chanceFullHouse = new double();
+            var chanceFourKind = new double();
+            var chanceStraightFlush = new double();
+            var chanceRoyalFlush = new double();
+
+
+            //IF I HAVE A HIGH CARD WITH MY POCKET CARDS
+            if (IsMyPokerHand(myHand, "HIGH_CARD"))
+            {
+                //3 cards could pair with first pocket card and 3 with the second
+                cardsForPair = 6;
+
+                //				chanceHighCard = 1;
+
+                //flop0 pairs, flop1 doesnt, flop2 doesnt
+                //6/50 * 44/49 * (43-3)/48. The 3 represents the number of ranks left matching flop1
+                chancePair = cardsForPair / cardsLeft * ((cardsLeft - 1) - (cardsForPair - 1)) / (cardsLeft - 1) * ((cardsLeft - 2) - (cardsForPair - 1) - 3) / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
+
+
+                //TWO PAIR SECTION --------------------------------------------------------
+
+                //chance of first card pairing with a pocket card, 2nd card not pairing, 3rd card pairing with 2nd card
+                //6/50 * 44/49 * 3/48
+                double chanceTwoPairComm = 6d / cardsLeft * 44d / (cardsLeft - 1) * 3d / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
+
+                //chance of first card pairing with a pocket card, 2nd card pairing with other pocket card, 3rd card not pairing
+                //6/50 * 3/49 * 44/48
+                chanceTwoPair = cardsForPair / cardsLeft * 3d / (cardsLeft - 1) * ((cardsLeft - 2) - (cardsForPair - 2)) / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE + chanceTwoPairComm;
+
+
+                //chance of all 3 comm cards same rank (not same as either pocket card)
+                //(50-6)/50 * 3/49 * 2/48
+                double chanceThreeKindComm = (cardsLeft - cardsForPair) / cardsLeft * 3d / (cardsLeft - 1) * 2d / (cardsLeft - 2);
+
+                //chance flop0 pairing, flop1 pairing with flop0, flop3 not pairing
+                //6/50 * 2/49 * 44/48 * Constants.HOLDEM_FLOPSIZE + chanceThreeKindComm
+                chanceThreeKind = cardsForPair / cardsLeft * 2d / (cardsLeft - 1) * ((cardsLeft - 2) - (cardsForPair - 2)) / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE + chanceThreeKindComm;
+
+
+                //STRAIGHT AND STRAIGHT FLUSH POSSIBILITY --------------------------------------------
+
+                //for possible straight on flop, 
+                //cards must have an Ace and 2,3,4 or 5 (Ace low straight), or cards must be less than 5 ranks different
+                bool hasAce = myPocketRanks[0] == 14;
+                bool possAceLowStraight = hasAce && myPocketRanks[1] <= 5;
+                bool possNormalStraight = myPocketRanks[0] - myPocketRanks[1] < 5;
+                if (possAceLowStraight || possNormalStraight)
+                {
+                    //STRAIGHT IS POSSIBLE ON FLOP
+
+                    //number of card ranks per each suit
+                    double ranksPerSuit = 4d;
+
+                    //IF RANKS ARE < 4 APART AND THERE IS NO ACE, the first card has 8 possibilities 
+                    //(ie if pocket cards are 2 and 5, first card can be Ace or 6)
+                    if (myPocketRanks[0] - myPocketRanks[1] < 4 && !hasAce)
+                    {
+                        //8d / 50d * 4d / 49d * 4d / 48d * 3d*2d;
+                        chanceStraight = 2d * ranksPerSuit / cardsLeft * ranksPerSuit / (cardsLeft - 1) * ranksPerSuit / (cardsLeft - 2) * 3d * 2d;
+                    }
+                    else
+                    {
+                        //ranks are at the ends of the straight so there is only one possible straight
+                        //since they are all different ranks, there are 3! (3*2) different orders for them to be dealt
+                        //4d / 50d * 4d / 49d * 4d / 48d * 3d*2d;
+                        chanceStraight = ranksPerSuit / cardsLeft * ranksPerSuit / (cardsLeft - 1) * ranksPerSuit / (cardsLeft - 2) * 3d * 2d;
+                    }
+
+                    //if cards are suited, there's a chance of straight flush on flop
+                    if (cardsAreSuited)
+                    {
+                        //straight flush is also possible on flop
+                        //1d / 50d * 1d / 49d * 1d / 48d * 3d * 2d;
+                        chanceStraightFlush = 1d / cardsLeft * 1d / (cardsLeft - 1) * 1d / (cardsLeft - 2) * 3d * 2d;
+
+                        //Royal flush chance
+                        bool bothRankedAtLeastTen = myPocketRanks[0] >= 10 && myPocketRanks[1] >= 10;
+                        if (bothRankedAtLeastTen)
+                        {
+                            chanceRoyalFlush = chanceStraightFlush;
+                        }
+                    }
+                }
+                else
+                { //cards are not within 5 ranks so no possibility of straight
+                    Debug.WriteLine("straight is not possible on flop");
+                    chanceStraight = 0;
+                    chanceStraightFlush = 0;
+                }
+
+                //FLUSH POSSIBILITY--------------------------------------------
+
+                if (cardsAreSuited)
+                {
+                    //flush is possible on flop
+                    var flushCardsLeft = 11d;
+                    //flop0 is flushcard, flop1 is flushcard, flop2 is flushcard (only one way to order this) 
+                    //11d / 50d * 10d / 49d * 9d / 48d;
+                    chanceFlush = flushCardsLeft / cardsLeft * (flushCardsLeft - 1) / (cardsLeft - 1) * (flushCardsLeft - 2) / (cardsLeft - 2);
+                }
+                else
+                {
+                    Debug.WriteLine("flush not possible on flop");
+                    chanceFlush = 0;
+                }
+
+                //FULL HOUSE POSSIBILITY--------------------------------------------
+
+                //chance of pairing on flop0, triple on flop1, pairing with other pocket card on flop2
+                //6d / 50d * 2d / 49d * 3d / 48d * Constants.HOLDEM_FLOPSIZE;
+                chanceFullHouse = cardsForPair / cardsLeft * 2d / (cardsLeft - 1) * 3d / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
+
+                //FOUR OF A KIND POSSIBILITY--------------------------------------------
+
+                //first card has 6 possibilities for pairing, then only 2 for triple, then 1 for quad
+                //6 / 50 * 2 / 49 * 1 / 48
+                chanceFourKind = cardsForPair / cardsLeft * 2d / (cardsLeft - 1) * 1d / (cardsLeft - 2);
+
+                //starts from 1 (pair) through straight flush (count-1) because royal flush is a type of straight flush
+                chanceHighCard = 1;
+
+            } //CLOSE HIGH CARD
+            else if (IsMyPokerHand(myHand, "PAIR"))
+            {
+
+                //HIDE HIGH CARD CHANCE TEXT
+                //pc.chanceTexts [0].enabled = false;
+
+                //TWO PAIR SECTION --------------------------------------------------------
+
+                //chance of first card not tripling with pocket cards, 2nd card not tripling or pairing with 1st, 3rd card pairing with 2nd card
+                //48/50 * (47-3)/49 * 3/48 * 3
+                chanceTwoPair = 48d / cardsLeft * 44d / (cardsLeft - 1) * 3d / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
+
+                //THREE KIND SECTION
+
+                cardsForTriple = 2;
+
+                //chance flop0 tripling, flop1 no multiple, flop2 no multiple
+                //2/50 * 48/49 * (47-3)/48 * Constants.HOLDEM_FLOPSIZE
+                chanceThreeKind = cardsForTriple / cardsLeft * ((cardsLeft - 1) - (cardsForTriple - 1)) / (cardsLeft - 1) * ((cardsLeft - 2) - (cardsForTriple - 1) - 3d) / (cardsLeft - 2) * Constants.HOLDEM_FLOPSIZE;
+
+                //STRAIGHT, FLUSH, AND STRAIGHT FLUSH NOT POSSIBLE --------------------------------------------
+
+                chanceStraight = 0;
+                chanceFlush = 0;
+                chanceStraightFlush = 0;
+
+                //FULL HOUSE POSSIBILITY--------------------------------------------
+
+                //chance of all 3 comm cards same rank (not same as either pocket card)
+                //(50-2)/50 * 3/49 * 2/48
+                double chanceThreeKindComm = (cardsLeft - cardsForTriple) / cardsLeft * 3d / (cardsLeft - 1) * 2d / (cardsLeft - 2);
+
+                //TODO: RECODE
+                //flop0 triples, flop1 other rank, flop2 pairs with flop1
+                //2/50 * 48/49 * 3/48 * Constants.HOLDEM_FLOPSIZE
+                chanceFullHouse = 2d / 50d * 48d / 49d * 3d / 48d * Constants.HOLDEM_FLOPSIZE + chanceThreeKindComm;
+
+                //flop0 and flop1 make quad, flop2 any card
+                //2d / 50d * 1d / 49d * 1d * Constants.HOLDEM_FLOPSIZE
+                chanceFourKind = 2d / 50d * 1d / 49d * 1d * Constants.HOLDEM_FLOPSIZE;
+
+                chancePair = 1;
+
+            } //CLOSE PAIR
+
+            var vm = new ProbabilityViewModel
+                (chanceHighCard, chancePair, chanceTwoPair, chanceThreeKind,
+                chanceStraight, chanceFlush, chanceFullHouse,
+                chanceFourKind, chanceStraightFlush, chanceRoyalFlush);
+
+            return vm;
+        }
+
+        public void FindChancesOfPokerHands(MyHand myHand)
         {
             //TODO: POSSIBLE BUGS SEEN ON STRAIGHT POSSIBILITY
             //TODO: INDICATOR OF PLAYING BOARD CARDS (IE IF 2 BOARD CARDS ARE PAIR, CHANCE 3KIND ON BOARD IS
@@ -78,7 +273,7 @@ namespace PokerOddsRazor.Models
 
             var deckSize = 52;
 
-            var flopSize = 3;
+            //var flopSize = 3;
 
             //number of cards still in deck that can be used to pair with a pocket card
             var cardsForPair = new double();
@@ -104,180 +299,20 @@ namespace PokerOddsRazor.Models
             }
             else if (CurrentRound == Rounds.isFlop)
             {
-                cardsLeft = deckSize - 2 * numberPlayers - flopSize;
+                cardsLeft = deckSize - 2 * numberPlayers - Constants.HOLDEM_FLOPSIZE;
             }
             else if (CurrentRound == Rounds.isTurn)
             {
-                cardsLeft = deckSize - 2 * numberPlayers - flopSize - 1;
+                cardsLeft = deckSize - 2 * numberPlayers - Constants.HOLDEM_FLOPSIZE - 1;
             }
+
+            ProbabilityViewModel vm;
 
             //http://poker.stackexchange.com/questions/1474/formula-for-making-a-single-pair-on-the-flop
             //PRE-FLOP ROUND
             if (CurrentRound == Rounds.isPreFlop)
             {
-                //pc.roundText.text = "CHANCES ON THE FLOP";
-
-                //IF I HAVE A HIGH CARD WITH MY POCKET CARDS
-                if (IsMyPokerHand(myHand, "HIGH_CARD"))
-                {
-                    //3 cards could pair with first pocket card and 3 with the second
-                    cardsForPair = 6;
-
-                    //				chanceHighCard = 1;
-
-                    //flop0 pairs, flop1 doesnt, flop2 doesnt
-                    //6/50 * 44/49 * (43-3)/48. The 3 represents the number of ranks left matching flop1
-                    chancePair = cardsForPair / cardsLeft * ((cardsLeft - 1) - (cardsForPair - 1)) / (cardsLeft - 1) * ((cardsLeft - 2) - (cardsForPair - 1) - 3) / (cardsLeft - 2) * flopSize;
-
-
-                    //TWO PAIR SECTION --------------------------------------------------------
-
-                    //chance of first card pairing with a pocket card, 2nd card not pairing, 3rd card pairing with 2nd card
-                    //6/50 * 44/49 * 3/48
-                    double chanceTwoPairComm = 6d / cardsLeft * 44d / (cardsLeft - 1) * 3d / (cardsLeft - 2) * flopSize;
-
-                    //chance of first card pairing with a pocket card, 2nd card pairing with other pocket card, 3rd card not pairing
-                    //6/50 * 3/49 * 44/48
-                    chanceTwoPair = cardsForPair / cardsLeft * 3d / (cardsLeft - 1) * ((cardsLeft - 2) - (cardsForPair - 2)) / (cardsLeft - 2) * flopSize + chanceTwoPairComm;
-
-
-                    //chance of all 3 comm cards same rank (not same as either pocket card)
-                    //(50-6)/50 * 3/49 * 2/48
-                    double chanceThreeKindComm = (cardsLeft - cardsForPair) / cardsLeft * 3d / (cardsLeft - 1) * 2d / (cardsLeft - 2);
-
-                    //chance flop0 pairing, flop1 pairing with flop0, flop3 not pairing
-                    //6/50 * 2/49 * 44/48 * flopSize + chanceThreeKindComm
-                    chanceThreeKind = cardsForPair / cardsLeft * 2d / (cardsLeft - 1) * ((cardsLeft - 2) - (cardsForPair - 2)) / (cardsLeft - 2) * flopSize + chanceThreeKindComm;
-
-
-                    //STRAIGHT AND STRAIGHT FLUSH POSSIBILITY --------------------------------------------
-
-                    //for possible straight on flop, 
-                    //cards must have an Ace and 2,3,4 or 5 (Ace low straight), or cards must be less than 5 ranks different
-                    bool hasAce = myPocketRanks[0] == 14;
-                    bool possAceLowStraight =  hasAce && myPocketRanks[1] <= 5;
-                    bool possNormalStraight = myPocketRanks[0] - myPocketRanks[1] < 5;
-                    if (possAceLowStraight || possNormalStraight)
-                    {
-                        //STRAIGHT IS POSSIBLE ON FLOP
-
-                        //number of card ranks per each suit
-                        double ranksPerSuit = 4d;
-
-                        //IF RANKS ARE < 4 APART AND THERE IS NO ACE, the first card has 8 possibilities 
-                        //(ie if pocket cards are 2 and 5, first card can be Ace or 6)
-                        if (myPocketRanks[0] - myPocketRanks[1] < 4 && !hasAce)
-                        {
-                            //8d / 50d * 4d / 49d * 4d / 48d * 3d*2d;
-                            chanceStraight = 2d * ranksPerSuit / cardsLeft * ranksPerSuit / (cardsLeft - 1) * ranksPerSuit / (cardsLeft - 2) * 3d * 2d;
-                        }
-                        else
-                        {
-                            //ranks are at the ends of the straight so there is only one possible straight
-                            //since they are all different ranks, there are 3! (3*2) different orders for them to be dealt
-                            //4d / 50d * 4d / 49d * 4d / 48d * 3d*2d;
-                            chanceStraight = ranksPerSuit / cardsLeft * ranksPerSuit / (cardsLeft - 1) * ranksPerSuit / (cardsLeft - 2) * 3d * 2d;
-                        }
-
-                        //if cards are suited, there's a chance of straight flush on flop
-                        if (cardsAreSuited)
-                        {
-                            //straight flush is also possible on flop
-                            //1d / 50d * 1d / 49d * 1d / 48d * 3d * 2d;
-                            chanceStraightFlush = 1d / cardsLeft * 1d / (cardsLeft - 1) * 1d / (cardsLeft - 2) * 3d * 2d;
-
-                            //Royal flush chance
-                            bool bothRankedAtLeastTen = myPocketRanks[0] >= 10 && myPocketRanks[1] >= 10;
-                            if (bothRankedAtLeastTen)
-                            {
-                                chanceRoyalFlush = chanceStraightFlush;
-                            }
-                        }
-                    }
-                    else
-                    { //cards are not within 5 ranks so no possibility of straight
-                        Debug.WriteLine("straight is not possible on flop");
-                        chanceStraight = 0;
-                        chanceStraightFlush = 0;
-                    }
-
-                    //FLUSH POSSIBILITY--------------------------------------------
-
-                    if (cardsAreSuited)
-                    {
-                        //flush is possible on flop
-                        var flushCardsLeft = 11d;
-                        //flop0 is flushcard, flop1 is flushcard, flop2 is flushcard (only one way to order this) 
-                        //11d / 50d * 10d / 49d * 9d / 48d;
-                        chanceFlush = flushCardsLeft / cardsLeft * (flushCardsLeft - 1) / (cardsLeft - 1) * (flushCardsLeft - 2) / (cardsLeft - 2);
-                    }
-                    else
-                    {
-                        Debug.WriteLine("flush not possible on flop");
-                        chanceFlush = 0;
-                    }
-
-                    //FULL HOUSE POSSIBILITY--------------------------------------------
-
-                    //chance of pairing on flop0, triple on flop1, pairing with other pocket card on flop2
-                    //6d / 50d * 2d / 49d * 3d / 48d * flopSize;
-                    chanceFullHouse = cardsForPair / cardsLeft * 2d / (cardsLeft - 1) * 3d / (cardsLeft - 2) * flopSize;
-
-                    //FOUR OF A KIND POSSIBILITY--------------------------------------------
-
-                    //first card has 6 possibilities for pairing, then only 2 for triple, then 1 for quad
-                    //6 / 50 * 2 / 49 * 1 / 48
-                    chanceFourKind = cardsForPair / cardsLeft * 2d / (cardsLeft - 1) * 1d / (cardsLeft - 2);
-
-                    //starts from 1 (pair) through straight flush (count-1) because royal flush is a type of straight flush
-                    chanceHighCard = 1;
-
-                } //CLOSE HIGH CARD, PREFLOP
-
-                else if (IsMyPokerHand(myHand, "PAIR"))
-                {
-
-                    //HIDE HIGH CARD CHANCE TEXT
-                    //pc.chanceTexts [0].enabled = false;
-
-                    //TWO PAIR SECTION --------------------------------------------------------
-
-                    //chance of first card not tripling with pocket cards, 2nd card not tripling or pairing with 1st, 3rd card pairing with 2nd card
-                    //48/50 * (47-3)/49 * 3/48 * 3
-                    chanceTwoPair = 48d / cardsLeft * 44d / (cardsLeft - 1) * 3d / (cardsLeft - 2) * flopSize;
-
-                    //THREE KIND SECTION
-
-                    cardsForTriple = 2;
-
-                    //chance flop0 tripling, flop1 no multiple, flop2 no multiple
-                    //2/50 * 48/49 * (47-3)/48 * flopSize
-                    chanceThreeKind = cardsForTriple / cardsLeft * ((cardsLeft - 1) - (cardsForTriple - 1)) / (cardsLeft - 1) * ((cardsLeft - 2) - (cardsForTriple - 1) - 3d) / (cardsLeft - 2) * flopSize;
-
-                    //STRAIGHT, FLUSH, AND STRAIGHT FLUSH NOT POSSIBLE --------------------------------------------
-
-                    chanceStraight = 0;
-                    chanceFlush = 0;
-                    chanceStraightFlush = 0;
-
-                    //FULL HOUSE POSSIBILITY--------------------------------------------
-
-                    //chance of all 3 comm cards same rank (not same as either pocket card)
-                    //(50-2)/50 * 3/49 * 2/48
-                    double chanceThreeKindComm = (cardsLeft - cardsForTriple) / cardsLeft * 3d / (cardsLeft - 1) * 2d / (cardsLeft - 2);
-
-                    //TODO: RECODE
-                    //flop0 triples, flop1 other rank, flop2 pairs with flop1
-                    //2/50 * 48/49 * 3/48 * flopSize
-                    chanceFullHouse = 2d / 50d * 48d / 49d * 3d / 48d * flopSize + chanceThreeKindComm;
-
-                    //flop0 and flop1 make quad, flop2 any card
-                    //2d / 50d * 1d / 49d * 1d * flopSize
-                    chanceFourKind = 2d / 50d * 1d / 49d * 1d * flopSize;
-
-                    chancePair = 1;
-
-                } //CLOSE PAIR, PREFLOP
+                vm = GetPreFlopChances(myHand);
 
             }   //CLOSE PREFLOP ROUND
 
@@ -891,20 +926,20 @@ namespace PokerOddsRazor.Models
                 }
             }
 
-            List<string> pokerHandsList = new List<string> {
-            "HIGH CARD",
-            "PAIR",
-            "TWO PAIR",
-            "THREE OF A KIND",
-            "STRAIGHT",
-            "FLUSH",
-            "FULL HOUSE",
-            "FOUR OF A KIND",
-            "STRAIGHT FLUSH",
-            "ROYAL FLUSH"
-        };
+        //    List<string> pokerHandsList = new List<string> {
+        //    "HIGH CARD",
+        //    "PAIR",
+        //    "TWO PAIR",
+        //    "THREE OF A KIND",
+        //    "STRAIGHT",
+        //    "FLUSH",
+        //    "FULL HOUSE",
+        //    "FOUR OF A KIND",
+        //    "STRAIGHT FLUSH",
+        //    "ROYAL FLUSH"
+        //};
 
-            string lastCharacter;
+         //   string lastCharacter;
             //for (int i = 0; i < pc.chanceTexts.Count-1; i++) 
             //{
 
@@ -935,7 +970,7 @@ namespace PokerOddsRazor.Models
 
         static public void SetHandStrength(float fStr)
         {
-            ProbabilityCalculator pc = GetInstance();
+            //ProbabilityCalculator pc = GetInstance();
             //if(pc.chanceTexts.Count > 9)
             //{
             //	pc.chanceTexts[10].text = "HAND STRENGTH: " + "<color=#" + strNumberColor + ">" + fStr.ToString("N1") + "/100</color>";

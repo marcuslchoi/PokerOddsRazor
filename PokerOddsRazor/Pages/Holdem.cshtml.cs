@@ -19,6 +19,9 @@ namespace PokerOddsRazor.Pages
         public string Card1 { get; set; }
         public void OnGet()
         {
+            //todo should this happen every time?
+            ProbabilityCalculator.Initialize();
+
             if (string.IsNullOrEmpty(Card0))
             {
                 Card0 = "card0";
@@ -37,7 +40,8 @@ namespace PokerOddsRazor.Pages
             }
 
             TableGameMediator.CurrentRound = Rounds.isPreFlop;
-            ProbabilityCalculator.FindChancesOfPokerHands(Hand);
+            var pc = ProbabilityCalculator.Instance;
+            pc.FindChancesOfPokerHands(Hand);
 
             return RedirectToPage(new {Card0 = Hand.MyCard0Id, Card1 = Hand.MyCard1Id }); // (new { IndexCity = Address.City });//pass anonymous object with city property
         }
