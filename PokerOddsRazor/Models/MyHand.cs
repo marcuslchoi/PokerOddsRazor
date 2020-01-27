@@ -47,7 +47,8 @@ namespace PokerOddsRazor.Models
         {
         }
 
-        public List<int> cardsToRanks(List<string> cardsToBeIntRanked)
+        //returns the list of cards as just int ranks
+        public List<int> CardsToRanks(List<string> cardsToBeIntRanked)
         {
             List<int> myCardRanks = new List<int>();
 
@@ -78,11 +79,8 @@ namespace PokerOddsRazor.Models
                     cardSuitless = "14";
                 }
 
-                //card value as an integer. int.Parse to convert string to int
                 int cardRankInt = int.Parse(cardSuitless);
                 myCardRanks.Add(cardRankInt);
-
-
             }
 
             return myCardRanks;
@@ -175,7 +173,7 @@ namespace PokerOddsRazor.Models
             //FIRST CHECKS FOR QUAD, THEN FULL HOUSE, THEN TRIPLE, THEN 2 PAIR, THEN 1 PAIR (THEN HIGH CARD IF EVERYTHING FALSE)
 
             //put cards into array of suitless int values
-            List<int> myCardRanks = cardsToRanks(myCardIds);
+            List<int> myCardRanks = CardsToRanks(myCardIds);
 
             //sort rank values in high to low order
             myCardRanks.Sort();
@@ -498,7 +496,7 @@ namespace PokerOddsRazor.Models
                 List<string> flushCards = getFlushCards(flushSuit);
 
                 //list of Int ranks of the flush cards. Put in high-to-low order
-                List<int> flushCardRanks = cardsToRanks(flushCards);
+                List<int> flushCardRanks = CardsToRanks(flushCards);
                 flushCardRanks.Sort();
                 flushCardRanks.Reverse();
 
@@ -533,7 +531,7 @@ namespace PokerOddsRazor.Models
         public double checkForStraight()
         {
 
-            List<int> myCardRanks = cardsToRanks(myCardIds);
+            List<int> myCardRanks = CardsToRanks(myCardIds);
 
             //sort rank values in high to low order
             myCardRanks.Sort();

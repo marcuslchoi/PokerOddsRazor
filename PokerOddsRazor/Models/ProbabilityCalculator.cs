@@ -73,7 +73,7 @@ namespace PokerOddsRazor.Models
             List<string> myPocketCardIds = new List<string> { myHand.MyCard0Id, myHand.MyCard1Id };
 
             //just the ranks of the pocket hand, sorted from high to low
-            List<int> myPocketRanks = myHand.cardsToRanks(myPocketCardIds);
+            List<int> myPocketRanks = myHand.CardsToRanks(myPocketCardIds);
             myPocketRanks.Sort();
             myPocketRanks.Reverse();
 
