@@ -17,6 +17,11 @@ namespace PokerOddsRazor.Pages
         public string Card0 { get; set; }
         [BindProperty(SupportsGet = true)]
         public string Card1 { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string ChanceHighCard { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string ChancePair { get; set; }
         public void OnGet()
         {
             //todo should this happen every time?
@@ -30,6 +35,11 @@ namespace PokerOddsRazor.Pages
             {
                 Card1 = "card1";
             }
+
+            if (string.IsNullOrEmpty(ChancePair))
+            {
+                ChancePair = string.Empty;
+            }
         }
 
         public IActionResult OnPost()
@@ -41,9 +51,14 @@ namespace PokerOddsRazor.Pages
 
             TableGameMediator.CurrentRound = Rounds.isPreFlop;
             var pc = ProbabilityCalculator.Instance;
-            pc.FindChancesOfPokerHands(Hand);
+            var vm = pc.FindChancesOfPokerHands(Hand);
 
-            return RedirectToPage(new {Card0 = Hand.MyCard0Id, Card1 = Hand.MyCard1Id }); // (new { IndexCity = Address.City });//pass anonymous object with city property
+            var highCardPercent = vm.HighCard * 100;
+            var pairPercent = vm.Pair * 100;
+
+            return RedirectToPage(new
+            {ChancePair = pairPercent.ToString(),ChanceHighCard = highCardPercent.ToString(),
+                Card0 = Hand.MyCard0Id, Card1 = Hand.MyCard1Id }); //pass anonymous object with hand property
         }
     }
 }

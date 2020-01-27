@@ -801,7 +801,7 @@ namespace PokerOddsRazor.Models
             return vm;
         }
 
-        public void FindChancesOfPokerHands(MyHand myHand)
+        public ProbabilityViewModel FindChancesOfPokerHands(MyHand myHand)
         {
             //TODO: POSSIBLE BUGS SEEN ON STRAIGHT POSSIBILITY
             //TODO: INDICATOR OF PLAYING BOARD CARDS (IE IF 2 BOARD CARDS ARE PAIR, CHANCE 3KIND ON BOARD IS
@@ -821,10 +821,10 @@ namespace PokerOddsRazor.Models
             //}
 
             //just the ranks of the pocket hand, sorted from high to low
-            List<int> myPocketRanks = myHand.GetPocketCardRanksHighToLow();
+            //List<int> myPocketRanks = myHand.GetPocketCardRanksHighToLow();
 
             //just the suits of the pocket hand
-            List<string> myPocketSuits = myHand.GetPocketSuits();
+            //List<string> myPocketSuits = myHand.GetPocketSuits();
             //bool cardsAreSuited = myPocketSuits[0] == myPocketSuits[1];
 
             //var deckSize = 52;
@@ -862,13 +862,12 @@ namespace PokerOddsRazor.Models
                 cardsLeft = Constants.DECK_SIZE - 2 * numberPlayers - Constants.HOLDEM_FLOPSIZE - 1;
             }
 
-            ProbabilityViewModel vm;
+            ProbabilityViewModel vm = null;
 
             //http://poker.stackexchange.com/questions/1474/formula-for-making-a-single-pair-on-the-flop
             if (CurrentRound == Rounds.isPreFlop)
             {
                 vm = GetPreFlopChances(myHand);
-
             }  
             else if (CurrentRound == Rounds.isFlop || CurrentRound == Rounds.isTurn)
             {
@@ -893,6 +892,8 @@ namespace PokerOddsRazor.Models
                 //}
 
             }
+
+            return vm;
 
             //below is UI stuff
 
