@@ -69,19 +69,11 @@ namespace PokerOddsRazor.Models
             //	pc.chanceTexts [i].enabled = true;
             //}
 
-            //List<string> myPocketCardIds = myHand.myPocketCardIds;
-            List<string> myPocketCardIds = new List<string> { myHand.MyCard0Id, myHand.MyCard1Id };
-
             //just the ranks of the pocket hand, sorted from high to low
-            List<int> myPocketRanks = myHand.CardsToRanks(myPocketCardIds);
-            myPocketRanks.Sort();
-            myPocketRanks.Reverse();
+            List<int> myPocketRanks = myHand.GetPocketCardRanksHighToLow();
 
             //just the suits of the pocket hand
-            List<string> myPocketSuits = new List<string>();
-
-            myPocketSuits.Add(myPocketCardIds[0].Substring(myPocketCardIds[0].Length - 1));
-            myPocketSuits.Add(myPocketCardIds[1].Substring(myPocketCardIds[1].Length - 1));
+            List<string> myPocketSuits = myHand.GetPocketSuits();
             bool cardsAreSuited = myPocketSuits[0] == myPocketSuits[1];
 
             var deckSize = 52;

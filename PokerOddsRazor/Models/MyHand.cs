@@ -47,8 +47,22 @@ namespace PokerOddsRazor.Models
         {
         }
 
+        public List<string> GetPocketSuits()
+        {
+            var pocketSuits = new List<string>();
+            pocketSuits.Add(this.MyCard0Id.Substring(this.MyCard0Id.Length - 1));
+            pocketSuits.Add(this.MyCard1Id.Substring(this.MyCard1Id.Length - 1));
+            return pocketSuits;
+        }
+
+        public List<int> GetPocketCardRanksHighToLow()
+        {
+            var pocketCards = new List<string> { this.MyCard0Id, this.MyCard1Id };
+            return this.GetCardRanksHighToLow(pocketCards);
+        }
+
         //returns the list of cards as just int ranks
-        public List<int> CardsToRanks(List<string> cardsToBeIntRanked)
+        private List<int> GetCardRanksHighToLow(List<string> cardsToBeIntRanked)
         {
             List<int> myCardRanks = new List<int>();
 
@@ -82,6 +96,9 @@ namespace PokerOddsRazor.Models
                 int cardRankInt = int.Parse(cardSuitless);
                 myCardRanks.Add(cardRankInt);
             }
+
+            myCardRanks.Sort();
+            myCardRanks.Reverse();
 
             return myCardRanks;
         }
@@ -173,7 +190,7 @@ namespace PokerOddsRazor.Models
             //FIRST CHECKS FOR QUAD, THEN FULL HOUSE, THEN TRIPLE, THEN 2 PAIR, THEN 1 PAIR (THEN HIGH CARD IF EVERYTHING FALSE)
 
             //put cards into array of suitless int values
-            List<int> myCardRanks = CardsToRanks(myCardIds);
+            List<int> myCardRanks = GetCardRanksHighToLow(myCardIds);
 
             //sort rank values in high to low order
             myCardRanks.Sort();
@@ -496,7 +513,7 @@ namespace PokerOddsRazor.Models
                 List<string> flushCards = getFlushCards(flushSuit);
 
                 //list of Int ranks of the flush cards. Put in high-to-low order
-                List<int> flushCardRanks = CardsToRanks(flushCards);
+                List<int> flushCardRanks = GetCardRanksHighToLow(flushCards);
                 flushCardRanks.Sort();
                 flushCardRanks.Reverse();
 
@@ -531,7 +548,7 @@ namespace PokerOddsRazor.Models
         public double checkForStraight()
         {
 
-            List<int> myCardRanks = CardsToRanks(myCardIds);
+            List<int> myCardRanks = GetCardRanksHighToLow(myCardIds);
 
             //sort rank values in high to low order
             myCardRanks.Sort();
