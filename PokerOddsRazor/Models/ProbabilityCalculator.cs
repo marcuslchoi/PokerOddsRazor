@@ -7,7 +7,6 @@ using System.Diagnostics;
 
 namespace PokerOddsRazor.Models
 {
-
     public class ProbabilityCalculator
     {
         //public static Rounds CurrentRound;
@@ -61,7 +60,7 @@ namespace PokerOddsRazor.Models
 
             //		MyHand myHand = new MyHand (MyHand.myCardIds);
 
-            ProbabilityCalculator pc = GetInstance(); //GameObject.Find ("ProbabilityCalculator").GetComponent<ProbabilityCalculator> ();
+            //ProbabilityCalculator pc = GameObject.Find ("ProbabilityCalculator").GetComponent<ProbabilityCalculator> ();
 
             //enable the round text and chance texts
             //pc.roundText.enabled = true;
@@ -83,6 +82,7 @@ namespace PokerOddsRazor.Models
 
             myPocketSuits.Add(myPocketCardIds[0].Substring(myPocketCardIds[0].Length - 1));
             myPocketSuits.Add(myPocketCardIds[1].Substring(myPocketCardIds[1].Length - 1));
+            bool cardsAreSuited = myPocketSuits[0] == myPocketSuits[1];
 
             var deckSize = 52;
 
@@ -90,7 +90,6 @@ namespace PokerOddsRazor.Models
 
             //number of cards still in deck that can be used to pair with a pocket card
             var cardsForPair = new double();
-
             var cardsForTriple = new double();
 
             var chanceHighCard = new double();
@@ -124,7 +123,6 @@ namespace PokerOddsRazor.Models
             //PRE-FLOP ROUND
             if (CurrentRound == Rounds.isPreFlop)
             {
-
                 //pc.roundText.text = "CHANCES ON THE FLOP";
 
                 //IF I HAVE A HIGH CARD WITH MY POCKET CARDS
@@ -164,45 +162,45 @@ namespace PokerOddsRazor.Models
 
                     //for possible straight on flop, 
                     //cards must have an Ace and 2,3,4 or 5 (Ace low straight), or cards must be less than 5 ranks different
-                    if (myPocketRanks[0] == 14 && myPocketRanks[1] <= 5 || myPocketRanks[0] - myPocketRanks[1] < 5)
+                    bool hasAce = myPocketRanks[0] == 14;
+                    bool possAceLowStraight =  hasAce && myPocketRanks[1] <= 5;
+                    bool possNormalStraight = myPocketRanks[0] - myPocketRanks[1] < 5;
+                    if (possAceLowStraight || possNormalStraight)
                     {
                         //STRAIGHT IS POSSIBLE ON FLOP
 
                         //number of card ranks per each suit
-                        var ranksPerSuit = 4d;
+                        double ranksPerSuit = 4d;
 
                         //IF RANKS ARE < 4 APART AND THERE IS NO ACE, the first card has 8 possibilities 
                         //(ie if pocket cards are 2 and 5, first card can be Ace or 6)
-                        if (myPocketRanks[0] - myPocketRanks[1] < 4 && myPocketRanks[0] != 14)
+                        if (myPocketRanks[0] - myPocketRanks[1] < 4 && !hasAce)
                         {
                             //8d / 50d * 4d / 49d * 4d / 48d * 3d*2d;
                             chanceStraight = 2d * ranksPerSuit / cardsLeft * ranksPerSuit / (cardsLeft - 1) * ranksPerSuit / (cardsLeft - 2) * 3d * 2d;
                         }
                         else
-                        { //ranks are at the ends of the straight so there is only one possible straight
-                          //since they are all different ranks, there are 3! (3*2) different orders for them to be dealt
-                          //4d / 50d * 4d / 49d * 4d / 48d * 3d*2d;
+                        {
+                            //ranks are at the ends of the straight so there is only one possible straight
+                            //since they are all different ranks, there are 3! (3*2) different orders for them to be dealt
+                            //4d / 50d * 4d / 49d * 4d / 48d * 3d*2d;
                             chanceStraight = ranksPerSuit / cardsLeft * ranksPerSuit / (cardsLeft - 1) * ranksPerSuit / (cardsLeft - 2) * 3d * 2d;
                         }
 
                         //if cards are suited, there's a chance of straight flush on flop
-                        if (myPocketSuits[0] == myPocketSuits[1])
+                        if (cardsAreSuited)
                         {
                             //straight flush is also possible on flop
-
                             //1d / 50d * 1d / 49d * 1d / 48d * 3d * 2d;
                             chanceStraightFlush = 1d / cardsLeft * 1d / (cardsLeft - 1) * 1d / (cardsLeft - 2) * 3d * 2d;
 
-                            //CHANGED
                             //Royal flush chance
-                            if (myPocketRanks[0] >= 10 && myPocketRanks[1] >= 10)
+                            bool bothRankedAtLeastTen = myPocketRanks[0] >= 10 && myPocketRanks[1] >= 10;
+                            if (bothRankedAtLeastTen)
                             {
                                 chanceRoyalFlush = chanceStraightFlush;
-
                             }
-
                         }
-
                     }
                     else
                     { //cards are not within 5 ranks so no possibility of straight
@@ -213,23 +211,18 @@ namespace PokerOddsRazor.Models
 
                     //FLUSH POSSIBILITY--------------------------------------------
 
-                    if (myPocketSuits[0] == myPocketSuits[1])
+                    if (cardsAreSuited)
                     {
                         //flush is possible on flop
-
                         var flushCardsLeft = 11d;
                         //flop0 is flushcard, flop1 is flushcard, flop2 is flushcard (only one way to order this) 
                         //11d / 50d * 10d / 49d * 9d / 48d;
                         chanceFlush = flushCardsLeft / cardsLeft * (flushCardsLeft - 1) / (cardsLeft - 1) * (flushCardsLeft - 2) / (cardsLeft - 2);
-
-
                     }
                     else
                     {
-
                         Debug.WriteLine("flush not possible on flop");
                         chanceFlush = 0;
-
                     }
 
                     //FULL HOUSE POSSIBILITY--------------------------------------------
@@ -244,10 +237,8 @@ namespace PokerOddsRazor.Models
                     //6 / 50 * 2 / 49 * 1 / 48
                     chanceFourKind = cardsForPair / cardsLeft * 2d / (cardsLeft - 1) * 1d / (cardsLeft - 2);
 
-
                     //starts from 1 (pair) through straight flush (count-1) because royal flush is a type of straight flush
                     chanceHighCard = 1;
-
 
                 } //CLOSE HIGH CARD, PREFLOP
 
@@ -266,7 +257,6 @@ namespace PokerOddsRazor.Models
                     //THREE KIND SECTION
 
                     cardsForTriple = 2;
-
 
                     //chance flop0 tripling, flop1 no multiple, flop2 no multiple
                     //2/50 * 48/49 * (47-3)/48 * flopSize
@@ -294,7 +284,6 @@ namespace PokerOddsRazor.Models
                     chanceFourKind = 2d / 50d * 1d / 49d * 1d * flopSize;
 
                     chancePair = 1;
-
 
                 } //CLOSE PAIR, PREFLOP
 
