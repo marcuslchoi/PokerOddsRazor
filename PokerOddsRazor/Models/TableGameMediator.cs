@@ -9,7 +9,7 @@ namespace PokerOddsRazor.Models
     public class TableGameMediator
     {
         public static bool newGameStarted { get; set; }
-        public static Rounds currentRound { get; internal set; }
+        public static Rounds CurrentRound { get; internal set; }
         public static string myCard0Id { get; internal set; }
         public static string myCard1Id { get; internal set; }
         public static List<string> tableCardIds { get; internal set; }

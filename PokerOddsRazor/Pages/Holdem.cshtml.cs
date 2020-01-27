@@ -36,7 +36,7 @@ namespace PokerOddsRazor.Pages
                 return Page();
             }
 
-            ProbabilityCalculator.CurrentRound = Rounds.isPreFlop;
+            TableGameMediator.CurrentRound = Rounds.isPreFlop;
             ProbabilityCalculator.FindChancesOfPokerHands(Hand);
 
             return RedirectToPage(new {Card0 = Hand.MyCard0Id, Card1 = Hand.MyCard1Id }); // (new { IndexCity = Address.City });//pass anonymous object with city property

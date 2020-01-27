@@ -12,7 +12,8 @@ namespace PokerOddsRazor.Models
 
     public class ProbabilityCalculator
     {
-        public static Rounds CurrentRound;
+        //public static Rounds CurrentRound;
+        public static Rounds CurrentRound { get { return TableGameMediator.CurrentRound; } }
 
         //public Text roundText;
         public static string strNumberColor = "0271D9FF";//"00ffff";

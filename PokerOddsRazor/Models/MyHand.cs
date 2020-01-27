@@ -818,7 +818,7 @@ namespace PokerOddsRazor.Models
             }
 
             //add the pocket hand to my cards
-            if (TableGameMediator.currentRound == Rounds.isPreFlop) //(myCardIds.Count == 0) 
+            if (TableGameMediator.CurrentRound == Rounds.isPreFlop) //(myCardIds.Count == 0) 
             {
 
                 myPocketCardIds.Add(TableGameMediator.myCard0Id);
@@ -828,34 +828,34 @@ namespace PokerOddsRazor.Models
 
                 //myPocketCardIds.AddRange (TableGameMediator.myCardIds);
 
-                ProbabilityCalculator.CurrentRound = Rounds.isPreFlop;
+                TableGameMediator.CurrentRound = Rounds.isPreFlop;
 
                 Debug.WriteLine("pre flop round");
             }
             //ADD ONLY THE NEW TABLE CARDS TO MY CARDS
-            else if (TableGameMediator.currentRound == Rounds.isFlop)
+            else if (TableGameMediator.CurrentRound == Rounds.isFlop)
             {
 
                 //add the flop
                 myCardIds.AddRange(TableGameMediator.tableCardIds);
 
                 //on the flop round
-                ProbabilityCalculator.CurrentRound = Rounds.isFlop;
+                TableGameMediator.CurrentRound = Rounds.isFlop;
 
                 Debug.WriteLine("flop round");
 
             }
-            else if (TableGameMediator.currentRound == Rounds.isTurn || TableGameMediator.currentRound == Rounds.isRiver)
+            else if (TableGameMediator.CurrentRound == Rounds.isTurn || TableGameMediator.CurrentRound == Rounds.isRiver)
             {
 
                 //add the turn/river
                 myCardIds.Add(TableGameMediator.tableCardIds[TableGameMediator.tableCardIds.Count - 1]);
 
                 //if number of comm cards is now 4, we are on the turn round
-                if (TableGameMediator.currentRound == Rounds.isTurn)
+                if (TableGameMediator.CurrentRound == Rounds.isTurn)
                 {
 
-                    ProbabilityCalculator.CurrentRound = Rounds.isTurn;
+                    TableGameMediator.CurrentRound = Rounds.isTurn;
 
                     Debug.WriteLine("turn round");
 
@@ -864,7 +864,7 @@ namespace PokerOddsRazor.Models
                 {
 
                     //last round before showdown (on the river)
-                    ProbabilityCalculator.CurrentRound = Rounds.isRiver;
+                    TableGameMediator.CurrentRound = Rounds.isRiver;
 
                     Debug.WriteLine("river round");
                 }
@@ -882,7 +882,7 @@ namespace PokerOddsRazor.Models
             foreach (string CardId in myCardIds)
             {
 
-                Debug.WriteLine(ProbabilityCalculator.CurrentRound + " MY CARD IDS " + i + " " + CardId);
+                Debug.WriteLine(TableGameMediator.CurrentRound + " MY CARD IDS " + i + " " + CardId);
 
                 i++;
             }
