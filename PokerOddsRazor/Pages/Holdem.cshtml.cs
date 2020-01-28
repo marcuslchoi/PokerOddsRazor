@@ -22,6 +22,10 @@ namespace PokerOddsRazor.Pages
         public string ChanceHighCard { get; set; }
         [BindProperty(SupportsGet = true)]
         public string ChancePair { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public double HandRank { get; set; }
+
         public void OnGet()
         {
             //todo should this happen every time?
@@ -52,13 +56,14 @@ namespace PokerOddsRazor.Pages
             TableGameMediator.CurrentRound = Rounds.isPreFlop;
             var pc = ProbabilityCalculator.Instance;
             var vm = pc.FindChancesOfPokerHands(Hand);
+            var rank = Hand.GetRank(); //todo make sure this isn't called too many times
 
             var highCardPercent = vm.HighCard * 100;
             var pairPercent = vm.Pair * 100;
 
             return RedirectToPage(new
             {ChancePair = pairPercent.ToString(),ChanceHighCard = highCardPercent.ToString(),
-                Card0 = Hand.MyCard0Id, Card1 = Hand.MyCard1Id }); //pass anonymous object with hand property
+                Card0 = Hand.MyCard0Id, Card1 = Hand.MyCard1Id, HandRank = rank }); //pass anonymous object with hand property
         }
     }
 }
