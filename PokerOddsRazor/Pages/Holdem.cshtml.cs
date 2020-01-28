@@ -1,6 +1,7 @@
 ﻿//this is a Razor page's page model, like a viewmodel
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -19,12 +20,22 @@ namespace PokerOddsRazor.Pages
         public string Card1 { get; set; }
 
         [BindProperty(SupportsGet = true)]
+        public string Flop0 { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Flop1 { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Flop2 { get; set; }
+
+        [BindProperty(SupportsGet = true)]
         public string ChanceHighCard { get; set; }
         [BindProperty(SupportsGet = true)]
         public string ChancePair { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public double HandRank { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public Rounds CurrentRound { get; set; }
 
         public void OnGet()
         {
@@ -40,6 +51,19 @@ namespace PokerOddsRazor.Pages
                 Card1 = "card1";
             }
 
+            if (string.IsNullOrEmpty(Flop0))
+            {
+                Flop0 = "flop0";
+            }
+            if (string.IsNullOrEmpty(Flop1))
+            {
+                Flop1 = "flop1";
+            }
+            if (string.IsNullOrEmpty(Flop2))
+            {
+                Flop2 = "flop2";
+            }
+
             if (string.IsNullOrEmpty(ChancePair))
             {
                 ChancePair = string.Empty;
@@ -53,7 +77,9 @@ namespace PokerOddsRazor.Pages
                 return Page();
             }
 
-            TableGameMediator.CurrentRound = Rounds.isPreFlop;
+            //todo null check?
+            TableGameMediator.SetCurrentRound(Hand);
+
             var pc = ProbabilityCalculator.Instance;
             var vm = pc.FindChancesOfPokerHands(Hand);
             var rank = Hand.GetRank(); //todo make sure this isn't called too many times
@@ -63,7 +89,12 @@ namespace PokerOddsRazor.Pages
 
             return RedirectToPage(new
             {ChancePair = pairPercent.ToString(),ChanceHighCard = highCardPercent.ToString(),
-                Card0 = Hand.MyCard0Id, Card1 = Hand.MyCard1Id, HandRank = rank }); //pass anonymous object with hand property
+                Card0 = Hand.MyCard0Id, Card1 = Hand.MyCard1Id,
+                Flop0 = Hand.Flop[0],
+                Flop1 = Hand.Flop[1],
+                Flop2 = Hand.Flop[2],
+                CurrentRound = TableGameMediator.CurrentRound,
+                HandRank = rank }); //pass anonymous object with hand property
         }
     }
 }

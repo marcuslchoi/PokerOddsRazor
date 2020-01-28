@@ -32,12 +32,23 @@ namespace PokerOddsRazor.Models
                     myCardIds.Add(value);
             }
         }
+        private List<string> flop;
+        public List<string> Flop
+        {
+            get { return flop; }
+            set
+            {
+                flop = value;
+                myCardIds.AddRange(value);
+            }
+        }
 
         public List<string> myPocketCardIds = new List<string>();
         public List<string> tableCardIds = new List<string>();
 
         //my pocket hand and table cards combined
         private List<string> myCardIds = new List<string>();
+        public List<string> MyCardIds { get { return myCardIds; } }
 
         //has 4 of 5 cards to get a straight
         public bool isAlmostStraight = false;
@@ -871,7 +882,7 @@ namespace PokerOddsRazor.Models
 
                 //myPocketCardIds.AddRange (TableGameMediator.myCardIds);
 
-                TableGameMediator.CurrentRound = Rounds.isPreFlop;
+                //TableGameMediator.CurrentRound = Rounds.isPreFlop;
 
                 Debug.WriteLine("pre flop round");
             }
@@ -883,7 +894,7 @@ namespace PokerOddsRazor.Models
                 myCardIds.AddRange(TableGameMediator.tableCardIds);
 
                 //on the flop round
-                TableGameMediator.CurrentRound = Rounds.isFlop;
+                //TableGameMediator.CurrentRound = Rounds.isFlop;
 
                 Debug.WriteLine("flop round");
 
@@ -898,7 +909,7 @@ namespace PokerOddsRazor.Models
                 if (TableGameMediator.CurrentRound == Rounds.isTurn)
                 {
 
-                    TableGameMediator.CurrentRound = Rounds.isTurn;
+                    //TableGameMediator.CurrentRound = Rounds.isTurn;
 
                     Debug.WriteLine("turn round");
 
@@ -907,7 +918,7 @@ namespace PokerOddsRazor.Models
                 {
 
                     //last round before showdown (on the river)
-                    TableGameMediator.CurrentRound = Rounds.isRiver;
+                    //TableGameMediator.CurrentRound = Rounds.isRiver;
 
                     Debug.WriteLine("river round");
                 }

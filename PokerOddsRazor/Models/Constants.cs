@@ -9,7 +9,10 @@ namespace PokerOddsRazor.Models
         { "HIGH_CARD", "PAIR", "TWO_PAIR", "THREE_OF_A_KIND",
           "STRAIGHT", "FLUSH", "FULL_HOUSE", "FOUR_OF_A_KIND", "STRAIGHT_FLUSH" };
 
+        public static int HOLDEM_POCKETSIZE = 2;
         public static int HOLDEM_FLOPSIZE = 3;
+        public static int HOLDEM_TURNSIZE = 1;
+        public static int HOLDEM_RIVERSIZE = 1;
         public static int DECK_SIZE = 52;
     }
 }
