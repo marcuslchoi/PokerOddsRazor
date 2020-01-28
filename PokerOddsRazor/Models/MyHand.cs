@@ -151,7 +151,7 @@ namespace PokerOddsRazor.Models
             //hashset of the suits present in hand (unique)
             HashSet<string> suitsUnique = new HashSet<string>(cardsSuit);
 
-            string flushSuit = "N";
+            string flushSuit = null;
 
             //create dictionary of suit:number in hand
             //for each suit present, loop through array of playerCardsSuit and count how many of each suit 		
@@ -522,7 +522,7 @@ namespace PokerOddsRazor.Models
             string flushSuit = getFlushSuit();
 
             //getFlushSuit returns "N" or the flush suit
-            if (flushSuit != "N")
+            if (!string.IsNullOrEmpty(flushSuit))
             {
                 isFlush = true;
             }
@@ -794,21 +794,23 @@ namespace PokerOddsRazor.Models
 
         public double GetRank()
         {
-            double rank;
+            double rank = checkForMultiples();
+            int checkForMultiplesRank = (int)Math.Floor(rank);
+
             if (Math.Floor((float)checkForStraightFlush()) == System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT_FLUSH"))
             {
                 Debug.WriteLine("Straight Flush Rank: " + checkForStraightFlush());
                 rank = checkForStraightFlush();
             }
-            else if (Math.Floor((float)checkForMultiples()) == System.Array.IndexOf(Constants.POKER_HANDS, "FOUR_OF_A_KIND"))
+            else if (checkForMultiplesRank == System.Array.IndexOf(Constants.POKER_HANDS, "FOUR_OF_A_KIND"))
             {
-                Debug.WriteLine("4 of a Kind Rank: " + checkForMultiples());
-                rank = checkForMultiples();
+                Debug.WriteLine("4 of a Kind Rank: " + rank);
+                //rank = checkForMultiples();
             }
-            else if (Math.Floor((float)checkForMultiples()) == System.Array.IndexOf(Constants.POKER_HANDS, "FULL_HOUSE"))
+            else if (checkForMultiplesRank == System.Array.IndexOf(Constants.POKER_HANDS, "FULL_HOUSE"))
             {
-                Debug.WriteLine("Full House Rank: " + checkForMultiples());
-                rank = checkForMultiples();
+                Debug.WriteLine("Full House Rank: " + rank);
+                //rank = checkForMultiples();
             }
             else if (Math.Floor((float)checkForFlush()) == System.Array.IndexOf(Constants.POKER_HANDS, "FLUSH"))
             {
@@ -820,25 +822,25 @@ namespace PokerOddsRazor.Models
                 Debug.WriteLine("Straight Rank: " + checkForStraight());
                 rank = checkForStraight();
             }
-            else if (Math.Floor((float)checkForMultiples()) == System.Array.IndexOf(Constants.POKER_HANDS, "THREE_OF_A_KIND"))
+            else if (checkForMultiplesRank == System.Array.IndexOf(Constants.POKER_HANDS, "THREE_OF_A_KIND"))
             {
-                Debug.WriteLine("3 of a Kind Rank: " + checkForMultiples());
-                rank = checkForMultiples();
+                Debug.WriteLine("3 of a Kind Rank: " + rank);
+                //rank = checkForMultiples();
             }
-            else if (Math.Floor((float)checkForMultiples()) == System.Array.IndexOf(Constants.POKER_HANDS, "TWO_PAIR"))
+            else if (checkForMultiplesRank == System.Array.IndexOf(Constants.POKER_HANDS, "TWO_PAIR"))
             {
-                Debug.WriteLine("2 Pair Rank: " + checkForMultiples());
-                rank = checkForMultiples();
+                Debug.WriteLine("2 Pair Rank: " + rank);
+                //rank = checkForMultiples();
             }
-            else if (Math.Floor((float)checkForMultiples()) == System.Array.IndexOf(Constants.POKER_HANDS, "PAIR"))
+            else if (checkForMultiplesRank == System.Array.IndexOf(Constants.POKER_HANDS, "PAIR"))
             {
-                Debug.WriteLine("1 Pair Rank: " + checkForMultiples());
-                rank = checkForMultiples();
+                Debug.WriteLine("1 Pair Rank: " + rank);
+                //rank = checkForMultiples();
             }
             else // if (Math.Floor((float)checkForMultiples()) == System.Array.IndexOf(Constants.POKER_HANDS,"HIGH_CARD"))
             {
-                Debug.WriteLine("High Card Rank: " + checkForMultiples());
-                rank = checkForMultiples();
+                Debug.WriteLine("High Card Rank: " + rank);
+                //rank = checkForMultiples();
             }
 
             return rank;
