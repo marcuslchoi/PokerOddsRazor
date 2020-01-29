@@ -14,5 +14,12 @@ namespace PokerOddsRazor.Models
         public static int HOLDEM_TURNSIZE = 1;
         public static int HOLDEM_RIVERSIZE = 1;
         public static int DECK_SIZE = 52;
+
+        public static double ConvertToPercent(double probability)
+        {
+            var percent = probability * 100;
+            percent = Math.Round(percent, 2);
+            return percent;
+        }
     }
 }

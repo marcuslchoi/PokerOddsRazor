@@ -30,6 +30,22 @@ namespace PokerOddsRazor.Pages
         public string ChanceHighCard { get; set; }
         [BindProperty(SupportsGet = true)]
         public string ChancePair { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string ChanceTwoPair { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string ChanceThreeKind { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string ChanceStraight { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string ChanceFlush { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string ChanceFullHouse { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string ChanceFourKind { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string ChanceStraightFlush { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string ChanceRoyalFlush { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public double HandRank { get; set; }
@@ -63,11 +79,6 @@ namespace PokerOddsRazor.Pages
             {
                 Flop2 = "flop2";
             }
-
-            if (string.IsNullOrEmpty(ChancePair))
-            {
-                ChancePair = string.Empty;
-            }
         }
 
         public IActionResult OnPost()
@@ -84,17 +95,38 @@ namespace PokerOddsRazor.Pages
             var vm = pc.FindChancesOfPokerHands(Hand);
             var rank = Hand.GetRank(); //todo make sure this isn't called too many times
 
-            var highCardPercent = vm.HighCard * 100;
-            var pairPercent = vm.Pair * 100;
+            var highCardPercent = Constants.ConvertToPercent(vm.HighCard);
+            var pairPercent = Constants.ConvertToPercent(vm.Pair);
+            var twoPairPercent = Constants.ConvertToPercent(vm.TwoPair);
+            var threeKindPercent = Constants.ConvertToPercent(vm.ThreeOfAKind);
+            var straightPercent = Constants.ConvertToPercent(vm.Straight);
+            var flushPercent = Constants.ConvertToPercent(vm.Flush);
+            var fullhousePercent = Constants.ConvertToPercent(vm.FullHouse);
+            var fourKindPercent = Constants.ConvertToPercent(vm.FourOfAKind);
+            var straightFlushPercent = Constants.ConvertToPercent(vm.StraightFlush);
+            var royalFlushPercent = Constants.ConvertToPercent(vm.RoyalFlush);
 
             return RedirectToPage(new
-            {ChancePair = pairPercent.ToString(),ChanceHighCard = highCardPercent.ToString(),
-                Card0 = Hand.MyCard0Id, Card1 = Hand.MyCard1Id,
+            {
+                ChancePair = pairPercent.ToString(),
+                ChanceHighCard = highCardPercent.ToString(),
+                ChanceTwoPair = twoPairPercent.ToString(),
+                ChanceThreeKind = threeKindPercent.ToString(),
+                ChanceStraight = straightPercent.ToString(),
+                ChanceFlush = flushPercent.ToString(),
+                ChanceFullHouse = fullhousePercent.ToString(),
+                ChanceFourKind = fourKindPercent.ToString(),
+                ChanceStraightFlush = straightFlushPercent.ToString(),
+                ChanceRoyalFlush = royalFlushPercent.ToString(),
+
+                Card0 = Hand.MyCard0Id,
+                Card1 = Hand.MyCard1Id,
                 Flop0 = Hand.Flop[0],
                 Flop1 = Hand.Flop[1],
                 Flop2 = Hand.Flop[2],
                 CurrentRound = TableGameMediator.CurrentRound,
-                HandRank = rank }); //pass anonymous object with hand property
+                HandRank = rank
+            }); //pass anonymous object with hand property
         }
     }
 }
