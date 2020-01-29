@@ -38,8 +38,11 @@ namespace PokerOddsRazor.Models
             get { return flop; }
             set
             {
-                flop = value;
-                myCardIds.AddRange(value);
+                if (value[0] != null)
+                {
+                    flop = value;
+                    myCardIds.AddRange(value);
+                }
             }
         }
 
@@ -97,6 +100,7 @@ namespace PokerOddsRazor.Models
             return this.GetCardRanksHighToLow(pocketCards);
         }
 
+        //todo call this once!
         //returns the list of cards as just int ranks
         private List<int> GetCardRanksHighToLow(List<string> cardsToBeIntRanked)
         {

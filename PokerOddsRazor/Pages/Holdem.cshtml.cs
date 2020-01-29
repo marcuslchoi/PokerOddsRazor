@@ -106,6 +106,17 @@ namespace PokerOddsRazor.Pages
             var straightFlushPercent = Constants.ConvertToPercent(vm.StraightFlush);
             var royalFlushPercent = Constants.ConvertToPercent(vm.RoyalFlush);
 
+            //set flop values
+            string flop0 = string.Empty;
+            string flop1 = string.Empty;
+            string flop2 = string.Empty;
+            if (Hand.Flop != null)
+            {
+                flop0 = Hand.Flop[0];
+                flop1 = Hand.Flop[1];
+                flop2 = Hand.Flop[2];
+            }
+
             return RedirectToPage(new
             {
                 ChancePair = pairPercent.ToString(),
@@ -121,9 +132,9 @@ namespace PokerOddsRazor.Pages
 
                 Card0 = Hand.MyCard0Id,
                 Card1 = Hand.MyCard1Id,
-                Flop0 = Hand.Flop[0],
-                Flop1 = Hand.Flop[1],
-                Flop2 = Hand.Flop[2],
+                Flop0 = flop0,
+                Flop1 = flop1,
+                Flop2 = flop2,
                 CurrentRound = TableGameMediator.CurrentRound,
                 HandRank = rank
             }); //pass anonymous object with hand property
