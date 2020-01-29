@@ -88,13 +88,22 @@ namespace PokerOddsRazor.Pages
                 return Page();
             }
 
+            if (this.Card0 != null && Hand.MyCard0Id == null)
+            {
+                Hand.MyCard0Id = this.Card0;
+            }
+            if (this.Card1 != null && Hand.MyCard1Id == null)
+            {
+                Hand.MyCard1Id = this.Card1;
+            }
+
             //todo null check?
             TableGameMediator.SetCurrentRound(Hand);
-
-            var pc = ProbabilityCalculator.Instance;
-            var vm = pc.FindChancesOfPokerHands(Hand);
             var rank = Hand.GetRank(); //todo make sure this isn't called too many times
 
+            //get probabilities
+            var pc = ProbabilityCalculator.Instance;
+            var vm = pc.FindChancesOfPokerHands(Hand);
             var highCardPercent = Constants.ConvertToPercent(vm.HighCard);
             var pairPercent = Constants.ConvertToPercent(vm.Pair);
             var twoPairPercent = Constants.ConvertToPercent(vm.TwoPair);
@@ -117,6 +126,7 @@ namespace PokerOddsRazor.Pages
                 flop2 = Hand.Flop[2];
             }
 
+            //pass anonymous object with hand property
             return RedirectToPage(new
             {
                 ChancePair = pairPercent.ToString(),
@@ -137,7 +147,7 @@ namespace PokerOddsRazor.Pages
                 Flop2 = flop2,
                 CurrentRound = TableGameMediator.CurrentRound,
                 HandRank = rank
-            }); //pass anonymous object with hand property
+            }); 
         }
     }
 }

@@ -18,8 +18,10 @@ namespace PokerOddsRazor.Models
             set
             {
                 myCard0Id = value;
-                if(!myCardIds.Contains(value))
+                if (!myCardIds.Contains(value) && value != null)
+                {
                     myCardIds.Add(value);
+                }
             }
         }
         public string MyCard1Id
@@ -28,8 +30,10 @@ namespace PokerOddsRazor.Models
             set
             {
                 myCard1Id = value;
-                if (!myCardIds.Contains(value))
+                if (!myCardIds.Contains(value) && value != null)
+                {
                     myCardIds.Add(value);
+                }
             }
         }
         private List<string> flop;
@@ -38,10 +42,21 @@ namespace PokerOddsRazor.Models
             get { return flop; }
             set
             {
-                if (value[0] != null)
+                if (value != null)
                 {
+                    foreach (var card in value)
+                    {
+                        if (card == null)
+                        {
+                            Debug.WriteLine("Flop cards are null");
+                            return;
+                        }
+                        else if (!myCardIds.Contains(card))
+                        {
+                            myCardIds.Add(card); 
+                        }
+                    }
                     flop = value;
-                    myCardIds.AddRange(value);
                 }
             }
         }
