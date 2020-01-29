@@ -18,10 +18,7 @@ namespace PokerOddsRazor.Models
             set
             {
                 myCard0Id = value;
-                if (!myCardIds.Contains(value) && value != null)
-                {
-                    myCardIds.Add(value);
-                }
+                this.PossiblyAddToMyCardIds(value);
             }
         }
         public string MyCard1Id
@@ -30,10 +27,7 @@ namespace PokerOddsRazor.Models
             set
             {
                 myCard1Id = value;
-                if (!myCardIds.Contains(value) && value != null)
-                {
-                    myCardIds.Add(value);
-                }
+                this.PossiblyAddToMyCardIds(value);
             }
         }
         private List<string> flop;
@@ -46,6 +40,27 @@ namespace PokerOddsRazor.Models
                 {
                     this.OnSetFlop(value);
                 }
+            }
+        }
+
+        private string turn;
+        private string river;
+        public string Turn
+        {
+            get { return this.turn; }
+            set
+            {
+                this.turn = value;
+                this.PossiblyAddToMyCardIds(value);
+            }
+        }
+        public string River
+        {
+            get { return this.river; }
+            set
+            {
+                this.river = value;
+                this.PossiblyAddToMyCardIds(value);
             }
         }
 
@@ -87,17 +102,27 @@ namespace PokerOddsRazor.Models
         {
             foreach (var card in flopToSet)
             {
-                if (card == null)
+                if (!this.PossiblyAddToMyCardIds(card))
                 {
                     Debug.WriteLine("Flop cards are null");
                     return;
                 }
-                else if (!myCardIds.Contains(card))
-                {
-                    myCardIds.Add(card);
-                }
             }
             this.flop = flopToSet;
+        }
+
+        private bool PossiblyAddToMyCardIds(string card)
+        {
+            if (card != null && !this.myCardIds.Contains(card))
+            {
+                this.myCardIds.Add(card);
+                return true;
+            }
+            else
+            {
+                Debug.WriteLine("Card not added: " + card);
+                return false;
+            }
         }
 
         public List<string> GetPocketSuits()
@@ -830,52 +855,46 @@ namespace PokerOddsRazor.Models
         public double GetRank()
         {
             double rank = checkForMultiples();
-            int checkForMultiplesRank = (int)Math.Floor(rank);
+            int checkForMultiplesIndex = (int)Math.Floor(rank);
 
-            if (Math.Floor((float)checkForStraightFlush()) == System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT_FLUSH"))
+            if (Math.Floor((float)checkForStraightFlush()) == Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT_FLUSH"))
             {
                 Debug.WriteLine("Straight Flush Rank: " + checkForStraightFlush());
                 rank = checkForStraightFlush();
             }
-            else if (checkForMultiplesRank == System.Array.IndexOf(Constants.POKER_HANDS, "FOUR_OF_A_KIND"))
+            else if (checkForMultiplesIndex == Array.IndexOf(Constants.POKER_HANDS, "FOUR_OF_A_KIND"))
             {
                 Debug.WriteLine("4 of a Kind Rank: " + rank);
-                //rank = checkForMultiples();
             }
-            else if (checkForMultiplesRank == System.Array.IndexOf(Constants.POKER_HANDS, "FULL_HOUSE"))
+            else if (checkForMultiplesIndex == Array.IndexOf(Constants.POKER_HANDS, "FULL_HOUSE"))
             {
                 Debug.WriteLine("Full House Rank: " + rank);
-                //rank = checkForMultiples();
             }
-            else if (Math.Floor((float)checkForFlush()) == System.Array.IndexOf(Constants.POKER_HANDS, "FLUSH"))
+            else if (Math.Floor((float)checkForFlush()) == Array.IndexOf(Constants.POKER_HANDS, "FLUSH"))
             {
                 Debug.WriteLine("Flush Rank: " + checkForFlush());
                 rank = checkForFlush();
             }
-            else if (Math.Floor((float)checkForStraight()) == System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
+            else if (Math.Floor((float)checkForStraight()) == Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
             {
                 Debug.WriteLine("Straight Rank: " + checkForStraight());
                 rank = checkForStraight();
             }
-            else if (checkForMultiplesRank == System.Array.IndexOf(Constants.POKER_HANDS, "THREE_OF_A_KIND"))
+            else if (checkForMultiplesIndex == Array.IndexOf(Constants.POKER_HANDS, "THREE_OF_A_KIND"))
             {
                 Debug.WriteLine("3 of a Kind Rank: " + rank);
-                //rank = checkForMultiples();
             }
-            else if (checkForMultiplesRank == System.Array.IndexOf(Constants.POKER_HANDS, "TWO_PAIR"))
+            else if (checkForMultiplesIndex == Array.IndexOf(Constants.POKER_HANDS, "TWO_PAIR"))
             {
                 Debug.WriteLine("2 Pair Rank: " + rank);
-                //rank = checkForMultiples();
             }
-            else if (checkForMultiplesRank == System.Array.IndexOf(Constants.POKER_HANDS, "PAIR"))
+            else if (checkForMultiplesIndex == Array.IndexOf(Constants.POKER_HANDS, "PAIR"))
             {
                 Debug.WriteLine("1 Pair Rank: " + rank);
-                //rank = checkForMultiples();
             }
-            else // if (Math.Floor((float)checkForMultiples()) == System.Array.IndexOf(Constants.POKER_HANDS,"HIGH_CARD"))
+            else 
             {
                 Debug.WriteLine("High Card Rank: " + rank);
-                //rank = checkForMultiples();
             }
 
             return rank;

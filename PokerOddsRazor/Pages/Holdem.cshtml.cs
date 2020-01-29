@@ -27,6 +27,11 @@ namespace PokerOddsRazor.Pages
         public string Flop2 { get; set; }
 
         [BindProperty(SupportsGet = true)]
+        public string Turn { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string River { get; set; }
+
+        [BindProperty(SupportsGet = true)]
         public string ChanceHighCard { get; set; }
         [BindProperty(SupportsGet = true)]
         public string ChancePair { get; set; }
@@ -88,14 +93,7 @@ namespace PokerOddsRazor.Pages
                 return Page();
             }
 
-            if (this.Card0 != null && Hand.MyCard0Id == null)
-            {
-                Hand.MyCard0Id = this.Card0;
-            }
-            if (this.Card1 != null && Hand.MyCard1Id == null)
-            {
-                Hand.MyCard1Id = this.Card1;
-            }
+            this.PossiblySetPreviousCardValues();
 
             //todo null check?
             TableGameMediator.SetCurrentRound(Hand);
@@ -145,9 +143,44 @@ namespace PokerOddsRazor.Pages
                 Flop0 = flop0,
                 Flop1 = flop1,
                 Flop2 = flop2,
+                Turn = Hand.Turn,
+                River = Hand.River,
                 CurrentRound = TableGameMediator.CurrentRound,
                 HandRank = rank
             }); 
+        }
+
+        private void PossiblySetPreviousCardValues()
+        {
+            if (this.Card0 != null && Hand.MyCard0Id == null)
+            {
+                Hand.MyCard0Id = this.Card0;
+            }
+            if (this.Card1 != null && Hand.MyCard1Id == null)
+            {
+                Hand.MyCard1Id = this.Card1;
+            }
+
+            if (this.Flop0 != null && Hand.Flop[0] == null)
+            {
+                Hand.Flop[0] = this.Flop0;
+            }
+            if (this.Flop1 != null && Hand.Flop[1] == null)
+            {
+                Hand.Flop[1] = this.Flop1;
+            }
+            if (this.Flop2 != null && Hand.Flop[2] == null)
+            {
+                Hand.Flop[2] = this.Flop2;
+            }
+            if (this.Turn != null && Hand.Turn == null)
+            {
+                Hand.Turn = this.Turn;
+            }
+            if (this.River != null && Hand.River == null)
+            {
+                Hand.River = this.River;
+            }
         }
     }
 }

@@ -825,6 +825,8 @@ namespace PokerOddsRazor.Models
             {
 
                 var indexOfPokerHand = (int)Math.Floor((float)myHand.GetRank());
+                //todo
+                vm = new ProbabilityViewModel();
 
                 //pc.roundText.text = "FINAL ROUND";
 
