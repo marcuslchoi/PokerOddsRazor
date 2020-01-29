@@ -84,6 +84,15 @@ namespace PokerOddsRazor.Pages
             {
                 Flop2 = "flop2";
             }
+
+            if (string.IsNullOrEmpty(Turn))
+            {
+                Turn = "turn";
+            }
+            if (string.IsNullOrEmpty(River))
+            {
+                River = "river";
+            }
         }
 
         public IActionResult OnPost()
@@ -98,6 +107,7 @@ namespace PokerOddsRazor.Pages
             //todo null check?
             TableGameMediator.SetCurrentRound(Hand);
             var rank = Hand.GetRank(); //todo make sure this isn't called too many times
+            rank = Math.Round(rank, 10);
 
             //get probabilities
             var pc = ProbabilityCalculator.Instance;
@@ -114,15 +124,15 @@ namespace PokerOddsRazor.Pages
             var royalFlushPercent = Constants.ConvertToPercent(vm.RoyalFlush);
 
             //set flop values
-            string flop0 = string.Empty;
-            string flop1 = string.Empty;
-            string flop2 = string.Empty;
-            if (Hand.Flop != null)
-            {
-                flop0 = Hand.Flop[0];
-                flop1 = Hand.Flop[1];
-                flop2 = Hand.Flop[2];
-            }
+            //string flop0 = string.Empty;
+            //string flop1 = string.Empty;
+            //string flop2 = string.Empty;
+            //if (Hand.Flop != null)
+            //{
+            //    flop0 = Hand.Flop[0];
+            //    flop1 = Hand.Flop[1];
+            //    flop2 = Hand.Flop[2];
+            //}
 
             //pass anonymous object with hand property
             return RedirectToPage(new
@@ -140,9 +150,9 @@ namespace PokerOddsRazor.Pages
 
                 Card0 = Hand.MyCard0Id,
                 Card1 = Hand.MyCard1Id,
-                Flop0 = flop0,
-                Flop1 = flop1,
-                Flop2 = flop2,
+                Flop0 = Hand.Flop0,
+                Flop1 = Hand.Flop1,
+                Flop2 = Hand.Flop2,
                 Turn = Hand.Turn,
                 River = Hand.River,
                 CurrentRound = TableGameMediator.CurrentRound,
@@ -160,18 +170,17 @@ namespace PokerOddsRazor.Pages
             {
                 Hand.MyCard1Id = this.Card1;
             }
-
-            if (this.Flop0 != null && Hand.Flop[0] == null)
+            if (this.Flop0 != null && Hand.Flop0 == null)
             {
-                Hand.Flop[0] = this.Flop0;
+                Hand.Flop0 = this.Flop0;
             }
-            if (this.Flop1 != null && Hand.Flop[1] == null)
+            if (this.Flop1 != null && Hand.Flop1 == null)
             {
-                Hand.Flop[1] = this.Flop1;
+                Hand.Flop1 = this.Flop1;
             }
-            if (this.Flop2 != null && Hand.Flop[2] == null)
+            if (this.Flop2 != null && Hand.Flop2 == null)
             {
-                Hand.Flop[2] = this.Flop2;
+                Hand.Flop2 = this.Flop2;
             }
             if (this.Turn != null && Hand.Turn == null)
             {

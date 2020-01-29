@@ -11,7 +11,6 @@ namespace PokerOddsRazor.Models
     public class MyHand
     {
         private string myCard0Id;
-        private string myCard1Id;
         public string MyCard0Id
         {
             get { return myCard0Id; }
@@ -21,6 +20,7 @@ namespace PokerOddsRazor.Models
                 this.PossiblyAddToMyCardIds(value);
             }
         }
+        private string myCard1Id;
         public string MyCard1Id
         {
             get { return myCard1Id; }
@@ -30,21 +30,38 @@ namespace PokerOddsRazor.Models
                 this.PossiblyAddToMyCardIds(value);
             }
         }
-        private List<string> flop;
-        public List<string> Flop
+        private string flop0;
+        public string Flop0
         {
-            get { return this.flop; }
+            get { return flop0; }
             set
             {
-                if (value != null)
-                {
-                    this.OnSetFlop(value);
-                }
+                flop0 = value;
+                this.PossiblyAddToMyCardIds(value);
+            }
+        }
+        private string flop1;
+        public string Flop1
+        {
+            get { return flop1; }
+            set
+            {
+                flop1 = value;
+                this.PossiblyAddToMyCardIds(value);
+            }
+        }
+        private string flop2;
+        public string Flop2
+        {
+            get { return flop2; }
+            set
+            {
+                flop2 = value;
+                this.PossiblyAddToMyCardIds(value);
             }
         }
 
         private string turn;
-        private string river;
         public string Turn
         {
             get { return this.turn; }
@@ -54,6 +71,7 @@ namespace PokerOddsRazor.Models
                 this.PossiblyAddToMyCardIds(value);
             }
         }
+        private string river;
         public string River
         {
             get { return this.river; }
@@ -96,19 +114,6 @@ namespace PokerOddsRazor.Models
 
         public MyHand()
         {
-        }
-
-        private void OnSetFlop(List<string> flopToSet)
-        {
-            foreach (var card in flopToSet)
-            {
-                if (!this.PossiblyAddToMyCardIds(card))
-                {
-                    Debug.WriteLine("Flop cards are null");
-                    return;
-                }
-            }
-            this.flop = flopToSet;
         }
 
         private bool PossiblyAddToMyCardIds(string card)
