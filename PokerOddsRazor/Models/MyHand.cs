@@ -39,24 +39,12 @@ namespace PokerOddsRazor.Models
         private List<string> flop;
         public List<string> Flop
         {
-            get { return flop; }
+            get { return this.flop; }
             set
             {
                 if (value != null)
                 {
-                    foreach (var card in value)
-                    {
-                        if (card == null)
-                        {
-                            Debug.WriteLine("Flop cards are null");
-                            return;
-                        }
-                        else if (!myCardIds.Contains(card))
-                        {
-                            myCardIds.Add(card); 
-                        }
-                    }
-                    flop = value;
+                    this.OnSetFlop(value);
                 }
             }
         }
@@ -66,7 +54,7 @@ namespace PokerOddsRazor.Models
 
         //my pocket hand and table cards combined
         private List<string> myCardIds = new List<string>();
-        public List<string> MyCardIds { get { return myCardIds; } }
+        public List<string> MyCardIds { get { return this.myCardIds; } }
 
         //has 4 of 5 cards to get a straight
         public bool isAlmostStraight = false;
@@ -93,6 +81,23 @@ namespace PokerOddsRazor.Models
 
         public MyHand()
         {
+        }
+
+        private void OnSetFlop(List<string> flopToSet)
+        {
+            foreach (var card in flopToSet)
+            {
+                if (card == null)
+                {
+                    Debug.WriteLine("Flop cards are null");
+                    return;
+                }
+                else if (!myCardIds.Contains(card))
+                {
+                    myCardIds.Add(card);
+                }
+            }
+            this.flop = flopToSet;
         }
 
         public List<string> GetPocketSuits()
