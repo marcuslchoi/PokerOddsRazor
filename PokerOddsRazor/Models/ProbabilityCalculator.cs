@@ -307,10 +307,10 @@ namespace PokerOddsRazor.Models
             //getRank already called checkForStraight
 
             //equals null if there is no four card flush
-            string myFourFlushSuit = myHand.fourFlushSuit;
+            string myFourFlushSuit = myHand.FourFlushSuit;
 
             //IF THERE IS A 4 FLUSH SUIT, THERE IS A 3 FLUSH SUIT
-            string myThreeFlushSuit = myHand.threeFlushSuit;
+            string myThreeFlushSuit = myHand.ThreeFlushSuit;
 
             Debug.WriteLine("four flush suit: " + myFourFlushSuit);
             Debug.WriteLine("three flush suit: " + myThreeFlushSuit);
@@ -342,19 +342,12 @@ namespace PokerOddsRazor.Models
                 //if there is exactly 3 card flush (also for checking for straight flush)
                 if (myThreeFlushSuit != null && myFourFlushSuit == null)
                 {
-
                     Debug.WriteLine("exactly 3 flush cards");
                     chanceFlush = 9d / CardsLeft * 8d / (CardsLeft - 1);
 
-                    //List<string> myThreeFlushCards = myHand.getFlushCards(myThreeFlushSuit);
+                    //Debug.WriteLine ("1INSIDE FLOP CHANCE FLUSH: " + TableGameMediator.currentRound + " " + MyHand.myCardIds.Count);
 
-                    ////					Debug.WriteLine ("1INSIDE FLOP CHANCE FLUSH: " + TableGameMediator.currentRound + " " + MyHand.myCardIds.Count);
-
-                    ////create new hand with just 3 flush cards, check if 3 cards present in straight
-                    //my3FlushHand = new MyHand(myThreeFlushCards);
-                    //my3FlushHand.checkForStraight();
-
-                    //					Debug.WriteLine ("2INSIDE FLOP CHANCE FLUSH: " + TableGameMediator.currentRound + " " + MyHand.myCardIds.Count);
+                    //Debug.WriteLine ("2INSIDE FLOP CHANCE FLUSH: " + TableGameMediator.currentRound + " " + MyHand.myCardIds.Count);
 
                 }
                 //if there is a 4+ card flush (also for checking for straight flush)
@@ -365,11 +358,6 @@ namespace PokerOddsRazor.Models
                     //chance of both new cards flushing + chance of exactly 1 card flushing
                     // 9/47 * 8/46 + (9/47 * 38/46)*2 = 35%
                     chanceFlush = 9d / CardsLeft * 8d / (CardsLeft - 1) + 2 * (9d / CardsLeft * (CardsLeft - 9d) / (CardsLeft - 1));
-                    //List<string> myFourFlushCards = myHand.getFlushCards(myFourFlushSuit);
-
-                    ////create new hand with just 4 flush cards, check if 4 cards present in straight
-                    //my4FlushHand = new MyHand(myFourFlushCards);
-                    //my4FlushHand.checkForStraight();
                 }
                 else
                 {
@@ -388,12 +376,6 @@ namespace PokerOddsRazor.Models
                     Debug.WriteLine("four flush");
                     //9 cards left in deck of same flush suit
                     chanceFlush = 9d / CardsLeft;
-
-                    //List<string> myFourFlushCards = myHand.getFlushCards(myFourFlushSuit);
-
-                    ////create new hand with just 4 flush cards, check if 4 cards present in straight
-                    //my4FlushHand = new MyHand(myFourFlushCards);
-                    //my4FlushHand.checkForStraight();
                 }
                 else
                 {

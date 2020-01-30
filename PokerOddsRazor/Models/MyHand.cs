@@ -95,15 +95,12 @@ namespace PokerOddsRazor.Models
         //used for royal flush possibility
         public bool isAlmostHighStraight = false;
 
-        //CHANGED
         //3 cards present in a possible straight
         public bool is3AlmostStraight = false;
         public bool is3AlmostHighStraight = false;
 
-        public string fourFlushSuit = null;
-
-        //CHANGED
-        public string threeFlushSuit = null;
+        public string FourFlushSuit { get; private set; }
+        public string ThreeFlushSuit { get; private set; }
 
         //initializer
         public MyHand(List<string> cardList)
@@ -241,20 +238,20 @@ namespace PokerOddsRazor.Models
                     flushSuit = suit;
 
                     //need this for straight flush possibilities
-                    fourFlushSuit = suit;
+                    FourFlushSuit = suit;
 
                     //CHANGED
-                    threeFlushSuit = suit;
+                    ThreeFlushSuit = suit;
 
                 }
                 //if there are exactly 4 flush cards
                 else if (count == 4)
                 {
 
-                    fourFlushSuit = suit;
+                    FourFlushSuit = suit;
 
                     //CHANGED
-                    threeFlushSuit = suit;
+                    ThreeFlushSuit = suit;
 
                 }
                 //CHANGED
@@ -262,7 +259,7 @@ namespace PokerOddsRazor.Models
                 else if (count == 3)
                 {
 
-                    threeFlushSuit = suit;
+                    ThreeFlushSuit = suit;
 
                 }
 
