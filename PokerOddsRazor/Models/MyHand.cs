@@ -82,6 +82,7 @@ namespace PokerOddsRazor.Models
             }
         }
 
+        //todo get rid of some of these fields/properties
         public List<string> myPocketCardIds = new List<string>();
         public List<string> tableCardIds = new List<string>();
 
@@ -647,87 +648,56 @@ namespace PokerOddsRazor.Models
 
             double handRank = -1;
 
-            //LOWEST STRAIGHT CASE: Ace becomes low card
-            List<int> lowestStraight = new List<int> { 14, 2, 3, 4, 5 };
-
-            //List<int> straight6 = new List<int> {2,3,4,5,6};
-
-            List<List<int>> straights = new List<List<int>>();
-
-            //all the possible straights from highest to lowest
-            straights.Add(new List<int> { 10, 11, 12, 13, 14 });
-            straights.Add(new List<int> { 9, 10, 11, 12, 13 });
-            straights.Add(new List<int> { 8, 9, 10, 11, 12 });
-            straights.Add(new List<int> { 7, 8, 9, 10, 11 });
-            straights.Add(new List<int> { 6, 7, 8, 9, 10 });
-            straights.Add(new List<int> { 5, 6, 7, 8, 9 });
-            straights.Add(new List<int> { 4, 5, 6, 7, 8 });
-            straights.Add(new List<int> { 3, 4, 5, 6, 7 });
-            straights.Add(new List<int> { 2, 3, 4, 5, 6 });
-            straights.Add(lowestStraight);
-
             //IF PAST PREFLOP ROUND, CHECK IF HAVE 4 CARDS OUT OF STRAIGHT FOR STRAIGHT POSSIBILITY
             //loop through each possible straight
-            for (int j = 0; j < straights.Count; j++)
+            for (int r = 0; r < Constants.STRAIGHTS.Length; r++)
             {
-
                 int count = 0;
+                int[] currentStraight = Constants.STRAIGHTS[r];
 
                 //loop through the ranks in each possible straight
-                foreach (int rankInStraight in straights[j])
+                foreach (int rankInStraight in currentStraight)
                 {
-
                     //loop through my unique ranks
                     foreach (int uniqueRank in intRanksUnique)
                     {
-
                         if (uniqueRank == rankInStraight)
                         {
-
                             count++;
                         }
                     }
                 }
 
                 //Debug.WriteLine ("count: " + count);
-
                 if (count == 4)
                 {
                     if (checkForStraightCalledOnFlop == false)
                     {
                         numberOfPossStraightsWithMy4Cards++;
                     }
-
                     else if (myCardRanks.Count == 6 && checkForStraightCalledOnTurn == false)
                     {
                         numberOfPossStraightsWithMy4Cards++;
                     }
-
                     //possible high straight
-                    if (j == 0)
+                    if (currentStraight == Constants.HIGHEST_STRAIGHT)
                     {
                         isAlmostHighStraight = true;
                     }
-
                     isAlmostStraight = true;
-
-                    //CHANGED
-                    //break;
                 }
-                //CHANGED
+
                 //3 cards present in a straight
                 else if (count == 3 && checkForStraightCalledOnFlop == false)
                 {
                     numberOfPossStraightsWithMy3Cards++;
                     //possible high straight
-                    if (j == 0)
+                    if (currentStraight == Constants.HIGHEST_STRAIGHT) 
                     {
                         is3AlmostHighStraight = true;
                     }
 
                     is3AlmostStraight = true;
-                    //break;
-
                 }
             }
             //flag that check for straight was called on flop so that number of poss straights w 3 or 4 cards
@@ -735,30 +705,25 @@ namespace PokerOddsRazor.Models
             int numberOfPossStraightsWithMy4Cards_fromFlop = 0;
             if (myCardRanks.Count == 5)
             {
-
                 checkForStraightCalledOnFlop = true;
                 numberOfPossStraightsWithMy4Cards_fromFlop = numberOfPossStraightsWithMy4Cards;
-
             }
             //on turn
             else if (myCardRanks.Count == 6)
             {
-
                 checkForStraightCalledOnTurn = true;
-
                 //makes sure this increments from 0 instead of from number of poss straights on flop
                 numberOfPossStraightsWithMy4Cards -= numberOfPossStraightsWithMy4Cards_fromFlop;
             }
 
             //check if intRanksUnique is a superset of lowestStraight
-            bool isLowStraight = intRanksUnique.IsSupersetOf(lowestStraight);
+            bool isLowStraight = intRanksUnique.IsSupersetOf(Constants.LOWEST_STRAIGHT);
 
             //if intRanksUnique contains all elements in lowestStraight, change Ace value (14) to 1
             if (isLowStraight)
             {
                 intRanksUnique.Remove(14);
                 intRanksUnique.Add(1);
-
             }
             //LOWEST STRAIGHT CASE END
 
@@ -769,10 +734,10 @@ namespace PokerOddsRazor.Models
             intRanksUniqueList.Sort();
 
             //the saved number of cards in a row in the case of straight
-            int actualNumberOfCardsInARow = new int();// = Int()
+            int actualNumberOfCardsInARow = new int();
 
             //the index of the high card in the case of straight
-            int indexOfStraightHighCard = new int(); // = Int()
+            int indexOfStraightHighCard = new int();
 
             int i = 0;
             //increment through entire ranked list to see if 5 in a row
@@ -785,17 +750,14 @@ namespace PokerOddsRazor.Models
                     //case straight
                     if (numberOfCardsInARow >= 5)
                     {
-
                         actualNumberOfCardsInARow = numberOfCardsInARow;
                         indexOfStraightHighCard = i + 1;
                     }
-
                 }
                 else    //if cards not in a row, restart at 1
                 {
                     numberOfCardsInARow = 1;
                 }
-
                 i++;
             }
 
@@ -804,11 +766,8 @@ namespace PokerOddsRazor.Models
                 double divisor = 100;
 
                 isStraight = true;
-                handRank = System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT");
+                handRank = Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT");
                 handRank += intRanksUniqueList[indexOfStraightHighCard] / divisor;
-
-                //limit to 2 decimals
-                //handRank = handRank.toFixed(2);
             }
 
             return handRank;
