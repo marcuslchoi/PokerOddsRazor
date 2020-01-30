@@ -345,27 +345,21 @@ namespace PokerOddsRazor.Models
                 //if there is a 4+ card flush (also for checking for straight flush)
                 else if (myFourFlushSuit != null)
                 {
-
                     Debug.WriteLine("four flush");
                     //9 cards left in deck of same flush suit
                     //chance of both new cards flushing + chance of exactly 1 card flushing
                     // 9/47 * 8/46 + (9/47 * 38/46)*2 = 35%
                     chanceFlush = 9d / CardsLeft * 8d / (CardsLeft - 1) + 2 * (9d / CardsLeft * (CardsLeft - 9d) / (CardsLeft - 1));
-
-
                     List<string> myFourFlushCards = myHand.getFlushCards(myFourFlushSuit);
 
                     //create new hand with just 4 flush cards, check if 4 cards present in straight
                     my4FlushHand = new MyHand(myFourFlushCards);
                     my4FlushHand.checkForStraight();
-
                 }
-
                 else
                 {
                     chanceFlush = 0;
                 }
-
             }
             else if (CurrentRound == Rounds.isTurn && isLowerThanFlush)
             {
@@ -385,11 +379,9 @@ namespace PokerOddsRazor.Models
                     //create new hand with just 4 flush cards, check if 4 cards present in straight
                     my4FlushHand = new MyHand(myFourFlushCards);
                     my4FlushHand.checkForStraight();
-
                 }
                 else
                 {
-
                     chanceFlush = 0;
                 }
             }
@@ -397,14 +389,10 @@ namespace PokerOddsRazor.Models
             //CHANCE FOR STRAIGHT if have 4 of 5 straight cards already
             if (myHand.isAlmostStraight && isLowerThanStraight)
             {
-
                 //STRAIGHT IS POSSIBLE
-
-                //CHANGED
                 //chance with 8 possible cards to finish straight
                 if (myHand.numberOfPossStraightsWithMy4Cards == 2)
                 {
-
                     if (CurrentRound == Rounds.isFlop)
                     {
                         //first card straights and second card either does or doesn't + only 2nd card straights
@@ -439,9 +427,7 @@ namespace PokerOddsRazor.Models
                         chanceStraight = 4d / CardsLeft;
                     }
                 }
-
             }
-
             //chance for straight if have 3 of 5 straight cards already (only in flop round)
             else if (myHand.is3AlmostStraight &&
                      CurrentRound == Rounds.isFlop &&
@@ -451,14 +437,12 @@ namespace PokerOddsRazor.Models
                 //STRAIGHT IS POSSIBLE
                 if (myHand.numberOfPossStraightsWithMy3Cards >= 3)
                 {
-
                     Debug.WriteLine("3 or more diff poss straights");
                     //both cards must straight.
                     //first card has 2 poss ranks to make 4 in a row, then 2 poss ranks for 2nd card +
                     //first card has 2 poss ranks to make 4 in poss straight (with gap), then 1 poss rank (gap card)
                     // 8/47 * 8/46 + 8/47 * 4/46
                     chanceStraight = 8d / CardsLeft * 8d / (CardsLeft - 1) + 8d / CardsLeft * 4d / (CardsLeft - 1);
-
                 }
                 else if (myHand.numberOfPossStraightsWithMy3Cards == 2)
                 {
@@ -470,7 +454,6 @@ namespace PokerOddsRazor.Models
                     //1 poss rank for 4 in a row (the gap), then 2 poss ranks (2 ways this can happen) 
                     // 4/47 * 8/46 * 2
                     chanceStraight = 4d / CardsLeft * 8d / (CardsLeft - 1) * 2;
-
                 }
                 else if (myHand.numberOfPossStraightsWithMy3Cards == 1)
                 {
@@ -478,9 +461,7 @@ namespace PokerOddsRazor.Models
                     //2 poss ranks then 1 poss rank
                     // 8/47 * 4/46
                     chanceStraight = 8d / CardsLeft * 4d / (CardsLeft - 1);
-
                 }
-
             }
             //there are not 4 of 5 straight cards present, or 3 straight in the flop round
             else if (isLowerThanStraight)
@@ -493,15 +474,11 @@ namespace PokerOddsRazor.Models
             if (my4FlushHand.isAlmostStraight)
             {
                 //STRAIGHT FLUSH IS POSSIBLE
-
                 Debug.WriteLine("poss straight flush");
-
                 //ROYAL FLUSH POSSIBILITY
                 if (my4FlushHand.isAlmostHighStraight)
                 {
-
                     Debug.WriteLine("poss royal flush");
-
                     if (CurrentRound == Rounds.isFlop)
                     {
                         chanceRoyalFlush = 1d / CardsLeft * 2;
@@ -515,7 +492,6 @@ namespace PokerOddsRazor.Models
                 else if (CurrentRound == Rounds.isFlop &&
                          my4FlushHand.is3AlmostHighStraight)
                 {
-
                     Debug.WriteLine("is3almosthighstraight with a 4+ card flush (also is almost straight flush)");
                     chanceRoyalFlush = 2d / CardsLeft * 1d / (CardsLeft - 1);
                 }
@@ -523,7 +499,6 @@ namespace PokerOddsRazor.Models
                 //STRAIGHT FLUSH POSSIBILITY: chance with 2 possible cards to finish straight flush
                 if (my4FlushHand.numberOfPossStraightsWithMy4Cards == 2)
                 {
-
                     if (CurrentRound == Rounds.isFlop)
                     {
                         chanceStraightFlush = 2d / CardsLeft + (CardsLeft - 2d) / CardsLeft * 2d / (CardsLeft - 1);
@@ -532,7 +507,6 @@ namespace PokerOddsRazor.Models
                     {
                         chanceStraightFlush = 2d / CardsLeft;
                     }
-
                 }
                 //chance with 1 possible card to finish straight flush
                 else
@@ -542,7 +516,6 @@ namespace PokerOddsRazor.Models
                     {
                         if (my4FlushHand.is3AlmostStraight)
                         {
-
                             //chance of completing the 4 straight + chance of completing the 3 straight
                             chanceStraightFlush = (1d / CardsLeft * 2) + 2d / CardsLeft * 1d / (CardsLeft - 1);
                         }
@@ -550,15 +523,12 @@ namespace PokerOddsRazor.Models
                         {
                             chanceStraightFlush = 1d / CardsLeft + (CardsLeft - 1d) / CardsLeft * 1d / (CardsLeft - 1);
                         }
-
                     }
                     else
                     {
                         chanceStraightFlush = 1d / CardsLeft;
                     }
-
                 }
-
             }
 
             //3+ flush hand is 3almost straight during flop round
@@ -566,26 +536,21 @@ namespace PokerOddsRazor.Models
                      CurrentRound == Rounds.isFlop)
             {
                 Debug.WriteLine("is3almosthighstraight " + my3FlushHand.is3AlmostHighStraight);
-
                 if (my3FlushHand.numberOfPossStraightsWithMy3Cards >= 3)
                 {
-
                     Debug.WriteLine("3 or more diff poss straight flushes");
                     //both cards must straight.
                     //first card has 2 poss ranks to make 4 in a row, then 2 poss ranks for 2nd card +
                     //first card has 2 poss ranks to make 4 in poss straight (with gap), then 1 poss rank (gap card)
                     // 2/47 * 2/46 + 2/47 * 1/46
                     chanceStraightFlush = 2d / CardsLeft * 2d / (CardsLeft - 1) + 2d / CardsLeft * 1d / (CardsLeft - 1);
-
                 }
                 else if (my3FlushHand.numberOfPossStraightsWithMy3Cards == 2)
                 {
-
                     Debug.WriteLine("2 diff poss straight flushes");
                     //1 poss rank for 4 in a row (the gap), then 2 poss ranks (2 ways this can happen) 
                     // 1/47 * 2/46 * 2
                     chanceStraightFlush = 1d / CardsLeft * 2d / (CardsLeft - 1) * 2;
-
                 }
                 else if (my3FlushHand.numberOfPossStraightsWithMy3Cards == 1)
                 {
@@ -593,19 +558,17 @@ namespace PokerOddsRazor.Models
                     //2 poss ranks then 1 poss rank
                     // 2/47 * 1/46
                     chanceStraightFlush = 2d / CardsLeft * 1d / (CardsLeft - 1);
-
                 }
 
                 if (my3FlushHand.is3AlmostHighStraight)
                 {
-
                     Debug.WriteLine("is3almosthighstraight!!!!!!!!");
                     chanceRoyalFlush = 2d / CardsLeft * 1d / (CardsLeft - 1);
                 }
             }
             else
-            { //there are not 4 of 5 straight flush cards present
-
+            {
+                //there are not 4 of 5 straight flush cards present
                 chanceStraightFlush = 0;
                 chanceRoyalFlush = 0;
             }
@@ -621,7 +584,6 @@ namespace PokerOddsRazor.Models
         private ProbabilityViewModel GetPreFlopChances(MyHand myHand)
         {
             //pc.roundText.text = "CHANCES ON THE FLOP";
-
             List<int> myPocketRanks = myHand.GetPocketCardRanksHighToLow();
 
             //just the suits of the pocket hand
