@@ -100,10 +100,10 @@ namespace PokerOddsRazor.Models
         public bool is3AlmostStraight = false;
         public bool is3AlmostHighStraight = false;
 
-        public string fourFlushSuit = "N";
+        public string fourFlushSuit = null;
 
         //CHANGED
-        public string threeFlushSuit = "N";
+        public string threeFlushSuit = null;
 
         //initializer
         public MyHand(List<string> cardList)
@@ -193,7 +193,7 @@ namespace PokerOddsRazor.Models
             return myCardRanks;
         }
 
-        //get the flush suit. If not flush, returns "N"
+        //get the flush suit. If not flush, returns null
         string getFlushSuit()
         {
             //dictionary showing how many of each card suit there is		
@@ -586,7 +586,6 @@ namespace PokerOddsRazor.Models
             bool isFlush = false;
             string flushSuit = getFlushSuit();
 
-            //getFlushSuit returns "N" or the flush suit
             if (!string.IsNullOrEmpty(flushSuit))
             {
                 isFlush = true;

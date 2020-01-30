@@ -296,7 +296,7 @@ namespace PokerOddsRazor.Models
 
             //getRank already called checkForStraight
 
-            //equals "N" if there is no four card flush
+            //equals null if there is no four card flush
             string myFourFlushSuit = myHand.fourFlushSuit;
 
             //IF THERE IS A 4 FLUSH SUIT, THERE IS A 3 FLUSH SUIT
@@ -309,20 +309,15 @@ namespace PokerOddsRazor.Models
             MyHand my3FlushHand = new MyHand();
 
             //chance for flush
-            if (CurrentRound == Rounds.isFlop && Math.Floor((float)myHand.GetRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "FLUSH"))
+            if (CurrentRound == Rounds.isFlop &&
+                Math.Floor((float)myHand.GetRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "FLUSH"))
             {
                 //if there is exactly 3 card flush (also for checking for straight flush)
-                //CHANGED
-                if (myThreeFlushSuit != "N" && myFourFlushSuit == "N")
+                if (myThreeFlushSuit != null && myFourFlushSuit == null)
                 {
-
-                    //if there are exactly 3 flush cards
-                    //if (myFourFlushSuit == "N") {
 
                     Debug.WriteLine("exactly 3 flush cards");
                     chanceFlush = 9d / CardsLeft * 8d / (CardsLeft - 1);
-                    //}
-
 
                     List<string> myThreeFlushCards = myHand.getFlushCards(myThreeFlushSuit);
 
@@ -336,7 +331,7 @@ namespace PokerOddsRazor.Models
 
                 }
                 //if there is a 4+ card flush (also for checking for straight flush)
-                else if (myFourFlushSuit != "N")
+                else if (myFourFlushSuit != null)
                 {
 
                     Debug.WriteLine("four flush");
@@ -360,13 +355,14 @@ namespace PokerOddsRazor.Models
                 }
 
             }
-            else if (CurrentRound == Rounds.isTurn && Math.Floor((float)myHand.GetRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "FLUSH"))
+            else if (CurrentRound == Rounds.isTurn && Math.Floor((float)myHand.GetRank()) <
+                System.Array.IndexOf(Constants.POKER_HANDS, "FLUSH"))
             {
                 //must have 4 flush cards for possible flush
                 //Hand my4FlushHand = new Hand ();
 
                 //if there is a 4 card flush (also for checking for straight flush)
-                if (myFourFlushSuit != "N")
+                if (myFourFlushSuit != null)
                 {
 
                     Debug.WriteLine("four flush");
@@ -388,7 +384,8 @@ namespace PokerOddsRazor.Models
             }
 
             //CHANCE FOR STRAIGHT if have 4 of 5 straight cards already
-            if (myHand.isAlmostStraight && Math.Floor((float)myHand.GetRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
+            if (myHand.isAlmostStraight && Math.Floor((float)myHand.GetRank()) <
+                System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
             {
 
                 //STRAIGHT IS POSSIBLE
@@ -436,7 +433,8 @@ namespace PokerOddsRazor.Models
             }
 
             //chance for straight if have 3 of 5 straight cards already (only in flop round)
-            else if (myHand.is3AlmostStraight && CurrentRound == Rounds.isFlop && Math.Floor((float)myHand.GetRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
+            else if (myHand.is3AlmostStraight && CurrentRound == Rounds.isFlop &&
+                Math.Floor((float)myHand.GetRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
             {
                 Debug.WriteLine("INSIDE IS3ALMOSTSTRAIGHT " + myHand.numberOfPossStraightsWithMy3Cards);
                 //STRAIGHT IS POSSIBLE
@@ -474,7 +472,8 @@ namespace PokerOddsRazor.Models
 
             }
             //there are not 4 of 5 straight cards present, or 3 straight in the flop round
-            else if (Math.Floor((float)myHand.GetRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
+            else if (Math.Floor((float)myHand.GetRank()) <
+                System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
             {
                 chanceStraight = 0;
             }
@@ -483,7 +482,6 @@ namespace PokerOddsRazor.Models
             //works for if I have a flush already too (my4FlushHand can have 4+ cards in it)
             if (my4FlushHand.isAlmostStraight)
             {
-
                 //STRAIGHT FLUSH IS POSSIBLE
 
                 Debug.WriteLine("poss straight flush");
