@@ -46,10 +46,16 @@ namespace PokerOddsRazor.Models
             //}
         }
 
-        public static bool IsMyPokerHand(MyHand myHand, string pokerHand)
+        public bool IsMyPokerHand(double rank, string pokerHand)
         {
-            return (Math.Floor((float)myHand.GetRank()) ==
-                System.Array.IndexOf(Constants.POKER_HANDS, pokerHand));
+            return (Math.Floor(rank) ==
+                Array.IndexOf(Constants.POKER_HANDS, pokerHand));
+        }
+
+        private bool IsMyPokerHandLower(double rank, string pokerHand)
+        {
+            return (Math.Floor(rank) <
+                Array.IndexOf(Constants.POKER_HANDS, pokerHand));
         }
 
         private ProbabilityViewModel GetFlopOrTurnChances(MyHand myHand)
@@ -68,6 +74,8 @@ namespace PokerOddsRazor.Models
             var cardsForPair = new double();
             var cardsForTriple = new double();
 
+            double rank = myHand.GetRank();
+
             if (CurrentRound == Rounds.isFlop)
             {
                 //pc.roundText.text = "ON THE TURN AND RIVER";
@@ -78,7 +86,7 @@ namespace PokerOddsRazor.Models
             }
 
             //high card
-            if (IsMyPokerHand(myHand, "HIGH_CARD"))
+            if (IsMyPokerHand(rank, "HIGH_CARD"))
             {
                 if (CurrentRound == Rounds.isFlop)
                 {
@@ -112,7 +120,7 @@ namespace PokerOddsRazor.Models
                 chanceHighCard = 1;
             }
 
-            else if (IsMyPokerHand(myHand, "PAIR"))
+            else if (IsMyPokerHand(rank, "PAIR"))
             {
                 //HIDE HIGH CARD CHANCE TEXT IF ALREADY HAVE A PAIR
                 //pc.chanceTexts [0].enabled = false;
@@ -145,7 +153,7 @@ namespace PokerOddsRazor.Models
                 }
                 chancePair = 1;
             }
-            else if (IsMyPokerHand(myHand, "TWO_PAIR"))
+            else if (IsMyPokerHand(rank, "TWO_PAIR"))
             {
                 Debug.WriteLine("Case: two pair on flop/turn");
                 //HIDE CHANCE TEXTS FOR HIGH CARD, PAIR, THREE KIND
@@ -175,7 +183,7 @@ namespace PokerOddsRazor.Models
                 chanceTwoPair = 1;
             }
             //3 of a kind
-            else if (IsMyPokerHand(myHand, "THREE_OF_A_KIND"))
+            else if (IsMyPokerHand(rank, "THREE_OF_A_KIND"))
             {
                 for (int i = 0; i <= 2; i++)
                 {
@@ -197,7 +205,7 @@ namespace PokerOddsRazor.Models
                 chanceThreeKind = 1;
             }
             //straight
-            else if (IsMyPokerHand(myHand, "STRAIGHTS"))
+            else if (IsMyPokerHand(rank, "STRAIGHTS"))
             {
                 for (int i = 0; i <= 3; i++)
                 {
@@ -209,7 +217,7 @@ namespace PokerOddsRazor.Models
                 chanceStraight = 1;
             }
             //flush
-            else if (IsMyPokerHand(myHand, "FLUSH"))
+            else if (IsMyPokerHand(rank, "FLUSH"))
             {
                 for (int i = 0; i <= 4; i++)
                 {
@@ -221,7 +229,7 @@ namespace PokerOddsRazor.Models
                 chanceFlush = 1;
             }
             //full house
-            else if (IsMyPokerHand(myHand, "FULL_HOUSE"))
+            else if (IsMyPokerHand(rank, "FULL_HOUSE"))
             {
                 for (int i = 0; i <= 5; i++)
                 {
@@ -240,7 +248,7 @@ namespace PokerOddsRazor.Models
                 chanceFullHouse = 1;
             }
             //four of a kind
-            else if (IsMyPokerHand(myHand, "FOUR_OF_A_KIND"))
+            else if (IsMyPokerHand(rank, "FOUR_OF_A_KIND"))
             {
 
                 for (int i = 0; i <= 6; i++)
@@ -254,7 +262,7 @@ namespace PokerOddsRazor.Models
                 chanceFourKind = 1;
             }
             //straight flush
-            else if (IsMyPokerHand(myHand, "STRAIGHT_FLUSH"))
+            else if (IsMyPokerHand(rank, "STRAIGHT_FLUSH"))
             {
 
                 for (int i = 0; i <= 7; i++)
@@ -263,8 +271,10 @@ namespace PokerOddsRazor.Models
                     //pc.chanceTexts [i].enabled = false;
                 }
 
-                //if my hand is a king high straight flush
-                if (myHand.GetRank() == System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT_FLUSH") + 0.13)
+                bool isRoyalFlush = rank == Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT_FLUSH") + 0.14;
+                bool isKingHighStraightFlush = rank == Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT_FLUSH") + 0.13;
+
+                if (isKingHighStraightFlush)
                 {
 
                     if (CurrentRound == Rounds.isFlop)
@@ -277,7 +287,7 @@ namespace PokerOddsRazor.Models
                     }
                 }
                 //if my hand is a royal flush
-                else if (myHand.GetRank() == System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT_FLUSH") + 0.14)
+                else if (isRoyalFlush)
                 {
 
                     chanceRoyalFlush = 1;
@@ -308,9 +318,11 @@ namespace PokerOddsRazor.Models
             MyHand my4FlushHand = new MyHand();
             MyHand my3FlushHand = new MyHand();
 
+            bool isLowerThanFlush = this.IsMyPokerHandLower(rank, "FLUSH");
+            bool isLowerThanStraight = this.IsMyPokerHandLower(rank, "STRAIGHT");
+
             //chance for flush
-            if (CurrentRound == Rounds.isFlop &&
-                Math.Floor((float)myHand.GetRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "FLUSH"))
+            if (CurrentRound == Rounds.isFlop && isLowerThanFlush)
             {
                 //if there is exactly 3 card flush (also for checking for straight flush)
                 if (myThreeFlushSuit != null && myFourFlushSuit == null)
@@ -355,8 +367,7 @@ namespace PokerOddsRazor.Models
                 }
 
             }
-            else if (CurrentRound == Rounds.isTurn && Math.Floor((float)myHand.GetRank()) <
-                System.Array.IndexOf(Constants.POKER_HANDS, "FLUSH"))
+            else if (CurrentRound == Rounds.isTurn && isLowerThanFlush)
             {
                 //must have 4 flush cards for possible flush
                 //Hand my4FlushHand = new Hand ();
@@ -384,8 +395,7 @@ namespace PokerOddsRazor.Models
             }
 
             //CHANCE FOR STRAIGHT if have 4 of 5 straight cards already
-            if (myHand.isAlmostStraight && Math.Floor((float)myHand.GetRank()) <
-                System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
+            if (myHand.isAlmostStraight && isLowerThanStraight)
             {
 
                 //STRAIGHT IS POSSIBLE
@@ -433,8 +443,9 @@ namespace PokerOddsRazor.Models
             }
 
             //chance for straight if have 3 of 5 straight cards already (only in flop round)
-            else if (myHand.is3AlmostStraight && CurrentRound == Rounds.isFlop &&
-                Math.Floor((float)myHand.GetRank()) < System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
+            else if (myHand.is3AlmostStraight &&
+                     CurrentRound == Rounds.isFlop &&
+                     isLowerThanStraight)
             {
                 Debug.WriteLine("INSIDE IS3ALMOSTSTRAIGHT " + myHand.numberOfPossStraightsWithMy3Cards);
                 //STRAIGHT IS POSSIBLE
@@ -472,8 +483,7 @@ namespace PokerOddsRazor.Models
 
             }
             //there are not 4 of 5 straight cards present, or 3 straight in the flop round
-            else if (Math.Floor((float)myHand.GetRank()) <
-                System.Array.IndexOf(Constants.POKER_HANDS, "STRAIGHT"))
+            else if (isLowerThanStraight)
             {
                 chanceStraight = 0;
             }
@@ -502,7 +512,8 @@ namespace PokerOddsRazor.Models
                     }
                 }
                 //check if there is possible Royal Flush w 3 of the 5 poss cards
-                else if (CurrentRound == Rounds.isFlop && my4FlushHand.is3AlmostHighStraight)
+                else if (CurrentRound == Rounds.isFlop &&
+                         my4FlushHand.is3AlmostHighStraight)
                 {
 
                     Debug.WriteLine("is3almosthighstraight with a 4+ card flush (also is almost straight flush)");
@@ -551,7 +562,8 @@ namespace PokerOddsRazor.Models
             }
 
             //3+ flush hand is 3almost straight during flop round
-            else if (my3FlushHand.is3AlmostStraight && CurrentRound == Rounds.isFlop)
+            else if (my3FlushHand.is3AlmostStraight &&
+                     CurrentRound == Rounds.isFlop)
             {
                 Debug.WriteLine("is3almosthighstraight " + my3FlushHand.is3AlmostHighStraight);
 
@@ -630,9 +642,10 @@ namespace PokerOddsRazor.Models
             var chanceStraightFlush = new double();
             var chanceRoyalFlush = new double();
 
+            double rank = myHand.GetRank();
 
             //IF I HAVE A HIGH CARD WITH MY POCKET CARDS
-            if (IsMyPokerHand(myHand, "HIGH_CARD"))
+            if (IsMyPokerHand(rank, "HIGH_CARD"))
             {
                 //3 cards could pair with first pocket card and 3 with the second
                 cardsForPair = 6;
@@ -747,7 +760,7 @@ namespace PokerOddsRazor.Models
                 chanceHighCard = 1;
 
             } //CLOSE HIGH CARD
-            else if (IsMyPokerHand(myHand, "PAIR"))
+            else if (IsMyPokerHand(rank, "PAIR"))
             {
 
                 //HIDE HIGH CARD CHANCE TEXT
