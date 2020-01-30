@@ -91,14 +91,14 @@ namespace PokerOddsRazor.Models
         public List<string> MyCardIds { get { return this.myCardIds; } }
 
         //has 4 of 5 cards to get a straight
-        public bool isAlmostStraight = false;
+        public bool Is4AlmostStraight { get; private set; }
 
         //used for royal flush possibility
-        public bool isAlmostHighStraight = false;
+        public bool Is4AlmostHighStraight { get; private set; }
 
         //3 cards present in a possible straight
-        public bool is3AlmostStraight = false;
-        public bool is3AlmostHighStraight = false;
+        public bool Is3AlmostStraight { get; private set; }
+        public bool Is3AlmostHighStraight { get; private set; }
 
         public string FourFlushSuit { get; private set; }
         public string ThreeFlushSuit { get; private set; }
@@ -107,7 +107,6 @@ namespace PokerOddsRazor.Models
         public MyHand(List<string> cardList)
         {
             myCardIds = cardList;
-
         }
 
         public MyHand()
@@ -682,9 +681,9 @@ namespace PokerOddsRazor.Models
                     //possible high straight
                     if (currentStraight == Constants.HIGHEST_STRAIGHT)
                     {
-                        isAlmostHighStraight = true;
+                        Is4AlmostHighStraight = true;
                     }
-                    isAlmostStraight = true;
+                    Is4AlmostStraight = true;
                 }
 
                 //3 cards present in a straight
@@ -694,10 +693,10 @@ namespace PokerOddsRazor.Models
                     //possible high straight
                     if (currentStraight == Constants.HIGHEST_STRAIGHT) 
                     {
-                        is3AlmostHighStraight = true;
+                        Is3AlmostHighStraight = true;
                     }
 
-                    is3AlmostStraight = true;
+                    Is3AlmostStraight = true;
                 }
             }
             //flag that check for straight was called on flop so that number of poss straights w 3 or 4 cards

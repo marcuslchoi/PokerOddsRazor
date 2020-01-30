@@ -372,7 +372,7 @@ namespace PokerOddsRazor.Models
             }
 
             //CHANCE FOR STRAIGHT if have 4 of 5 straight cards already
-            if (myHand.isAlmostStraight && isLowerThanStraight)
+            if (myHand.Is4AlmostStraight && isLowerThanStraight)
             {
                 //STRAIGHT IS POSSIBLE
                 //chance with 8 possible cards to finish straight
@@ -395,7 +395,7 @@ namespace PokerOddsRazor.Models
                     if (CurrentRound == Rounds.isFlop)
                     {
                         //flop round with 1 4straight and is3almostStraight
-                        if (myHand.is3AlmostStraight)
+                        if (myHand.Is3AlmostStraight)
                         {
                             //chance of completing the 4 straight + chance of completing the 3 straight
                             chanceStraight = (4d / CardsLeft + (CardsLeft - 4d) / CardsLeft * 4d / (CardsLeft - 1)) + 8d / CardsLeft * 4d / (CardsLeft - 1);
@@ -414,7 +414,7 @@ namespace PokerOddsRazor.Models
                 }
             }
             //chance for straight if have 3 of 5 straight cards already (only in flop round)
-            else if (myHand.is3AlmostStraight &&
+            else if (myHand.Is3AlmostStraight &&
                      CurrentRound == Rounds.isFlop &&
                      isLowerThanStraight)
             {
@@ -456,12 +456,12 @@ namespace PokerOddsRazor.Models
 
             //CHANCE FOR STRAIGHT FLUSH
             //works for if I have a flush already too (my4FlushHand can have 4+ cards in it)
-            if (my4FlushHand != null && my4FlushHand.isAlmostStraight)
+            if (my4FlushHand != null && my4FlushHand.Is4AlmostStraight)
             {
                 //STRAIGHT FLUSH IS POSSIBLE
                 Debug.WriteLine("poss straight flush");
                 //ROYAL FLUSH POSSIBILITY
-                if (my4FlushHand.isAlmostHighStraight)
+                if (my4FlushHand.Is4AlmostHighStraight)
                 {
                     Debug.WriteLine("poss royal flush");
                     if (CurrentRound == Rounds.isFlop)
@@ -475,7 +475,7 @@ namespace PokerOddsRazor.Models
                 }
                 //check if there is possible Royal Flush w 3 of the 5 poss cards
                 else if (CurrentRound == Rounds.isFlop &&
-                         my4FlushHand.is3AlmostHighStraight)
+                         my4FlushHand.Is3AlmostHighStraight)
                 {
                     Debug.WriteLine("is3almosthighstraight with a 4+ card flush (also is almost straight flush)");
                     chanceRoyalFlush = 2d / CardsLeft * 1d / (CardsLeft - 1);
@@ -499,7 +499,7 @@ namespace PokerOddsRazor.Models
 
                     if (CurrentRound == Rounds.isFlop)
                     {
-                        if (my4FlushHand.is3AlmostStraight)
+                        if (my4FlushHand.Is3AlmostStraight)
                         {
                             //chance of completing the 4 straight + chance of completing the 3 straight
                             chanceStraightFlush = (1d / CardsLeft * 2) + 2d / CardsLeft * 1d / (CardsLeft - 1);
@@ -517,10 +517,10 @@ namespace PokerOddsRazor.Models
             }
 
             //3+ flush hand is 3almost straight during flop round
-            else if (my3FlushHand != null && my3FlushHand.is3AlmostStraight &&
+            else if (my3FlushHand != null && my3FlushHand.Is3AlmostStraight &&
                      CurrentRound == Rounds.isFlop)
             {
-                Debug.WriteLine("is3almosthighstraight " + my3FlushHand.is3AlmostHighStraight);
+                Debug.WriteLine("is3almosthighstraight " + my3FlushHand.Is3AlmostHighStraight);
                 if (my3FlushHand.numberOfPossStraightsWithMy3Cards >= 3)
                 {
                     Debug.WriteLine("3 or more diff poss straight flushes");
@@ -545,7 +545,7 @@ namespace PokerOddsRazor.Models
                     chanceStraightFlush = 2d / CardsLeft * 1d / (CardsLeft - 1);
                 }
 
-                if (my3FlushHand.is3AlmostHighStraight)
+                if (my3FlushHand.Is3AlmostHighStraight)
                 {
                     Debug.WriteLine("is3almosthighstraight!!!!!!!!");
                     chanceRoyalFlush = 2d / CardsLeft * 1d / (CardsLeft - 1);
