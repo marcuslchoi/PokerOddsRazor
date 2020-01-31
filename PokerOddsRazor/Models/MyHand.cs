@@ -860,7 +860,7 @@ namespace PokerOddsRazor.Models
             return rank;
         }
 
-        //update my hand everytime new cards are dealt, displays new probabilities
+        /*update my hand everytime new cards are dealt, displays new probabilities
         public void UpdateMyCards()
         {
 
@@ -948,6 +948,7 @@ namespace PokerOddsRazor.Models
            
             TableGameMediator.GetWinningChance();
         }
+        */
 
         #region statics
         public static bool IsMyPokerHand(double rank, PokerHand pokerHand)

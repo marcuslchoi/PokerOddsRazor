@@ -12,9 +12,9 @@ namespace PokerOddsRazor.Models
         public static bool newGameStarted { get; set; }
         private static Rounds currentRound;
         public static Rounds CurrentRound { get { return currentRound; } }
-        public static string myCard0Id { get; set; }
-        public static string myCard1Id { get; set; }
-        public static List<string> tableCardIds { get; set; }
+        //public static string myCard0Id { get; set; }
+        //public static string myCard1Id { get; set; }
+        //public static List<string> tableCardIds { get; set; }
         public static int CardsLeftInDeck { get; private set; }
         public static int NumberOfPlayers = 1;
 
