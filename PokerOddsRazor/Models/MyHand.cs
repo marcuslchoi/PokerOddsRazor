@@ -381,7 +381,7 @@ namespace PokerOddsRazor.Models
             if (isFourOfAKind)
             {
 
-                handRank = GetRankIndex("FOUR_OF_A_KIND");
+                handRank = GetRankIndex(PokerHand.FOUR_OF_A_KIND);
                 handRank += quadValue / divisor;
 
                 divisor *= 100;
@@ -407,7 +407,7 @@ namespace PokerOddsRazor.Models
             }
             else if (isFullHouse)
             {
-                handRank = GetRankIndex("FULL_HOUSE");
+                handRank = GetRankIndex(PokerHand.FULL_HOUSE);
 
                 //CASE 2 TRIPLES
                 if (numberOfTriples == 2)
@@ -434,7 +434,7 @@ namespace PokerOddsRazor.Models
             }
             else if (isThreeOfAKind)
             {
-                handRank = GetRankIndex("THREE_OF_A_KIND");
+                handRank = GetRankIndex(PokerHand.THREE_OF_A_KIND);
                 handRank += tripleValues[0] / divisor;
 
                 divisor *= 100;
@@ -463,7 +463,7 @@ namespace PokerOddsRazor.Models
             }
             else if (isTwoPair)
             {
-                handRank = GetRankIndex("TWO_PAIR");
+                handRank = GetRankIndex(PokerHand.TWO_PAIR);
 
                 //if there are 3 pair values, remove lowest pair
                 if (pairValues.Count == 3)
@@ -498,7 +498,7 @@ namespace PokerOddsRazor.Models
             }
             else if (isTwoOfAKind)
             {
-                handRank = GetRankIndex("PAIR");
+                handRank = GetRankIndex(PokerHand.PAIR);
 
                 //add pair value to handRank
                 handRank += pairValues[0] / divisor;
@@ -530,7 +530,7 @@ namespace PokerOddsRazor.Models
             }
             else //HIGH_CARD
             {
-                handRank = GetRankIndex("HIGH_CARD");
+                handRank = GetRankIndex(PokerHand.HIGH_CARD);
 
                 int counter = 0;
                 //add values of up to 5 highest cards from highest to lowest to handRank
@@ -593,7 +593,7 @@ namespace PokerOddsRazor.Models
             //eliminate non-flush cards from hand, put the rest in highest to lowest order, use top 5 in handRank
             if (isFlush)
             {
-                handRank = GetRankIndex("FLUSH");
+                handRank = GetRankIndex(PokerHand.FLUSH);
 
                 //list of the flush cards.
                 List<string> flushCards = getFlushCards(flushSuit);
@@ -765,7 +765,7 @@ namespace PokerOddsRazor.Models
                 double divisor = 100;
 
                 isStraight = true;
-                handRank = GetRankIndex("STRAIGHT");
+                handRank = GetRankIndex(PokerHand.STRAIGHT);
                 handRank += intRanksUniqueList[indexOfStraightHighCard] / divisor;
             }
 
@@ -781,7 +781,7 @@ namespace PokerOddsRazor.Models
 
             //if hand is a flush and a straight
             
-            if (Math.Floor((float)checkForFlush()) == GetRankIndex("FLUSH") && Math.Floor((float)checkForStraight()) == GetRankIndex("STRAIGHT"))
+            if (Math.Floor((float)checkForFlush()) == GetRankIndex(PokerHand.FLUSH) && Math.Floor((float)checkForStraight()) == GetRankIndex(PokerHand.STRAIGHT))
             {
                 //alert("flush and straight");
 
@@ -803,7 +803,7 @@ namespace PokerOddsRazor.Models
                     isStraightFlush = true;
 
                     //use straight flush index .(high card of straight) for hand rank
-                    handRank = handRankStraight - GetRankIndex("STRAIGHT") + GetRankIndex("STRAIGHT_FLUSH");
+                    handRank = handRankStraight - GetRankIndex(PokerHand.STRAIGHT) + GetRankIndex(PokerHand.STRAIGHT_FLUSH);
 
                     //alert("Straight flush: " +handRank)
                 }
@@ -817,38 +817,38 @@ namespace PokerOddsRazor.Models
             double rank = checkForMultiples();
             int checkForMultiplesIndex = (int)Math.Floor(rank);
 
-            if (Math.Floor((float)checkForStraightFlush()) == GetRankIndex("STRAIGHT_FLUSH"))
+            if (Math.Floor((float)checkForStraightFlush()) == GetRankIndex(PokerHand.STRAIGHT_FLUSH))
             {
                 Debug.WriteLine("Straight Flush Rank: " + checkForStraightFlush());
                 rank = checkForStraightFlush();
             }
-            else if (checkForMultiplesIndex == GetRankIndex("FOUR_OF_A_KIND"))
+            else if (checkForMultiplesIndex == GetRankIndex(PokerHand.FOUR_OF_A_KIND))
             {
                 Debug.WriteLine("4 of a Kind Rank: " + rank);
             }
-            else if (checkForMultiplesIndex == GetRankIndex("FULL_HOUSE"))
+            else if (checkForMultiplesIndex == GetRankIndex(PokerHand.FULL_HOUSE))
             {
                 Debug.WriteLine("Full House Rank: " + rank);
             }
-            else if (Math.Floor((float)checkForFlush()) == GetRankIndex("FLUSH"))
+            else if (Math.Floor((float)checkForFlush()) == GetRankIndex(PokerHand.FLUSH))
             {
                 Debug.WriteLine("Flush Rank: " + checkForFlush());
                 rank = checkForFlush();
             }
-            else if (Math.Floor((float)checkForStraight()) == GetRankIndex("STRAIGHT"))
+            else if (Math.Floor((float)checkForStraight()) == GetRankIndex(PokerHand.STRAIGHT))
             {
                 Debug.WriteLine("Straight Rank: " + checkForStraight());
                 rank = checkForStraight();
             }
-            else if (checkForMultiplesIndex == GetRankIndex("THREE_OF_A_KIND"))
+            else if (checkForMultiplesIndex == GetRankIndex(PokerHand.THREE_OF_A_KIND))
             {
                 Debug.WriteLine("3 of a Kind Rank: " + rank);
             }
-            else if (checkForMultiplesIndex == GetRankIndex("TWO_PAIR"))
+            else if (checkForMultiplesIndex == GetRankIndex(PokerHand.TWO_PAIR))
             {
                 Debug.WriteLine("2 Pair Rank: " + rank);
             }
-            else if (checkForMultiplesIndex == GetRankIndex("PAIR"))
+            else if (checkForMultiplesIndex == GetRankIndex(PokerHand.PAIR))
             {
                 Debug.WriteLine("1 Pair Rank: " + rank);
             }
@@ -950,19 +950,19 @@ namespace PokerOddsRazor.Models
         }
 
         #region statics
-        public static bool IsMyPokerHand(double rank, string pokerHand)
+        public static bool IsMyPokerHand(double rank, PokerHand pokerHand)
         {
             return (Math.Floor(rank) == GetRankIndex(pokerHand));
         }
 
-        public static bool IsMyPokerHandLower(double rank, string pokerHand)
+        public static bool IsMyPokerHandLower(double rank, PokerHand pokerHand)
         {
             return (Math.Floor(rank) < GetRankIndex(pokerHand));
         }
 
-        public static int GetRankIndex(string pokerHand)
+        public static int GetRankIndex(PokerHand pokerHand)
         {
-            return Array.IndexOf(Constants.POKER_HANDS, pokerHand);
+            return (int)pokerHand;
         }
         #endregion
     }

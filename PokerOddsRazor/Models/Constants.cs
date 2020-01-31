@@ -6,10 +6,6 @@ namespace PokerOddsRazor.Models
 
     public static class Constants
     {
-        public static string[] POKER_HANDS = new string[]
-        { "HIGH_CARD", "PAIR", "TWO_PAIR", "THREE_OF_A_KIND",
-          "STRAIGHT", "FLUSH", "FULL_HOUSE", "FOUR_OF_A_KIND", "STRAIGHT_FLUSH" };
-
         public static int[] LOWEST_STRAIGHT = new int[] { 14, 2, 3, 4, 5 };
         public static int[] HIGHEST_STRAIGHT = new int[] { 10,11,12,13,14 };
         public static int[][] STRAIGHTS = new int[][]

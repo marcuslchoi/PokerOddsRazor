@@ -74,7 +74,7 @@ namespace PokerOddsRazor.Models
             }
 
             //high card
-            if (MyHand.IsMyPokerHand(rank, "HIGH_CARD"))
+            if (MyHand.IsMyPokerHand(rank, PokerHand.HIGH_CARD))
             {
                 if (CurrentRound == Rounds.isFlop)
                 {
@@ -108,7 +108,7 @@ namespace PokerOddsRazor.Models
                 chanceHighCard = 1;
             }
 
-            else if (MyHand.IsMyPokerHand(rank, "PAIR"))
+            else if (MyHand.IsMyPokerHand(rank, PokerHand.PAIR))
             {
                 //HIDE HIGH CARD CHANCE TEXT IF ALREADY HAVE A PAIR
                 //pc.chanceTexts [0].enabled = false;
@@ -141,7 +141,7 @@ namespace PokerOddsRazor.Models
                 }
                 chancePair = 1;
             }
-            else if (MyHand.IsMyPokerHand(rank, "TWO_PAIR"))
+            else if (MyHand.IsMyPokerHand(rank, PokerHand.TWO_PAIR))
             {
                 Debug.WriteLine("Case: two pair on flop/turn");
                 //HIDE CHANCE TEXTS FOR HIGH CARD, PAIR, THREE KIND
@@ -171,7 +171,7 @@ namespace PokerOddsRazor.Models
                 chanceTwoPair = 1;
             }
             //3 of a kind
-            else if (MyHand.IsMyPokerHand(rank, "THREE_OF_A_KIND"))
+            else if (MyHand.IsMyPokerHand(rank, PokerHand.THREE_OF_A_KIND))
             {
                 for (int i = 0; i <= 2; i++)
                 {
@@ -193,7 +193,7 @@ namespace PokerOddsRazor.Models
                 chanceThreeKind = 1;
             }
             //straight
-            else if (MyHand.IsMyPokerHand(rank, "STRAIGHT"))
+            else if (MyHand.IsMyPokerHand(rank, PokerHand.STRAIGHT))
             {
                 for (int i = 0; i <= 3; i++)
                 {
@@ -205,7 +205,7 @@ namespace PokerOddsRazor.Models
                 chanceStraight = 1;
             }
             //flush
-            else if (MyHand.IsMyPokerHand(rank, "FLUSH"))
+            else if (MyHand.IsMyPokerHand(rank, PokerHand.FLUSH))
             {
                 for (int i = 0; i <= 4; i++)
                 {
@@ -217,7 +217,7 @@ namespace PokerOddsRazor.Models
                 chanceFlush = 1;
             }
             //full house
-            else if (MyHand.IsMyPokerHand(rank, "FULL_HOUSE"))
+            else if (MyHand.IsMyPokerHand(rank, PokerHand.FULL_HOUSE))
             {
                 for (int i = 0; i <= 5; i++)
                 {
@@ -236,7 +236,7 @@ namespace PokerOddsRazor.Models
                 chanceFullHouse = 1;
             }
             //four of a kind
-            else if (MyHand.IsMyPokerHand(rank, "FOUR_OF_A_KIND"))
+            else if (MyHand.IsMyPokerHand(rank, PokerHand.FOUR_OF_A_KIND))
             {
 
                 for (int i = 0; i <= 6; i++)
@@ -250,7 +250,7 @@ namespace PokerOddsRazor.Models
                 chanceFourKind = 1;
             }
             //straight flush
-            else if (MyHand.IsMyPokerHand(rank, "STRAIGHT_FLUSH"))
+            else if (MyHand.IsMyPokerHand(rank, PokerHand.STRAIGHT_FLUSH))
             {
 
                 for (int i = 0; i <= 7; i++)
@@ -259,7 +259,7 @@ namespace PokerOddsRazor.Models
                     //pc.chanceTexts [i].enabled = false;
                 }
 
-                int rankIndexStraightFlush = MyHand.GetRankIndex("STRAIGHT_FLUSH");
+                int rankIndexStraightFlush = MyHand.GetRankIndex(PokerHand.STRAIGHT_FLUSH);
                 bool isRoyalFlush = rank == rankIndexStraightFlush + 0.14;
                 bool isKingHighStraightFlush = rank == rankIndexStraightFlush + 0.13;
 
@@ -322,8 +322,8 @@ namespace PokerOddsRazor.Models
                 my4FlushHand.checkForStraight();
             }
 
-            bool isLowerThanFlush = MyHand.IsMyPokerHandLower(rank, "FLUSH");
-            bool isLowerThanStraight = MyHand.IsMyPokerHandLower(rank, "STRAIGHT");
+            bool isLowerThanFlush = MyHand.IsMyPokerHandLower(rank, PokerHand.FLUSH);
+            bool isLowerThanStraight = MyHand.IsMyPokerHandLower(rank, PokerHand.STRAIGHT);
 
             //chance for flush
             if (CurrentRound == Rounds.isFlop && isLowerThanFlush)
@@ -593,7 +593,7 @@ namespace PokerOddsRazor.Models
             double rank = myHand.GetRank();
 
             //IF I HAVE A HIGH CARD WITH MY POCKET CARDS
-            if (MyHand.IsMyPokerHand(rank, "HIGH_CARD"))
+            if (MyHand.IsMyPokerHand(rank, PokerHand.HIGH_CARD))
             {
                 //3 cards could pair with first pocket card and 3 with the second
                 cardsForPair = 6;
@@ -708,7 +708,7 @@ namespace PokerOddsRazor.Models
                 chanceHighCard = 1;
 
             } //CLOSE HIGH CARD
-            else if (MyHand.IsMyPokerHand(rank, "PAIR"))
+            else if (MyHand.IsMyPokerHand(rank, PokerHand.PAIR))
             {
 
                 //HIDE HIGH CARD CHANCE TEXT
