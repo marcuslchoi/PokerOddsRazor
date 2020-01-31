@@ -193,7 +193,7 @@ namespace PokerOddsRazor.Models
                 chanceThreeKind = 1;
             }
             //straight
-            else if (MyHand.IsMyPokerHand(rank, "STRAIGHTS"))
+            else if (MyHand.IsMyPokerHand(rank, "STRAIGHT"))
             {
                 for (int i = 0; i <= 3; i++)
                 {

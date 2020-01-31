@@ -191,7 +191,7 @@ namespace PokerOddsRazor.Models
         }
 
         //get the flush suit. If not flush, returns null
-        string getFlushSuit()
+        private string GetFlushSuit()
         {
             //dictionary showing how many of each card suit there is		
             Dictionary<string, int> suitCounts = new Dictionary<string, int>();
@@ -581,7 +581,7 @@ namespace PokerOddsRazor.Models
         {
 
             bool isFlush = false;
-            string flushSuit = getFlushSuit();
+            string flushSuit = GetFlushSuit();
 
             if (!string.IsNullOrEmpty(flushSuit))
             {
@@ -785,7 +785,7 @@ namespace PokerOddsRazor.Models
             {
                 //alert("flush and straight");
 
-                string flushSuit = getFlushSuit();
+                string flushSuit = GetFlushSuit();
                 //alert(flushSuit);
 
                 //list of flush cards only
