@@ -782,10 +782,10 @@ namespace PokerOddsRazor.Models
             //river was just dealt, hide all chance texts except my hand
             else if (CurrentRound == Rounds.isRiver)
             {
-
-                var indexOfPokerHand = (int)Math.Floor((float)myHand.GetRank());
-                //todo
-                vm = new ProbabilityViewModel();
+                double rank = myHand.GetRank();
+                var pokerHand = (PokerHand)((int)Math.Floor(rank));
+                //todo royal flush
+                vm = new ProbabilityViewModel(pokerHand);
 
                 //pc.roundText.text = "FINAL ROUND";
 

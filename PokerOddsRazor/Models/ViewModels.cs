@@ -18,6 +18,41 @@ namespace PokerOddsRazor.Models
         {
         }
 
+        public ProbabilityViewModel(PokerHand pokerHand)
+        {
+            switch (pokerHand)
+            {
+                case PokerHand.HIGH_CARD:
+                    this.HighCard = 1;
+                    break;
+                case PokerHand.PAIR:
+                    this.Pair = 1;
+                    break;
+                case PokerHand.TWO_PAIR:
+                    this.TwoPair = 1;
+                    break;
+                case PokerHand.THREE_OF_A_KIND:
+                    this.ThreeOfAKind = 1;
+                    break;
+                case PokerHand.STRAIGHT:
+                    this.Straight = 1;
+                    break;
+                case PokerHand.FLUSH:
+                    this.Flush = 1;
+                    break;
+                case PokerHand.FULL_HOUSE:
+                    this.FullHouse = 1;
+                    break;
+                case PokerHand.FOUR_OF_A_KIND:
+                    this.FourOfAKind = 1;
+                    break;
+                case PokerHand.STRAIGHT_FLUSH:
+                    this.StraightFlush = 1;
+                    break;
+                //todo royal flush
+            }
+        }
+
         public ProbabilityViewModel(double highCard, double pair,
             double twoPair, double threeKind, double straight, double flush,
             double fullHouse, double fourKind, double straightFlush, double royalFlush)
