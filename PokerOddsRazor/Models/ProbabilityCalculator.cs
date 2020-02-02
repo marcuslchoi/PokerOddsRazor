@@ -259,7 +259,7 @@ namespace PokerOddsRazor.Models
                     //pc.chanceTexts [i].enabled = false;
                 }
 
-                int rankIndexStraightFlush = MyHand.GetRankIndex(PokerHand.STRAIGHT_FLUSH);
+                int rankIndexStraightFlush = (int)PokerHand.STRAIGHT_FLUSH;
                 bool isRoyalFlush = rank == rankIndexStraightFlush + 0.14;
                 bool isKingHighStraightFlush = rank == rankIndexStraightFlush + 0.13;
 
