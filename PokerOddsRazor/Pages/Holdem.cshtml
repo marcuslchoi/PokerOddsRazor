@@ -4,9 +4,9 @@
 }
 <h1>Play Texas Holdem!</h1>
 <form method="post">
-    <p id="myCard0"></p>
-    <input type="text" asp-for="Hand.MyCard0Id" placeholder="card 0" />
-    <input type="text" asp-for="Hand.MyCard1Id" placeholder="card 1" />
+    <p id="myCard0"></p><p id="myCard1"></p>
+    <input id="myCard0Hidden" type="hidden" asp-for="Hand.MyCard0Id" />
+    <input id="myCard1Hidden" type="hidden" asp-for="Hand.MyCard1Id" />
     <button type="submit">submit!</button>
     <p>@Model.Card0, @Model.Card1</p>
     <input type="text" asp-for="Hand.Flop0" placeholder="flop 0" />
@@ -21,19 +21,41 @@
 
 </form>
 
-<a href="#" id="QC">
+<a id="QC">
     <img src="images/QC.png" width="48" height="48" />
+</a>
+<a id="JC">
+    <img src="images/JC.png" width="48" height="48" />
 </a>
 
 <script>
+    //var arr = string[];
+
+    var id1 = 'JC';
+    var card1Element = document.getElementById(id1);
+    card1Element.addEventListener('click', function () {
+        SetCard(id1, 1);
+    });
+
     var id = 'QC';
     var card = document.getElementById(id);
     card.addEventListener('click', function () {
-        AddMyCard0(id);
+        SetCard(id, 0);
     });
 
-    function AddMyCard0(card) {
-        document.getElementById('myCard0').innerHTML = card;
+    function SetCard(card, num) {
+        var element;
+        var hiddenElement;
+        if (num == 0) {
+            element = document.getElementById('myCard0');
+            hiddenElement = document.getElementById('myCard0Hidden');
+        }
+        else if (num == 1) {
+            element = document.getElementById('myCard1');
+            hiddenElement = document.getElementById('myCard1Hidden');
+        }
+        element.innerHTML = card;
+        hiddenElement.value = card;
     }
 </script>
 
