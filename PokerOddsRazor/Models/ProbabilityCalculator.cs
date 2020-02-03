@@ -309,17 +309,17 @@ namespace PokerOddsRazor.Models
 
             if (myThreeFlushSuit != null)
             {
-                List<string> myThreeFlushCards = myHand.getFlushCards(myThreeFlushSuit);
+                List<string> myThreeFlushCards = myHand.GetFlushCards(myThreeFlushSuit);
                 my3FlushHand = new MyHand(myThreeFlushCards);
-                my3FlushHand.checkForStraight();
+                my3FlushHand.CheckForStraight();
             }
 
             if (myFourFlushSuit != null)
             {
-                List<string> myFourFlushCards = myHand.getFlushCards(myFourFlushSuit);
+                List<string> myFourFlushCards = myHand.GetFlushCards(myFourFlushSuit);
                 //create new hand with just 4 flush cards, check if 4 cards present in straight
                 my4FlushHand = new MyHand(myFourFlushCards);
-                my4FlushHand.checkForStraight();
+                my4FlushHand.CheckForStraight();
             }
 
             bool isLowerThanFlush = MyHand.IsMyPokerHandLower(rank, PokerHand.FLUSH);
