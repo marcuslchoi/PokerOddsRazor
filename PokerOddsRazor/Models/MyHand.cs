@@ -626,15 +626,13 @@ namespace PokerOddsRazor.Models
         }
 
         //CHECK FOR STRAIGHT	
-        //CHANGED
         public int numberOfPossStraightsWithMy3Cards = 0;
         public int numberOfPossStraightsWithMy4Cards = 0;
         bool checkForStraightCalledOnFlop = false;
         bool checkForStraightCalledOnTurn = false;
         public double checkForStraight()
         {
-
-            List<int> myCardRanks = GetCardRanksHighToLow(myCardIds);
+            List<int> myCardRanks = GetCardRanksHighToLow(this.myCardIds);
 
             //sort rank values in high to low order
             myCardRanks.Sort();
@@ -670,7 +668,7 @@ namespace PokerOddsRazor.Models
                 //Debug.WriteLine ("count: " + count);
                 if (count == 4)
                 {
-                    if (checkForStraightCalledOnFlop == false)
+                    if (!checkForStraightCalledOnFlop)
                     {
                         numberOfPossStraightsWithMy4Cards++;
                     }
@@ -687,7 +685,7 @@ namespace PokerOddsRazor.Models
                 }
 
                 //3 cards present in a straight
-                else if (count == 3 && checkForStraightCalledOnFlop == false)
+                else if (count == 3 && !checkForStraightCalledOnFlop)
                 {
                     numberOfPossStraightsWithMy3Cards++;
                     //possible high straight
@@ -775,40 +773,26 @@ namespace PokerOddsRazor.Models
         //takes flush cards, sees if they make a straight. USE THE HIGHEST CARD AS RANK DESCRIPTOR
         double checkForStraightFlush()
         {
-            bool isStraightFlush = false;
-
             double handRank = -1;
+            string flushSuit = this.GetFlushSuit();
+            //if not a flush, return
+            if (string.IsNullOrEmpty(flushSuit)) { return handRank; }
+          
+            //list of flush cards only
+            List<string> flushCards = this.getFlushCards(flushSuit);
 
-            //if hand is a flush and a straight
-            
-            if (Math.Floor((float)checkForFlush()) == (int)PokerHand.FLUSH && Math.Floor((float)checkForStraight()) == (int)PokerHand.STRAIGHT)
+            //assign the flush card list as the current Hand's cards
+            //so that check for straight uses those cards
+            this.myCardIds = flushCards;
+            double handRankPossStraight = this.checkForStraight();
+
+            //can only be straight flush if the flush cards are a straight
+            if (IsMyPokerHand(handRankPossStraight, PokerHand.STRAIGHT))
             {
-                //alert("flush and straight");
-
-                string flushSuit = GetFlushSuit();
-                //alert(flushSuit);
-
-                //list of flush cards only
-                List<string> flushCards = getFlushCards(flushSuit);
-
-                //assign the flush card list as the current Hand's cards
-                myCardIds = flushCards;
-
-                //the hand rank of straight (if not straight, = -1). Need just the decimal value
-                double handRankStraight = checkForStraight();
-
-                //can only be straight flush if the flush cards are a straight
-                if (handRankStraight != -1)
-                {
-                    isStraightFlush = true;
-
-                    //use straight flush index .(high card of straight) for hand rank
-                    handRank = handRankStraight - (int)PokerHand.STRAIGHT + (int)PokerHand.STRAIGHT_FLUSH;
-
-                    //alert("Straight flush: " +handRank)
-                }
+                //use straight flush index .(high card of straight) for hand rank
+                handRank = handRankPossStraight - (int)PokerHand.STRAIGHT + (int)PokerHand.STRAIGHT_FLUSH;
+                Debug.WriteLine("Straight flush: " + handRank);
             }
-
             return handRank;
         }
 
