@@ -32,18 +32,23 @@
 </a>
 
 <script>
-    //var arr = string[];
-    var id1 = 'JC';
-    var card1Element = document.getElementById(id1);
-    card1Element.addEventListener('click', function () {
-        SetCard(id1, 1);
-    });
+    var cardIds = ['JC', 'QC'];
 
-    var id = 'QC';
-    var card = document.getElementById(id);
-    card.addEventListener('click', function () {
-        SetCard(id, 0);
-    });
+    var currentCard = 0;
+    cardIds.forEach(AddEventListeners);
+    function AddEventListeners(item, index)
+    {
+        var btnCard = document.getElementById(item);
+        btnCard.addEventListener('click', function () {
+            SetCard(item, 0);
+        });
+    }
+
+    //var id = 'QC';
+    //var card = document.getElementById(id);
+    //card.addEventListener('click', function () {
+    //    SetCard(id, 0);
+    //});
 
     function SetCard(cardId, cardNum) {
         var element;
