@@ -8,8 +8,8 @@
     <img id="myCard0" src="images/cardback.png" width="48" height="48" />
     <img id="myCard1" src="images/cardback.png" width="48" height="48" />
 
-    <input id="myCard0Hidden" type="hidden" asp-for="Hand.MyCard0Id" />
-    <input id="myCard1Hidden" type="hidden" asp-for="Hand.MyCard1Id" />
+    <input id="myCardHidden0" type="hidden" asp-for="Hand.MyCard0Id" />
+    <input id="myCardHidden1" type="hidden" asp-for="Hand.MyCard1Id" />
     <button type="submit">submit!</button>
     <p>@Model.Card0, @Model.Card1</p>
     <input type="hidden" asp-for="Hand.Flop0" />
@@ -30,9 +30,12 @@
 <a id="JC">
     <img src="images/JC.png" width="48" height="48" />
 </a>
+<a id="JH">
+    <img src="images/JH.png" width="48" height="48" />
+</a>
 
 <script>
-    var cardIds = ['JC', 'QC'];
+    var cardIds = ['JC', 'QC', 'JH'];
 
     var currentCard = 0;
     cardIds.forEach(AddEventListeners);
@@ -44,20 +47,13 @@
         });
     }
 
-    function SetCard(cardId) {
-        var element;
-        var hiddenElement;
-        if (this.currentCard == 0) {
-            element = document.getElementById('myCard0');
-            hiddenElement = document.getElementById('myCard0Hidden');
-        }
-        else if (this.currentCard == 1) {
-            element = document.getElementById('myCard1');
-            hiddenElement = document.getElementById('myCard1Hidden');
-        }
-        var source = "images/" + cardId + ".png";
-        element.src = source;
-        hiddenElement.value = cardId;
+    function SetCard(cardId)
+    {
+        var cardImage = document.getElementById('myCard' + this.currentCard);
+        var cardhiddenElement = document.getElementById('myCardHidden' + this.currentCard);
+        var imgSource = "images/" + cardId + ".png";
+        cardImage.src = imgSource;
+        cardhiddenElement.value = cardId;
         this.currentCard++;
     }
 </script>
