@@ -4,6 +4,7 @@
 }
 <h1>Play Texas Holdem!</h1>
 <form method="post">
+    <p id="myCard0"></p>
     <input type="text" asp-for="Hand.MyCard0Id" placeholder="card 0" />
     <input type="text" asp-for="Hand.MyCard1Id" placeholder="card 1" />
     <button type="submit">submit!</button>
@@ -17,10 +18,26 @@
     <p>@Model.Turn</p>
     <input type="text" asp-for="Hand.River" placeholder="river" />
     <p>@Model.River</p>
+
 </form>
 
-<img src="images/10C.png" alt="Sample Photo" />
-<button>Reset (todo)</button> 
+<a href="#" id="QC">
+    <img src="images/QC.png" width="48" height="48" />
+</a>
+
+<script>
+    var id = 'QC';
+    var card = document.getElementById(id);
+    card.addEventListener('click', function () {
+        AddMyCard0(id);
+    });
+
+    function AddMyCard0(card) {
+        document.getElementById('myCard0').innerHTML = card;
+    }
+</script>
+
+<button>Reset (todo)</button>
 <p>Rank: @Model.HandRank</p>
 <p>Current Round: @Model.CurrentRound</p>
 <p>Probabilities</p>
