@@ -40,30 +40,25 @@
     {
         var btnCard = document.getElementById(item);
         btnCard.addEventListener('click', function () {
-            SetCard(item, 0);
+            SetCard(item);
         });
     }
 
-    //var id = 'QC';
-    //var card = document.getElementById(id);
-    //card.addEventListener('click', function () {
-    //    SetCard(id, 0);
-    //});
-
-    function SetCard(cardId, cardNum) {
+    function SetCard(cardId) {
         var element;
         var hiddenElement;
-        if (cardNum == 0) {
+        if (this.currentCard == 0) {
             element = document.getElementById('myCard0');
             hiddenElement = document.getElementById('myCard0Hidden');
         }
-        else if (cardNum == 1) {
+        else if (this.currentCard == 1) {
             element = document.getElementById('myCard1');
             hiddenElement = document.getElementById('myCard1Hidden');
         }
         var source = "images/" + cardId + ".png";
         element.src = source;
         hiddenElement.value = cardId;
+        this.currentCard++;
     }
 </script>
 
