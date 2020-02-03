@@ -942,7 +942,31 @@ namespace PokerOddsRazor.Models
 
         public static bool IsMyPokerHandLower(double rank, PokerHand pokerHand)
         {
+            if (rank < 0)
+            {
+                Debug.WriteLine("IsMyPokerHandLower error: rank is < 0");
+                return false;
+            }
             return (Math.Floor(rank) < (int)pokerHand);
+        }
+
+        public static PokerHand GetPokerHand(double rank)
+        {
+            return (PokerHand)((int)Math.Floor(rank));
+        }
+
+        public static bool CheckForRoyalFlush(double rank)
+        {
+            bool isRoyalFlush = false;
+            if (GetPokerHand(rank) == PokerHand.STRAIGHT_FLUSH)
+            {
+                int highCardRank = (int)((rank - (int)PokerHand.STRAIGHT_FLUSH) * 100);
+                if (highCardRank == Constants.ACE_VAL)
+                {
+                    isRoyalFlush = true;
+                }
+            }
+            return isRoyalFlush;
         }
         #endregion
     }

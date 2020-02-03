@@ -18,8 +18,14 @@ namespace PokerOddsRazor.Models
         {
         }
 
-        public ProbabilityViewModel(PokerHand pokerHand)
+        public ProbabilityViewModel(PokerHand pokerHand, bool isRoyalFlush = false)
         {
+            if (isRoyalFlush)
+            {
+                this.RoyalFlush = 1;
+                return;
+            }
+
             switch (pokerHand)
             {
                 case PokerHand.HIGH_CARD:
@@ -49,7 +55,6 @@ namespace PokerOddsRazor.Models
                 case PokerHand.STRAIGHT_FLUSH:
                     this.StraightFlush = 1;
                     break;
-                //todo royal flush
             }
         }
 

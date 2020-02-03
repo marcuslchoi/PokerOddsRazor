@@ -783,9 +783,16 @@ namespace PokerOddsRazor.Models
             else if (CurrentRound == Rounds.isRiver)
             {
                 double rank = myHand.GetRank();
-                var pokerHand = (PokerHand)((int)Math.Floor(rank));
-                //todo royal flush
-                vm = new ProbabilityViewModel(pokerHand);
+                var pokerHand = MyHand.GetPokerHand(rank);
+
+                bool isRoyalFlush = false;
+                if (pokerHand == PokerHand.STRAIGHT_FLUSH &&
+                    MyHand.CheckForRoyalFlush(rank))
+                {
+                    isRoyalFlush = true;
+                }
+
+                vm = new ProbabilityViewModel(pokerHand, isRoyalFlush);
 
                 //pc.roundText.text = "FINAL ROUND";
 
