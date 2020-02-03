@@ -761,16 +761,15 @@ namespace PokerOddsRazor.Models
             return vm;
         }
 
+        //http://poker.stackexchange.com/questions/1474/formula-for-making-a-single-pair-on-the-flop
         public ProbabilityViewModel FindChancesOfPokerHands(MyHand myHand)
         {
             //TODO: POSSIBLE BUGS SEEN ON STRAIGHT POSSIBILITY
-            //TODO: INDICATOR OF PLAYING BOARD CARDS (IE IF 2 BOARD CARDS ARE PAIR, CHANCE 3KIND ON BOARD IS
+            //TODO: INDICATOR OF PLAYING BOARD CARDS (IE IF 2 BOARD CARDS ARE PAIR, GETTING 3KIND ON BOARD IS
             //ONLY GOOD IF YOU HAVE ANOTHER HIGH CARD FOR POSSIBLE KICKER)
             //HAND STRENGTH INDICATOR: DEPENDS ON WHETHER YOUR CARDS COME INTO PLAY, HOW HIGH IN PLAY 
             //(IE HIGHEST CARD IN STRAIGHT, LOW OR HIGH COMPLETION OF FLUSH, ETC)
             ProbabilityViewModel vm = null;
-
-            //http://poker.stackexchange.com/questions/1474/formula-for-making-a-single-pair-on-the-flop
             if (CurrentRound == Rounds.isPreFlop)
             {
                 vm = GetPreFlopChances(myHand);
@@ -793,19 +792,6 @@ namespace PokerOddsRazor.Models
                 }
 
                 vm = new ProbabilityViewModel(pokerHand, isRoyalFlush);
-
-                //pc.roundText.text = "FINAL ROUND";
-
-                //for (int i = 0; i < pc.chanceTexts.Count; i++) {
-
-                //	if( i == 10)
-                //		continue;
-                //	if (i != indexOfPokerHand)
-                //	{
-                //		pc.chanceTexts [i].enabled = false;
-                //	}
-                //}
-
             }
 
             return vm;
