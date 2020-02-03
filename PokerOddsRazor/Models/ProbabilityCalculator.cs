@@ -9,16 +9,9 @@ namespace PokerOddsRazor.Models
 {
     public class ProbabilityCalculator
     {
-        //public static Rounds CurrentRound;
         static Rounds CurrentRound { get { return TableGameMediator.CurrentRound; } }
 
-        //public Text roundText;
-        //public static string strNumberColor = "0271D9FF";//"00ffff";
-
-        //public List<Text> chanceTexts = new List<Text>();
-
         //number of cards left in deck at any round
-        //static int CardsLeft;
         static int CardsLeft { get { return TableGameMediator.CardsLeftInDeck; } }
 
         #region Singleton
@@ -33,18 +26,6 @@ namespace PokerOddsRazor.Models
             ProbabilityCalculator.instance = new ProbabilityCalculator();
         }
         #endregion
-
-        //called when cards are returned to deck
-        public static void ClearAllTexts()
-        {
-            //ProbabilityCalculator pc = GetInstance();
-
-            //pc.roundText.text = "WAITING...";
-            //for (int i = 0; i < pc.chanceTexts.Count; i++) {
-
-            //	pc.chanceTexts [i].enabled = false;
-            //}
-        }
 
         private ProbabilityViewModel GetFlopOrTurnChances(MyHand myHand)
         {
@@ -795,15 +776,6 @@ namespace PokerOddsRazor.Models
             }
 
             return vm;
-        }
-
-        static public void SetHandStrength(float fStr)
-        {
-            //ProbabilityCalculator pc = GetInstance();
-            //if(pc.chanceTexts.Count > 9)
-            //{
-            //	pc.chanceTexts[10].text = "HAND STRENGTH: " + "<color=#" + strNumberColor + ">" + fStr.ToString("N1") + "/100</color>";
-            //}
         }
     }
 }
