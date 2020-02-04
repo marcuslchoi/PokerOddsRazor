@@ -21,7 +21,8 @@
     {
         <img id="myCard1" src="images/cardback.png" width="48" height="60" />
     }
-    <div>@Model.Card0, @Model.Card1</div>
+    <div>Pocket Cards</div>
+    <p></p>
 
     @if (!String.IsNullOrEmpty(Model.Flop0))
     {
@@ -48,8 +49,7 @@
         <img id="myCard4" src="images/cardback.png" width="48" height="60" />
     }
 
-
-    <div>@Model.Flop0, @Model.Flop1, @Model.Flop2</div>
+    <div>Flop</div>
     <p></p>
     @if (!String.IsNullOrEmpty(Model.Turn))
     {
@@ -59,7 +59,7 @@
     {
         <img id="myCard5" src="images/cardback.png" width="48" height="60" />
     }
-    <div>@Model.Turn</div>
+    <div>Turn</div>
     <p></p>
     @if (!String.IsNullOrEmpty(Model.River))
     {
@@ -69,7 +69,7 @@
     {
         <img id="myCard6" src="images/cardback.png" width="48" height="60" />
     }
-    <div>@Model.River</div>
+    <div>River</div>
 
     <input id="myCardHidden0" type="hidden" asp-for="Hand.MyCard0Id" />
     <input id="myCardHidden1" type="hidden" asp-for="Hand.MyCard1Id" />
@@ -78,7 +78,6 @@
     <input id="myCardHidden4" type="hidden" asp-for="Hand.Flop2" />
     <input id="myCardHidden5" type="hidden" asp-for="Hand.Turn" />
     <input id="myCardHidden6" type="hidden" asp-for="Hand.River" />
-    <button type="submit">Get Probabilities</button>
 </form>
 
 <a id="AS">
