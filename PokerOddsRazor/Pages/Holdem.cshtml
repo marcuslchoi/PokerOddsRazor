@@ -257,11 +257,29 @@ var cardIds = [
         });
     }
 
+    function HideAllCardButtons()
+    {
+        var i;
+        for (i = 0; i < this.cardIds.length; i++)
+        {
+            var cardButton = document.getElementById(this.cardIds[i]);
+            cardButton.style.display = "none";
+        }
+    }
+
     //hide the card buttons that have been used
     this.PossiblyHideDealtCardButtons();
     function PossiblyHideDealtCardButtons()
     {
         @{
+            if (!String.IsNullOrEmpty(Model.River))
+            {
+                <text>
+                this.HideAllCardButtons();
+                return;
+                </text>
+            }
+
             var cardsUsed = new List<string>();
             if (!String.IsNullOrEmpty(Model.Card0) &&
             !String.IsNullOrEmpty(Model.Card1))
@@ -281,11 +299,6 @@ var cardIds = [
             if (!String.IsNullOrEmpty(Model.Turn))
             {
                 cardsUsed.Add(Model.Turn);
-            }
-            //todo hide all buttons?
-            if (!String.IsNullOrEmpty(Model.River))
-            {
-                cardsUsed.Add(Model.River);
             }
 
             //tried to set currentCard number here
