@@ -22,6 +22,7 @@
         <img id="myCard1" src="images/cardback.png" width="48" height="60" />
     }
     <div>Pocket Cards</div>
+    <div id="test"></div>
     <p></p>
 
     @if (!String.IsNullOrEmpty(Model.Flop0))
@@ -241,8 +242,6 @@
 </a>
 <p></p>
 
-
-
 <script>
 var cardIds = [
         'AC', 'KC', 'QC', 'JC', '10C', '9C', '8C', '7C', '6C', '5C', '4C', '3C', '2C',
@@ -258,11 +257,60 @@ var cardIds = [
         });
     }
 
-    var currentCard = 0; //the current card that is being set (dealt)
-    function SetCard(cardButton, cardId) {
+    //hide the card buttons that have been used
+    this.PossiblyHideDealtCardButtons();
+    function PossiblyHideDealtCardButtons()
+    {
+        @{
+            var cardsUsed = new List<string>();
+            if (!String.IsNullOrEmpty(Model.Card0) &&
+            !String.IsNullOrEmpty(Model.Card1))
+            {
+                cardsUsed.Add(Model.Card0);
+                cardsUsed.Add(Model.Card1);
+            }
 
+            if(!String.IsNullOrEmpty(Model.Flop0) &&
+            !String.IsNullOrEmpty(Model.Flop1) &&
+            !String.IsNullOrEmpty(Model.Flop2))
+            {
+                cardsUsed.Add(Model.Flop0);
+                cardsUsed.Add(Model.Flop1);
+                cardsUsed.Add(Model.Flop2);
+            }
+            if (!String.IsNullOrEmpty(Model.Turn))
+            {
+                cardsUsed.Add(Model.Turn);
+            }
+            //todo hide all buttons?
+            if (!String.IsNullOrEmpty(Model.River))
+            {
+                cardsUsed.Add(Model.River);
+            }
+
+            //tried to set currentCard number here
+            //int cardsUsedCount = cardsUsed.Count;
+            //<text>
+            //var countJson = @Html.Raw(Json.Serialize(@cardsUsedCount));
+            //document.getElementById('test').innerHTML = countJson;
+            //this.currentCard = parseInt(countJson);
+            //</text>
+
+            foreach (string cardId in cardsUsed)
+            {
+                <text>
+                var cardIdJson = @Html.Raw(Json.Serialize(@cardId));
+                var cardButton = document.getElementById(cardIdJson);
+                cardButton.style.display = "none";
+                </text>
+            }
+        }
+    }
+
+    var currentCard = 0; //the current card number that is being set (dealt)
+    function SetCard(cardButton, cardId) {
         if (this.currentCard == 0) {
-            this.PossiblySetCurrentCard();
+            this.PossiblySetCurrentCardNumber();
         }
 
         //hide the button
@@ -278,7 +326,7 @@ var cardIds = [
         this.PossiblyAutoSubmitForm();
     }
 
-    function PossiblySetCurrentCard() {
+    function PossiblySetCurrentCardNumber() {
         @if (!String.IsNullOrEmpty(Model.Card0) &&
           !String.IsNullOrEmpty(Model.Card1) &&
           !String.IsNullOrEmpty(Model.Flop0) &&
@@ -317,7 +365,8 @@ var cardIds = [
             this.currentCard == 7 ) {
             document.getElementById('myForm').submit();
         }
-    }</script>
+    }
+</script>
 
 <button>Reset (todo)</button>
 <p>Rank: @Model.HandRank</p>
