@@ -3,9 +3,9 @@
 @{
 }
 <h1>Play Texas Holdem!</h1>
-<form method="post">
+<form id="myForm" method="post">
 
-    <img id="myCard0" src="images/cardback.png" width="48" height="60" />
+    <img id="myCard0" src="images/"+@Model.Card0+".png" alt="Image not found" onerror="this.src='images/cardback.png';" width="48" height="60" />
     <img id="myCard1" src="images/cardback.png" width="48" height="60" />
     <div>@Model.Card0, @Model.Card1</div>
 
@@ -204,8 +204,19 @@
         var btnCard = document.getElementById(item);
         btnCard.addEventListener('click', function () {
             SetCard(this, item);
+
         });
     }
+
+    //var cardImage1 = document.getElementById('myCard1');
+    //        var imgSrc;
+    //        //if (@Model.Card1.ToString() === "") {
+            //    imgSrc = "images/cardback.png";
+            //}
+            //else {
+            //    imgSrc = "images/" + @Model.Card1 + ".png";
+            //}
+            //cardImage1.src = imgSrc;
 
     var currentCard = 0; //the current card that is being set (dealt)
     function SetCard(cardButton, cardId)
@@ -220,6 +231,13 @@
         cardImage.src = imgSource;
         cardhiddenElement.value = cardId;
         this.currentCard++;
+        this.PossiblyAutoSubmitForm();
+    }
+
+    function PossiblyAutoSubmitForm() {
+        if (this.currentCard == 2) {
+            document.getElementById('myForm').submit();
+        }
     }
 </script>
 
