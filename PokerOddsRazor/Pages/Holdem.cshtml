@@ -5,19 +5,70 @@
 <h1>Play Texas Holdem!</h1>
 <form id="myForm" method="post">
 
-    <img id="myCard0" src="images/"+@Model.Card0+".png" alt="Image not found" onerror="this.src='images/cardback.png';" width="48" height="60" />
-    <img id="myCard1" src="images/cardback.png" width="48" height="60" />
+    @if (!String.IsNullOrEmpty(Model.Card0))
+    {
+        <img id="myCard0" src="images/@(Model.Card0).png" width="48" height="60" />
+    }
+    else
+    {
+        <img id="myCard0" src="images/cardback.png" width="48" height="60" />
+    }
+    @if (!String.IsNullOrEmpty(Model.Card1))
+    {
+        <img id="myCard1" src="images/@(Model.Card1).png" width="48" height="60" />
+    }
+    else
+    {
+        <img id="myCard1" src="images/cardback.png" width="48" height="60" />
+    }
     <div>@Model.Card0, @Model.Card1</div>
 
-    <img id="myCard2" src="images/cardback.png" width="48" height="60" />
-    <img id="myCard3" src="images/cardback.png" width="48" height="60" />
-    <img id="myCard4" src="images/cardback.png" width="48" height="60" />
+    @if (!String.IsNullOrEmpty(Model.Flop0))
+    {
+        <img id="myCard2" src="images/@(Model.Flop0).png" width="48" height="60" />
+    }
+    else
+    {
+        <img id="myCard2" src="images/cardback.png" width="48" height="60" />
+    }
+    @if (!String.IsNullOrEmpty(Model.Flop1))
+    {
+        <img id="myCard3" src="images/@(Model.Flop1).png" width="48" height="60" />
+    }
+    else
+    {
+        <img id="myCard3" src="images/cardback.png" width="48" height="60" />
+    }
+    @if (!String.IsNullOrEmpty(Model.Flop2))
+    {
+        <img id="myCard4" src="images/@(Model.Flop2).png" width="48" height="60" />
+    }
+    else
+    {
+        <img id="myCard4" src="images/cardback.png" width="48" height="60" />
+    }
+
+
     <div>@Model.Flop0, @Model.Flop1, @Model.Flop2</div>
     <p></p>
-    <img id="myCard5" src="images/cardback.png" width="48" height="60" />
+    @if (!String.IsNullOrEmpty(Model.Turn))
+    {
+        <img id="myCard5" src="images/@(Model.Turn).png" width="48" height="60" />
+    }
+    else
+    {
+        <img id="myCard5" src="images/cardback.png" width="48" height="60" />
+    }
     <div>@Model.Turn</div>
     <p></p>
-    <img id="myCard6" src="images/cardback.png" width="48" height="60" />
+    @if (!String.IsNullOrEmpty(Model.River))
+    {
+        <img id="myCard6" src="images/@(Model.River).png" width="48" height="60" />
+    }
+    else
+    {
+        <img id="myCard6" src="images/cardback.png" width="48" height="60" />
+    }
     <div>@Model.River</div>
 
     <input id="myCardHidden0" type="hidden" asp-for="Hand.MyCard0Id" />
@@ -192,8 +243,9 @@
 <p></p>
 
 
+
 <script>
-    var cardIds = [
+var cardIds = [
         'AC', 'KC', 'QC', 'JC', '10C', '9C', '8C', '7C', '6C', '5C', '4C', '3C', '2C',
         'AS', 'KS', 'QS', 'JS', '10S', '9S', '8S', '7S', '6S', '5S', '4S', '3S', '2S',
         'AD', 'KD', 'QD', 'JD', '10D', '9D', '8D', '7D', '6D', '5D', '4D', '3D', '2D',
@@ -204,23 +256,16 @@
         var btnCard = document.getElementById(item);
         btnCard.addEventListener('click', function () {
             SetCard(this, item);
-
         });
     }
 
-    //var cardImage1 = document.getElementById('myCard1');
-    //        var imgSrc;
-    //        //if (@Model.Card1.ToString() === "") {
-            //    imgSrc = "images/cardback.png";
-            //}
-            //else {
-            //    imgSrc = "images/" + @Model.Card1 + ".png";
-            //}
-            //cardImage1.src = imgSrc;
-
     var currentCard = 0; //the current card that is being set (dealt)
-    function SetCard(cardButton, cardId)
-    {
+    function SetCard(cardButton, cardId) {
+
+        if (this.currentCard == 0) {
+            this.PossiblySetCurrentCard();
+        }
+
         //hide the button
         cardButton.style.display = "none";
         //todo this doesn't work
@@ -234,12 +279,46 @@
         this.PossiblyAutoSubmitForm();
     }
 
-    function PossiblyAutoSubmitForm() {
-        if (this.currentCard == 2) {
-            document.getElementById('myForm').submit();
+    function PossiblySetCurrentCard() {
+        @if (!String.IsNullOrEmpty(Model.Card0) &&
+          !String.IsNullOrEmpty(Model.Card1) &&
+          !String.IsNullOrEmpty(Model.Flop0) &&
+          !String.IsNullOrEmpty(Model.Flop1) &&
+          !String.IsNullOrEmpty(Model.Flop2) &&
+          !String.IsNullOrEmpty(Model.Turn))
+        {
+            <text>
+            this.currentCard = 6;
+            </text>
+        }
+        else if (!String.IsNullOrEmpty(Model.Card0) &&
+            !String.IsNullOrEmpty(Model.Card1) &&
+            !String.IsNullOrEmpty(Model.Flop0) &&
+            !String.IsNullOrEmpty(Model.Flop1) &&
+            !String.IsNullOrEmpty(Model.Flop2))
+        {
+            <text>
+            this.currentCard = 5;
+            </text>
+        }
+        else if (!String.IsNullOrEmpty(Model.Card0) &&
+            !String.IsNullOrEmpty(Model.Card1))
+        {
+            <text>
+            this.currentCard = 2;
+            </text>
         }
     }
-</script>
+
+    //auto submit after each round
+    function PossiblyAutoSubmitForm() {
+        if (this.currentCard == 2 ||
+            this.currentCard == 5 ||
+            this.currentCard == 6 ||
+            this.currentCard == 7 ) {
+            document.getElementById('myForm').submit();
+        }
+    }</script>
 
 <button>Reset (todo)</button>
 <p>Rank: @Model.HandRank</p>

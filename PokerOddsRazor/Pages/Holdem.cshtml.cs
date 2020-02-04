@@ -65,33 +65,33 @@ namespace PokerOddsRazor.Pages
 
             if (string.IsNullOrEmpty(Card0))
             {
-                Card0 = "card0";
+                Card0 = "";
             }
             if (string.IsNullOrEmpty(Card1))
             {
-                Card1 = "card1";
+                Card1 = "";
             }
 
             if (string.IsNullOrEmpty(Flop0))
             {
-                Flop0 = "flop0";
+                Flop0 = "";
             }
             if (string.IsNullOrEmpty(Flop1))
             {
-                Flop1 = "flop1";
+                Flop1 = "";
             }
             if (string.IsNullOrEmpty(Flop2))
             {
-                Flop2 = "flop2";
+                Flop2 = "";
             }
 
             if (string.IsNullOrEmpty(Turn))
             {
-                Turn = "turn";
+                Turn = "";
             }
             if (string.IsNullOrEmpty(River))
             {
-                River = "river";
+                River = "";
             }
         }
 
