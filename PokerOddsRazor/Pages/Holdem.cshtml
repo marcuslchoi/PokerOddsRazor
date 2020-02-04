@@ -192,7 +192,8 @@
 <p></p>
 
 
-<script>var cardIds = [
+<script>
+    var cardIds = [
         'AC', 'KC', 'QC', 'JC', '10C', '9C', '8C', '7C', '6C', '5C', '4C', '3C', '2C',
         'AS', 'KS', 'QS', 'JS', '10S', '9S', '8S', '7S', '6S', '5S', '4S', '3S', '2S',
         'AD', 'KD', 'QD', 'JD', '10D', '9D', '8D', '7D', '6D', '5D', '4D', '3D', '2D',
@@ -202,19 +203,25 @@
     function AddEventListeners(item, index) {
         var btnCard = document.getElementById(item);
         btnCard.addEventListener('click', function () {
-            SetCard(item);
+            SetCard(this, item);
         });
     }
 
     var currentCard = 0; //the current card that is being set (dealt)
-    function SetCard(cardId) {
+    function SetCard(cardButton, cardId)
+    {
+        //hide the button
+        cardButton.style.display = "none";
+        //todo this doesn't work
+        //cardButton.disabled = true;
         var cardImage = document.getElementById('myCard' + this.currentCard);
         var cardhiddenElement = document.getElementById('myCardHidden' + this.currentCard);
         var imgSource = "images/" + cardId + ".png";
         cardImage.src = imgSource;
         cardhiddenElement.value = cardId;
         this.currentCard++;
-    }</script>
+    }
+</script>
 
 <button>Reset (todo)</button>
 <p>Rank: @Model.HandRank</p>
