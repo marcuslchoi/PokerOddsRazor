@@ -241,6 +241,7 @@
     <img src="images/2D.png" width="48" height="60" />
 </a>
 <p></p>
+<button id="btnRandomCard" onclick="DealRandomCard()">Random</button>
 
 <script>
 var cardIds = [
@@ -253,8 +254,14 @@ var cardIds = [
     function AddEventListeners(item, index) {
         var btnCard = document.getElementById(item);
         btnCard.addEventListener('click', function () {
-            SetCard(this, item);
+            DealCard(this, item);
         });
+    }
+
+    //remove the card that was dealt
+    function RemoveCardFromCardIds(cardId) {
+        this.cardIds.splice(this.cardIds.indexOf(cardId), 1);
+        //alert(cardId + " removed");
     }
 
     function HideAllCardButtons()
@@ -265,6 +272,8 @@ var cardIds = [
             var cardButton = document.getElementById(this.cardIds[i]);
             cardButton.style.display = "none";
         }
+        var randButton = document.getElementById('btnRandomCard');
+        randomButton.style.display = "hidden"; //todo this doesn't work
     }
 
     //hide the card buttons that have been used
@@ -312,7 +321,12 @@ var cardIds = [
             foreach (string cardId in cardsUsed)
             {
                 <text>
+                
                 var cardIdJson = @Html.Raw(Json.Serialize(@cardId));
+                //remove from card ids
+                this.RemoveCardFromCardIds(cardIdJson);
+
+                //hide the card button
                 var cardButton = document.getElementById(cardIdJson);
                 cardButton.style.display = "none";
                 </text>
@@ -320,12 +334,13 @@ var cardIds = [
         }
     }
 
-    var currentCard = 0; //the current card number that is being set (dealt)
-    function SetCard(cardButton, cardId) {
+    var currentCard = 0; //the current card number that is being dealt
+    function DealCard(cardButton, cardId) {
         if (this.currentCard == 0) {
             this.PossiblySetCurrentCardNumber();
         }
 
+        this.RemoveCardFromCardIds(cardId);
         //hide the button
         cardButton.style.display = "none";
         //todo this doesn't work
@@ -378,6 +393,21 @@ var cardIds = [
             this.currentCard == 7 ) {
             document.getElementById('myForm').submit();
         }
+    }
+
+    function DealRandomCard()
+    {
+        var len = this.cardIds.length;
+        //alert("current length of cardIds is "+len);
+        var randomInt = this.GetRndInteger(0, len - 1);
+        var cardId = this.cardIds[randomInt];
+        var cardButton = document.getElementById(cardId);
+        this.DealCard(cardButton, cardId);
+    }
+
+    function GetRndInteger(min, max)
+    {
+        return Math.floor(Math.random() * (max - min)) + min;
     }
 </script>
 
