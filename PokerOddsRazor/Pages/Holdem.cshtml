@@ -411,9 +411,26 @@ var cardIds = [
     }
 </script>
 
+<ul class="list-group">
+    <li class="list-group-item list-group-item-action active">Probabilities</li>
+
+    <li id="highCard" class="list-group-item list-group-item-primary">High Card: @Model.ChanceHighCard%</li>
+    <li id="pair" class="list-group-item list-group-item-secondary">Pair: @Model.ChancePair%</li>
+    <li id="twoPair" class="list-group-item list-group-item-success">Two Pair: @Model.ChanceTwoPair%</li>
+    <li id="threeKind" class="list-group-item list-group-item-danger">Three of a Kind: @Model.ChanceThreeKind%</li>
+    <li id="straight" class="list-group-item list-group-item-warning">Straight: @Model.ChanceStraight%</li>
+    <li id="flush" class="list-group-item list-group-item-info">Flush: @Model.ChanceFlush%</li>
+    <li id="fullHouse" class="list-group-item list-group-item-light">Full House: @Model.ChanceFullHouse%</li>
+    <li id="fourKind" class="list-group-item list-group-item-dark">Four of a Kind: @Model.ChanceFourKind%</li>
+    <li id="straightFlush" class="list-group-item list-group-item-dark">Straight Flush: @Model.ChanceStraightFlush%</li>
+    <li id="royalFlush" class="list-group-item list-group-item-dark">Royal Flush: @Model.ChanceRoyalFlush%</li>
+
+</ul>
+
 <button>Reset (todo)</button>
 <p>Rank: @Model.HandRank</p>
 <p>Current Round: @Model.CurrentRound</p>
+
 <p>Probabilities</p>
 <p>High Card: @Model.ChanceHighCard%</p>
 <p>Pair: @Model.ChancePair%</p>
