@@ -368,7 +368,7 @@
 </ul>
 
 <script>
-var cardIds = [
+    var cardIds = [
         'AC', 'KC', 'QC', 'JC', '10C', '9C', '8C', '7C', '6C', '5C', '4C', '3C', '2C',
         'AS', 'KS', 'QS', 'JS', '10S', '9S', '8S', '7S', '6S', '5S', '4S', '3S', '2S',
         'AD', 'KD', 'QD', 'JD', '10D', '9D', '8D', '7D', '6D', '5D', '4D', '3D', '2D',
@@ -381,6 +381,8 @@ var cardIds = [
             DealCard(this, item);
         });
     }
+
+    this.PossiblyHideDealtCardButtons();
 
     //remove the card that was dealt
     function RemoveCardFromCardIds(cardId) {
@@ -401,7 +403,6 @@ var cardIds = [
     }
 
     //hide the card buttons that have been used
-    this.PossiblyHideDealtCardButtons();
     function PossiblyHideDealtCardButtons()
     {
         @{
@@ -533,49 +534,8 @@ var cardIds = [
     {
         return Math.floor(Math.random() * (max - min)) + min;
     }
-
-    //this.GreenifyCurrentHand();
-    function GreenifyCurrentHand()
-    {
-        //C# code
-        @{
-            if (Model.Hand != null)
-            {
-                var pokerHand = Model.Hand.GetMyPokerHand(Model.HandRank);
-                <text>
-                var liCurrentHand;
-                </text>
-                switch (pokerHand)
-                {
-                    case PokerOddsRazor.Models.PokerHand.HIGH_CARD:
-                        <text>
-                        liCurrentHand = document.getElementById('highCard');
-                        </text>
-                        break;
-                }
-                <text>
-                liCurrentHand.className = "list-group-item list-group-item-success";
-                </text>
-            }
-        }
-    }
 </script>
-
-
 
 <button>Reset (todo)</button>
 <p>Rank: @Model.HandRank</p>
-<p>Current Round: @Model.CurrentRound</p>
-
-<p>Probabilities</p>
-<p>High Card: @Model.ChanceHighCard%</p>
-<p>Pair: @Model.ChancePair%</p>
-<p>Two Pair: @Model.ChanceTwoPair%</p>
-<p>Three of a Kind: @Model.ChanceThreeKind%</p>
-<p>Straight: @Model.ChanceStraight%</p>
-<p>Flush: @Model.ChanceFlush%</p>
-<p>Full House: @Model.ChanceFullHouse%</p>
-<p>Four of a Kind: @Model.ChanceFourKind%</p>
-<p>Straight Flush: @Model.ChanceStraightFlush%</p>
-<p>Royal Flush: @Model.ChanceRoyalFlush%</p>
 
