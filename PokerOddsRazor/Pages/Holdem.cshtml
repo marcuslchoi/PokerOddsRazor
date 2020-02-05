@@ -243,6 +243,130 @@
 <p></p>
 <button id="btnRandomCard" onclick="DealRandomCard()">Random</button>
 
+<ul class="list-group">
+    <li class="list-group-item list-group-item-action active">Probabilities</li>
+    @if (Model.ChanceHighCard == "100")
+    {
+        <li id="highCard" class="list-group-item list-group-item-success">High Card</li>
+    }
+    else if (Model.ChanceHighCard == "0")
+    {
+        <li id="highCard" class="list-group-item list-group-item-light">High Card: @Model.ChanceHighCard%</li>
+    }
+    else
+    {
+        <li id="highCard" class="list-group-item list-group-item-warning">High Card: @Model.ChanceHighCard%</li>
+    }
+    @if (Model.ChancePair == "100")
+    {
+        <li id="pair" class="list-group-item list-group-item-success">Pair</li>
+    }
+    else if (Model.ChancePair == "0")
+    {
+        <li id="pair" class="list-group-item list-group-item-light">Pair: @Model.ChancePair%</li>
+    }
+    else
+    {
+        <li id="pair" class="list-group-item list-group-item-warning">Pair: @Model.ChancePair%</li>
+    }
+    @if (Model.ChanceTwoPair == "100")
+    {
+        <li id="twoPair" class="list-group-item list-group-item-success">Two Pair</li>
+    }
+    else if (Model.ChanceTwoPair == "0")
+    {
+        <li id="twoPair" class="list-group-item list-group-item-light">Two Pair: @Model.ChanceTwoPair%</li>
+    }
+    else
+    {
+        <li id="twoPair" class="list-group-item list-group-item-warning">Two Pair: @Model.ChanceTwoPair%</li>
+    }
+    @if (Model.ChanceThreeKind == "100")
+    {
+        <li id="threeKind" class="list-group-item list-group-item-success">Three of a Kind</li>
+    }
+    else if (Model.ChanceThreeKind == "0")
+    {
+        <li id="threeKind" class="list-group-item list-group-item-light">Three of a Kind: @Model.ChanceThreeKind%</li>
+    }
+    else
+    {
+        <li id="threeKind" class="list-group-item list-group-item-warning">Three of a Kind: @Model.ChanceThreeKind%</li>
+    }
+    @if (Model.ChanceStraight == "100")
+    {
+        <li id="straight" class="list-group-item list-group-item-success">Straight</li>
+    }
+    else if (Model.ChanceStraight == "0")
+    {
+        <li id="straight" class="list-group-item list-group-item-light">Straight: @Model.ChanceStraight%</li>
+    }
+    else
+    {
+        <li id="straight" class="list-group-item list-group-item-warning">Straight: @Model.ChanceStraight%</li>
+    }
+    @if (Model.ChanceFlush == "100")
+    {
+        <li id="flush" class="list-group-item list-group-item-success">Flush</li>
+    }
+    else if (Model.ChanceFlush == "0")
+    {
+        <li id="flush" class="list-group-item list-group-item-light">Flush: @Model.ChanceFlush%</li>
+    }
+    else
+    {
+        <li id="flush" class="list-group-item list-group-item-warning">Flush: @Model.ChanceFlush%</li>
+    }
+    @if (Model.ChanceFullHouse == "100")
+    {
+        <li id="fullHouse" class="list-group-item list-group-item-success">Full House</li>
+    }
+    else if (Model.ChanceFullHouse == "0")
+    {
+        <li id="fullHouse" class="list-group-item list-group-item-light">Full House: @Model.ChanceFullHouse%</li>
+    }
+    else
+    {
+        <li id="fullHouse" class="list-group-item list-group-item-warning">Full House: @Model.ChanceFullHouse%</li>
+    }
+    @if (Model.ChanceFourKind == "100")
+    {
+        <li id="fourKind" class="list-group-item list-group-item-success">Four of a Kind</li>
+    }
+    else if (Model.ChanceFourKind == "0")
+    {
+        <li id="fourKind" class="list-group-item list-group-item-light">Four of a Kind: @Model.ChanceFourKind%</li>
+    }
+    else
+    {
+        <li id="fourKind" class="list-group-item list-group-item-warning">Four of a Kind: @Model.ChanceFourKind%</li>
+    }
+    @if (Model.ChanceStraightFlush == "100")
+    {
+        <li id="straightFlush" class="list-group-item list-group-item-success">Straight Flush</li>
+    }
+    else if (Model.ChanceStraightFlush == "0")
+    {
+        <li id="straightFlush" class="list-group-item list-group-item-light">Straight Flush: @Model.ChanceStraightFlush%</li>
+    }
+    else
+    {
+        <li id="straightFlush" class="list-group-item list-group-item-warning">Straight Flush: @Model.ChanceStraightFlush%</li>
+    }
+    @if (Model.ChanceRoyalFlush == "100")
+    {
+        <li id="royalFlush" class="list-group-item list-group-item-success">Royal Flush</li>
+    }
+    else if (Model.ChanceRoyalFlush == "0")
+    {
+        <li id="royalFlush" class="list-group-item list-group-item-light">Royal Flush: @Model.ChanceRoyalFlush%</li>
+    }
+    else
+    {
+        <li id="royalFlush" class="list-group-item list-group-item-warning">Royal Flush: @Model.ChanceRoyalFlush%</li>
+    }
+</ul>
+
 <script>
 var cardIds = [
         'AC', 'KC', 'QC', 'JC', '10C', '9C', '8C', '7C', '6C', '5C', '4C', '3C', '2C',
@@ -297,7 +421,7 @@ var cardIds = [
                 cardsUsed.Add(Model.Card1);
             }
 
-            if(!String.IsNullOrEmpty(Model.Flop0) &&
+            if (!String.IsNullOrEmpty(Model.Flop0) &&
             !String.IsNullOrEmpty(Model.Flop1) &&
             !String.IsNullOrEmpty(Model.Flop2))
             {
@@ -321,7 +445,7 @@ var cardIds = [
             foreach (string cardId in cardsUsed)
             {
                 <text>
-                
+
                 var cardIdJson = @Html.Raw(Json.Serialize(@cardId));
                 //remove from card ids
                 this.RemoveCardFromCardIds(cardIdJson);
@@ -356,11 +480,11 @@ var cardIds = [
 
     function PossiblySetCurrentCardNumber() {
         @if (!String.IsNullOrEmpty(Model.Card0) &&
-          !String.IsNullOrEmpty(Model.Card1) &&
-          !String.IsNullOrEmpty(Model.Flop0) &&
-          !String.IsNullOrEmpty(Model.Flop1) &&
-          !String.IsNullOrEmpty(Model.Flop2) &&
-          !String.IsNullOrEmpty(Model.Turn))
+            !String.IsNullOrEmpty(Model.Card1) &&
+            !String.IsNullOrEmpty(Model.Flop0) &&
+            !String.IsNullOrEmpty(Model.Flop1) &&
+            !String.IsNullOrEmpty(Model.Flop2) &&
+            !String.IsNullOrEmpty(Model.Turn))
         {
             <text>
             this.currentCard = 6;
@@ -409,23 +533,35 @@ var cardIds = [
     {
         return Math.floor(Math.random() * (max - min)) + min;
     }
+
+    //this.GreenifyCurrentHand();
+    function GreenifyCurrentHand()
+    {
+        //C# code
+        @{
+            if (Model.Hand != null)
+            {
+                var pokerHand = Model.Hand.GetMyPokerHand(Model.HandRank);
+                <text>
+                var liCurrentHand;
+                </text>
+                switch (pokerHand)
+                {
+                    case PokerOddsRazor.Models.PokerHand.HIGH_CARD:
+                        <text>
+                        liCurrentHand = document.getElementById('highCard');
+                        </text>
+                        break;
+                }
+                <text>
+                liCurrentHand.className = "list-group-item list-group-item-success";
+                </text>
+            }
+        }
+    }
 </script>
 
-<ul class="list-group">
-    <li class="list-group-item list-group-item-action active">Probabilities</li>
 
-    <li id="highCard" class="list-group-item list-group-item-primary">High Card: @Model.ChanceHighCard%</li>
-    <li id="pair" class="list-group-item list-group-item-secondary">Pair: @Model.ChancePair%</li>
-    <li id="twoPair" class="list-group-item list-group-item-success">Two Pair: @Model.ChanceTwoPair%</li>
-    <li id="threeKind" class="list-group-item list-group-item-danger">Three of a Kind: @Model.ChanceThreeKind%</li>
-    <li id="straight" class="list-group-item list-group-item-warning">Straight: @Model.ChanceStraight%</li>
-    <li id="flush" class="list-group-item list-group-item-info">Flush: @Model.ChanceFlush%</li>
-    <li id="fullHouse" class="list-group-item list-group-item-light">Full House: @Model.ChanceFullHouse%</li>
-    <li id="fourKind" class="list-group-item list-group-item-dark">Four of a Kind: @Model.ChanceFourKind%</li>
-    <li id="straightFlush" class="list-group-item list-group-item-dark">Straight Flush: @Model.ChanceStraightFlush%</li>
-    <li id="royalFlush" class="list-group-item list-group-item-dark">Royal Flush: @Model.ChanceRoyalFlush%</li>
-
-</ul>
 
 <button>Reset (todo)</button>
 <p>Rank: @Model.HandRank</p>

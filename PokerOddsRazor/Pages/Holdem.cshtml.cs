@@ -13,7 +13,7 @@ namespace PokerOddsRazor.Pages
 {
     public class HoldemModel : PageModel
     {
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public MyHand Hand { get; set; }
         [BindProperty(SupportsGet = true)]
         public string Card0 { get; set; }

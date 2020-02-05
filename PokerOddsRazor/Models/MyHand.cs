@@ -844,6 +844,11 @@ namespace PokerOddsRazor.Models
             return rank;
         }
 
+        public PokerHand GetMyPokerHand(double rank)
+        {
+            return GetPokerHand(rank);
+        }
+
         #region statics
         public static bool IsMyPokerHand(double rank, PokerHand pokerHand)
         {
