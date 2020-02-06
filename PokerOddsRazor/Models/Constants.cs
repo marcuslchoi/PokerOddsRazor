@@ -8,6 +8,8 @@ namespace PokerOddsRazor.Models
     public static class Constants
     {
         public const int ACE_VAL = 14;
+        public const int KING_VAL = 13;
+        public const int QUEEN_VAL = 12;
         public static int[] LOWEST_STRAIGHT = new int[] { 14, 2, 3, 4, 5 };
         public static int[] HIGHEST_STRAIGHT = new int[] { 10,11,12,13,14 };
         public static int[][] STRAIGHTS = new int[][]

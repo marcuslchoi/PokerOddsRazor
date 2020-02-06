@@ -234,8 +234,8 @@ namespace PokerOddsRazor.Models
             else if (MyHand.IsMyPokerHand(rank, PokerHand.STRAIGHT_FLUSH))
             {
                 int rankIndexStraightFlush = (int)PokerHand.STRAIGHT_FLUSH;
-                bool isRoyalFlush = rank == rankIndexStraightFlush + 0.14;
-                bool isKingHighStraightFlush = rank == rankIndexStraightFlush + 0.13;
+                bool isRoyalFlush = Math.Round(rank, 2) == rankIndexStraightFlush + Constants.ACE_VAL/100d;
+                bool isKingHighStraightFlush = Math.Round(rank, 2) == rankIndexStraightFlush + Constants.KING_VAL/100d;
                 //todo queen high straight flush
                 if (isKingHighStraightFlush)
                 {
