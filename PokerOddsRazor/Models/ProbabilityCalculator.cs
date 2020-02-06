@@ -253,7 +253,8 @@ namespace PokerOddsRazor.Models
                 {
                     if (CurrentRound == Rounds.isFlop)
                     {
-                        chanceRoyalFlush = 1d / CardsLeft + (CardsLeft - 1d) / CardsLeft * 1d / (CardsLeft - 1);
+                        //(chance getting the ace first, anything else second) + (chance getting anything else first, the ace second)
+                        chanceRoyalFlush = (1d / CardsLeft) + ((CardsLeft - 1d) / CardsLeft) * (1d / (CardsLeft - 1));
                     }
                     else
                     {
