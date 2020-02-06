@@ -124,6 +124,10 @@
     {
         <img id="myCard6" src="images/cardback.png" class="tableCard" />
     }
+    &nbsp;&nbsp;&nbsp;
+    <a id="btnRandomCard">
+        <img src="images/randomCard.jpg" class="cardButton" />
+    </a>
     <!--
     <div>River</div>
     -->
@@ -135,6 +139,8 @@
     <input id="myCardHidden5" type="hidden" asp-for="Hand.Turn" />
     <input id="myCardHidden6" type="hidden" asp-for="Hand.River" />
 </form>
+
+
 
 <p></p>
 <a id="AS">
@@ -297,8 +303,10 @@
     <img src="images/2D.png" class="cardButton" />
 </a>
 <p></p>
-<button id="btnRandomCard" onclick="DealRandomCard()">Random</button>
 
+<!--
+<button id="btnRandomCard" onclick="DealRandomCard()">Random</button>
+    -->
 <ul class="list-group">
     <li class="list-group-item list-group-item-action active">Probabilities</li>
     @if (Model.ChanceHighCard == "100")
@@ -437,6 +445,11 @@
             DealCard(this, item);
         });
     }
+
+    var btnRandom = document.getElementById('btnRandomCard');
+    btnRandom.addEventListener('click', function () {
+        DealRandomCard();
+    });
 
     this.PossiblyHideDealtCardButtons();
 
