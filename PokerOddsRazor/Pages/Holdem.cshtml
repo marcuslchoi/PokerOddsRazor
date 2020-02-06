@@ -21,9 +21,13 @@
     {
         <img id="myCard1" src="images/cardback.png" width="48" height="60" />
     }
+    <p></p>
+
+    <!--
     <div>Pocket Cards</div>
     <div id="test"></div>
     <p></p>
+        -->
 
     @if (!String.IsNullOrEmpty(Model.Flop0))
     {
@@ -49,9 +53,11 @@
     {
         <img id="myCard4" src="images/cardback.png" width="48" height="60" />
     }
-
+    &nbsp;&nbsp;&nbsp;
+    <!--
     <div>Flop</div>
     <p></p>
+    -->
     @if (!String.IsNullOrEmpty(Model.Turn))
     {
         <img id="myCard5" src="images/@(Model.Turn).png" width="48" height="60" />
@@ -60,8 +66,11 @@
     {
         <img id="myCard5" src="images/cardback.png" width="48" height="60" />
     }
+    &nbsp;&nbsp;&nbsp;
+    <!--
     <div>Turn</div>
     <p></p>
+    -->
     @if (!String.IsNullOrEmpty(Model.River))
     {
         <img id="myCard6" src="images/@(Model.River).png" width="48" height="60" />
@@ -70,8 +79,9 @@
     {
         <img id="myCard6" src="images/cardback.png" width="48" height="60" />
     }
+    <!--
     <div>River</div>
-
+    -->
     <input id="myCardHidden0" type="hidden" asp-for="Hand.MyCard0Id" />
     <input id="myCardHidden1" type="hidden" asp-for="Hand.MyCard1Id" />
     <input id="myCardHidden2" type="hidden" asp-for="Hand.Flop0" />
@@ -81,6 +91,7 @@
     <input id="myCardHidden6" type="hidden" asp-for="Hand.River" />
 </form>
 
+<p></p>
 <a id="AS">
     <img src="images/AS.png" width="48" height="60" />
 </a>
