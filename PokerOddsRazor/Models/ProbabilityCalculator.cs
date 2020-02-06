@@ -236,8 +236,20 @@ namespace PokerOddsRazor.Models
                 int rankIndexStraightFlush = (int)PokerHand.STRAIGHT_FLUSH;
                 bool isRoyalFlush = Math.Round(rank, 2) == rankIndexStraightFlush + Constants.ACE_VAL/100d;
                 bool isKingHighStraightFlush = Math.Round(rank, 2) == rankIndexStraightFlush + Constants.KING_VAL/100d;
-                //todo queen high straight flush
-                if (isKingHighStraightFlush)
+                bool isQueenHighStraightFlush = Math.Round(rank, 2) == rankIndexStraightFlush + Constants.QUEEN_VAL / 100d;
+
+                if (isQueenHighStraightFlush)
+                {
+                    if (CurrentRound == Rounds.isFlop)
+                    {
+                        chanceRoyalFlush = (2d / CardsLeft) * (1d / (CardsLeft - 1));
+                    }
+                    else
+                    {
+                        chanceRoyalFlush = 0;
+                    }
+                }
+                else if (isKingHighStraightFlush)
                 {
                     if (CurrentRound == Rounds.isFlop)
                     {
