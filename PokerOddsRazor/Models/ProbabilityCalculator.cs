@@ -45,14 +45,14 @@ namespace PokerOddsRazor.Models
 
             double rank = myHand.GetRank();
 
-            if (CurrentRound == Rounds.isFlop)
-            {
-                //pc.roundText.text = "ON THE TURN AND RIVER";
-            }
-            else
-            {
-                //pc.roundText.text = "ON THE RIVER";
-            }
+            //if (CurrentRound == Rounds.isFlop)
+            //{
+            //    //pc.roundText.text = "ON THE TURN AND RIVER";
+            //}
+            //else
+            //{
+            //    //pc.roundText.text = "ON THE RIVER";
+            //}
 
             //high card
             if (MyHand.IsMyPokerHand(rank, PokerHand.HIGH_CARD))
@@ -233,20 +233,12 @@ namespace PokerOddsRazor.Models
             //straight flush
             else if (MyHand.IsMyPokerHand(rank, PokerHand.STRAIGHT_FLUSH))
             {
-
-                for (int i = 0; i <= 7; i++)
-                {
-
-                    //pc.chanceTexts [i].enabled = false;
-                }
-
                 int rankIndexStraightFlush = (int)PokerHand.STRAIGHT_FLUSH;
                 bool isRoyalFlush = rank == rankIndexStraightFlush + 0.14;
                 bool isKingHighStraightFlush = rank == rankIndexStraightFlush + 0.13;
-
+                //todo queen high straight flush
                 if (isKingHighStraightFlush)
                 {
-
                     if (CurrentRound == Rounds.isFlop)
                     {
                         chanceRoyalFlush = 1d / CardsLeft + (CardsLeft - 1d) / CardsLeft * 1d / (CardsLeft - 1);
@@ -261,17 +253,13 @@ namespace PokerOddsRazor.Models
                 {
 
                     chanceRoyalFlush = 1;
-                    //hide all chance texts because already a royal flush
-                    //for (int i = 0; i < pc.chanceTexts.Count-1; i++) 
-                    //{
-                    //	pc.chanceTexts [i].enabled = false;
-                    //}
+                    return new ProbabilityViewModel { RoyalFlush = chanceRoyalFlush };
                 }
 
                 chanceStraightFlush = 1;
+                return new ProbabilityViewModel { StraightFlush = chanceStraightFlush, RoyalFlush = chanceRoyalFlush };
             }
 
-            //CHANGED
             //FLUSH, STRAIGHT, AND STRAIGHT FLUSH POSSIBILITY----------------------------
 
             //getRank already called checkForStraight
