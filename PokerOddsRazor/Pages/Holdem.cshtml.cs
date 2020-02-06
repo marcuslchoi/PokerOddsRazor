@@ -124,17 +124,6 @@ namespace PokerOddsRazor.Pages
             var straightFlushPercent = Constants.ConvertToPercent(vm.StraightFlush);
             var royalFlushPercent = Constants.ConvertToPercent(vm.RoyalFlush);
 
-            //set flop values
-            //string flop0 = string.Empty;
-            //string flop1 = string.Empty;
-            //string flop2 = string.Empty;
-            //if (Hand.Flop != null)
-            //{
-            //    flop0 = Hand.Flop[0];
-            //    flop1 = Hand.Flop[1];
-            //    flop2 = Hand.Flop[2];
-            //}
-
             //pass anonymous object with hand property
             return RedirectToPage(new
             {

@@ -11,6 +11,7 @@
     <style>
 
 
+
         body {
             background-color: white;
         }
@@ -128,6 +129,8 @@
     <a id="btnRandomCard">
         <img src="images/randomCard.jpg" class="cardButton" />
     </a>
+    &nbsp;&nbsp;&nbsp;
+    <a  asp-area="" asp-page="/Holdem">New Hand</a>
     <!--
     <div>River</div>
     -->
@@ -139,8 +142,6 @@
     <input id="myCardHidden5" type="hidden" asp-for="Hand.Turn" />
     <input id="myCardHidden6" type="hidden" asp-for="Hand.River" />
 </form>
-
-
 
 <p></p>
 <a id="AS">
@@ -431,7 +432,10 @@
     }
 </ul>
 
+<p>Current Rank: @Model.HandRank</p>
+
 <script>
+    
     var cardIds = [
         'AC', 'KC', 'QC', 'JC', '10C', '9C', '8C', '7C', '6C', '5C', '4C', '3C', '2C',
         'AS', 'KS', 'QS', 'JS', '10S', '9S', '8S', '7S', '6S', '5S', '4S', '3S', '2S',
@@ -604,7 +608,3 @@
         return Math.floor(Math.random() * (max - min)) + min;
     }
 </script>
-
-<button>Reset (todo)</button>
-<p>Rank: @Model.HandRank</p>
-
