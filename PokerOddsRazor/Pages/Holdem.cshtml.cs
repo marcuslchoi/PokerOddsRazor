@@ -167,6 +167,16 @@ namespace PokerOddsRazor.Pages
                 display = cardId.Remove(cardId.Length - 1);
                 display += "heart";
             }
+            else if (cardId.Contains('C'))
+            {
+                display = cardId.Remove(cardId.Length - 1);
+                display += "club";
+            }
+            else if (cardId.Contains('D'))
+            {
+                display = cardId.Remove(cardId.Length - 1);
+                display += "diamond";
+            }
             return display;
         }
 
