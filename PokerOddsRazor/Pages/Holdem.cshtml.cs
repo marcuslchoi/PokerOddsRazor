@@ -22,6 +22,8 @@ namespace PokerOddsRazor.Pages
 
         [BindProperty(SupportsGet = true)]
         public string Card0display { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Card1display { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string Flop0 { get; set; }
@@ -144,6 +146,7 @@ namespace PokerOddsRazor.Pages
                 Card0 = Hand.MyCard0Id,
                 Card0display = this.GetDisplayName(Hand.MyCard0Id),
                 Card1 = Hand.MyCard1Id,
+                Card1display = this.GetDisplayName(Hand.MyCard1Id),
                 Flop0 = Hand.Flop0,
                 Flop1 = Hand.Flop1,
                 Flop2 = Hand.Flop2,
@@ -154,6 +157,7 @@ namespace PokerOddsRazor.Pages
             }); 
         }
 
+        //convert to image file name
         private string GetDisplayName(string cardId)
         {
             string display = "";

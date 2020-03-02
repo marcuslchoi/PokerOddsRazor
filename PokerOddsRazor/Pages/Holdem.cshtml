@@ -61,7 +61,7 @@
     }
     @if (!String.IsNullOrEmpty(Model.Card1))
     {
-        <img id="myCard1" src="images/@(Model.Card1).png" class="myCard" />
+        <img id="myCard1" src="images/@(Model.Card1display).png" class="myCard" />
     }
     else
     {
@@ -552,6 +552,7 @@
         this.PossiblyAutoSubmitForm();
     }
 
+    //convert to image file name
     function GetDisplayName(cardId)
     {
         var displayName;
