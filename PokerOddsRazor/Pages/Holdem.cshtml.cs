@@ -21,11 +21,6 @@ namespace PokerOddsRazor.Pages
         public string Card1 { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public string Card0display { get; set; }
-        [BindProperty(SupportsGet = true)]
-        public string Card1display { get; set; }
-
-        [BindProperty(SupportsGet = true)]
         public string Flop0 { get; set; }
         [BindProperty(SupportsGet = true)]
         public string Flop1 { get; set; }
@@ -36,6 +31,23 @@ namespace PokerOddsRazor.Pages
         public string Turn { get; set; }
         [BindProperty(SupportsGet = true)]
         public string River { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Card0display { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Card1display { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string Flop0display { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Flop1display { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Flop2display { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string TurnDisplay { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string RiverDisplay { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string ChanceHighCard { get; set; }
@@ -144,14 +156,20 @@ namespace PokerOddsRazor.Pages
                 ChanceRoyalFlush = royalFlushPercent.ToString(),
 
                 Card0 = Hand.MyCard0Id,
-                Card0display = this.GetDisplayName(Hand.MyCard0Id),
                 Card1 = Hand.MyCard1Id,
+                Card0display = this.GetDisplayName(Hand.MyCard0Id),
                 Card1display = this.GetDisplayName(Hand.MyCard1Id),
                 Flop0 = Hand.Flop0,
                 Flop1 = Hand.Flop1,
                 Flop2 = Hand.Flop2,
+                Flop0display = this.GetDisplayName(Hand.Flop0),
+                Flop1display = this.GetDisplayName(Hand.Flop1),
+                Flop2display = this.GetDisplayName(Hand.Flop2),
                 Turn = Hand.Turn,
                 River = Hand.River,
+                TurnDisplay = this.GetDisplayName(Hand.Turn),
+                RiverDisplay = this.GetDisplayName(Hand.River),
+
                 CurrentRound = TableGameMediator.CurrentRound,
                 HandRank = rank
             }); 
@@ -160,7 +178,10 @@ namespace PokerOddsRazor.Pages
         //convert to image file name
         private string GetDisplayName(string cardId)
         {
-            string display = "";
+            string display = null;
+            if (cardId == null)
+                return display;
+
             if (cardId.Contains('S'))
             {
                 display = cardId.Remove(cardId.Length - 1);

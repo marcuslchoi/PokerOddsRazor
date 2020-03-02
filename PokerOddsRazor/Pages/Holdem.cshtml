@@ -77,7 +77,7 @@
 
     @if (!String.IsNullOrEmpty(Model.Flop0))
     {
-        <img id="myCard2" src="images/@(Model.Flop0).png" class="tableCard" />
+        <img id="myCard2" src="images/@(Model.Flop0display).png" class="tableCard" />
     }
     else
     {
@@ -85,7 +85,7 @@
     }
     @if (!String.IsNullOrEmpty(Model.Flop1))
     {
-        <img id="myCard3" src="images/@(Model.Flop1).png" class="tableCard" />
+        <img id="myCard3" src="images/@(Model.Flop1display).png" class="tableCard" />
     }
     else
     {
@@ -93,7 +93,7 @@
     }
     @if (!String.IsNullOrEmpty(Model.Flop2))
     {
-        <img id="myCard4" src="images/@(Model.Flop2).png" class="tableCard" />
+        <img id="myCard4" src="images/@(Model.Flop2display).png" class="tableCard" />
     }
     else
     {
@@ -106,7 +106,7 @@
     -->
     @if (!String.IsNullOrEmpty(Model.Turn))
     {
-        <img id="myCard5" src="images/@(Model.Turn).png" class="tableCard" />
+        <img id="myCard5" src="images/@(Model.TurnDisplay).png" class="tableCard" />
     }
     else
     {
@@ -119,7 +119,7 @@
     -->
     @if (!String.IsNullOrEmpty(Model.River))
     {
-        <img id="myCard6" src="images/@(Model.River).png" class="tableCard" />
+        <img id="myCard6" src="images/@(Model.RiverDisplay).png" class="tableCard" />
     }
     else
     {
