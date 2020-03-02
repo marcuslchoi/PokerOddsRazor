@@ -27,7 +27,7 @@ namespace PokerOddsRazor.Models
         }
         #endregion
 
-        private ProbabilityViewModel GetFlopOrTurnChances(MyHand myHand)
+        private ProbabilityViewModel GetChancesOnTurnAndRiver(MyHand myHand)
         {
             var chanceHighCard = new double();
             var chancePair = new double();
@@ -111,8 +111,8 @@ namespace PokerOddsRazor.Models
                 }
                 else //if (GameState.currentRound == GameState.Rounds.isTurn) 
                 {
-                    //3 * 3 possible cards to pair with
-                    chanceTwoPair = 9d / CardsLeft;
+                    //6 cards dealt, 2 are a pair, so 4 * 3 possible cards to pair with
+                    chanceTwoPair = 12d / CardsLeft;
 
                     //triple with pocket cards
                     chanceThreeKind = 2d / CardsLeft;
@@ -549,7 +549,7 @@ namespace PokerOddsRazor.Models
             return vm;
         }
 
-        private ProbabilityViewModel GetPreFlopChances(MyHand myHand)
+        private ProbabilityViewModel GetChancesOnFlop(MyHand myHand)
         {
             //pc.roundText.text = "CHANCES ON THE FLOP";
             List<int> myPocketRanks = myHand.GetPocketCardRanksHighToLow();
@@ -754,11 +754,11 @@ namespace PokerOddsRazor.Models
             ProbabilityViewModel vm = null;
             if (CurrentRound == Rounds.isPreFlop)
             {
-                vm = GetPreFlopChances(myHand);
+                vm = GetChancesOnFlop(myHand);
             }  
             else if (CurrentRound == Rounds.isFlop || CurrentRound == Rounds.isTurn)
             {
-                vm = GetFlopOrTurnChances(myHand);
+                vm = GetChancesOnTurnAndRiver(myHand);
             }  
             //river was just dealt, hide all chance texts except my hand
             else if (CurrentRound == Rounds.isRiver)

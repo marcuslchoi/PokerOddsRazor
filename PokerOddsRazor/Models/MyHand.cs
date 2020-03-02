@@ -639,7 +639,7 @@ namespace PokerOddsRazor.Models
             myCardRanks.Reverse();
 
             //get unique values of ranks and put in HashSet
-            HashSet<int> intRanksUnique = new HashSet<int>(myCardRanks);
+            var myRanksUniqueSet = new HashSet<int>(myCardRanks);
 
             bool isStraight = false;
 
@@ -651,20 +651,17 @@ namespace PokerOddsRazor.Models
             {
                 int count = 0;
                 int[] currentStraight = Constants.STRAIGHTS[r];
+                var currStraightSet = new HashSet<int>(currentStraight);
 
-                //loop through the ranks in each possible straight
-                foreach (int rankInStraight in currentStraight)
+                //loop through my unique ranks
+                foreach (int uniqueRank in myRanksUniqueSet)
                 {
-                    //loop through my unique ranks
-                    foreach (int uniqueRank in intRanksUnique)
+                    if (currStraightSet.Contains(uniqueRank))
                     {
-                        if (uniqueRank == rankInStraight)
-                        {
-                            count++;
-                        }
+                        count++;
                     }
                 }
-
+  
                 //Debug.WriteLine ("count: " + count);
                 if (count == 4)
                 {
@@ -714,20 +711,20 @@ namespace PokerOddsRazor.Models
             }
 
             //check if intRanksUnique is a superset of lowestStraight
-            bool isLowStraight = intRanksUnique.IsSupersetOf(Constants.LOWEST_STRAIGHT);
+            bool isLowStraight = myRanksUniqueSet.IsSupersetOf(Constants.LOWEST_STRAIGHT);
 
             //if intRanksUnique contains all elements in lowestStraight, change Ace value (14) to 1
             if (isLowStraight)
             {
-                intRanksUnique.Remove(14);
-                intRanksUnique.Add(1);
+                myRanksUniqueSet.Remove(14);
+                myRanksUniqueSet.Add(1);
             }
             //LOWEST STRAIGHT CASE END
 
             int numberOfCardsInARow = 1;
 
             //put values in low to high order using a list
-            List<int> intRanksUniqueList = intRanksUnique.ToList();
+            List<int> intRanksUniqueList = myRanksUniqueSet.ToList();
             intRanksUniqueList.Sort();
 
             //the saved number of cards in a row in the case of straight
