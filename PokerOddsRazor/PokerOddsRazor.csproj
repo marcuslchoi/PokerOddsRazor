@@ -18,8 +18,6 @@
     <Content Remove="wwwroot\images\10S.png" />
     <Content Remove="wwwroot\images\2C.png" />
     <Content Remove="wwwroot\images\2D.png" />
-    <Content Remove="wwwroot\images\2H.png" />
-    <Content Remove="wwwroot\images\2S.png" />
     <Content Remove="wwwroot\images\3C.png" />
     <Content Remove="wwwroot\images\3D.png" />
     <Content Remove="wwwroot\images\3H.png" />
@@ -39,7 +37,6 @@
     <Content Remove="wwwroot\images\7C.png" />
     <Content Remove="wwwroot\images\7D.png" />
     <Content Remove="wwwroot\images\7H.png" />
-    <Content Remove="wwwroot\images\7S.png" />
     <Content Remove="wwwroot\images\8C.png" />
     <Content Remove="wwwroot\images\8D.png" />
     <Content Remove="wwwroot\images\8H.png" />
@@ -51,9 +48,6 @@
     <Content Remove="wwwroot\images\AC.png" />
     <Content Remove="wwwroot\images\AD.png" />
     <Content Remove="wwwroot\images\AH.png" />
-    <Content Remove="wwwroot\images\AS.png" />
-    <Content Remove="wwwroot\images\CardHighlight.png" />
-    <Content Remove="wwwroot\images\CardHighlight_red.png" />
     <Content Remove="wwwroot\images\JC.png" />
     <Content Remove="wwwroot\images\JD.png" />
     <Content Remove="wwwroot\images\JH.png" />
@@ -64,8 +58,18 @@
     <Content Remove="wwwroot\images\KS.png" />
     <Content Remove="wwwroot\images\QC.png" />
     <Content Remove="wwwroot\images\QD.png" />
-    <Content Remove="wwwroot\images\QH.png" />
     <Content Remove="wwwroot\images\QS.png" />
+    <Content Remove="wwwroot\images\QH.png" />
+    <Content Remove="wwwroot\images\2S.png" />
+    <Content Remove="wwwroot\images\AS.png" />
+    <Content Remove="wwwroot\images\CardHighlight.png" />
+    <Content Remove="wwwroot\images\CardHighlight_red.png" />
+    <Content Remove="wwwroot\images\7S.png" />
+    <Content Remove="wwwroot\images\7S.png" />
+    <Content Remove="wwwroot\images\7spade.png" />
+    <Content Remove="wwwroot\images\7Spades.png" />
+    <Content Remove="wwwroot\images\aSpades.png" />
+    <Content Remove="wwwroot\images\7spades.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\images\10C.png" />
@@ -74,8 +78,6 @@
     <None Include="wwwroot\images\10S.png" />
     <None Include="wwwroot\images\2C.png" />
     <None Include="wwwroot\images\2D.png" />
-    <None Include="wwwroot\images\2H.png" />
-    <None Include="wwwroot\images\2S.png" />
     <None Include="wwwroot\images\3C.png" />
     <None Include="wwwroot\images\3D.png" />
     <None Include="wwwroot\images\3H.png" />
@@ -95,7 +97,6 @@
     <None Include="wwwroot\images\7C.png" />
     <None Include="wwwroot\images\7D.png" />
     <None Include="wwwroot\images\7H.png" />
-    <None Include="wwwroot\images\7S.png" />
     <None Include="wwwroot\images\8C.png" />
     <None Include="wwwroot\images\8D.png" />
     <None Include="wwwroot\images\8H.png" />
@@ -107,9 +108,6 @@
     <None Include="wwwroot\images\AC.png" />
     <None Include="wwwroot\images\AD.png" />
     <None Include="wwwroot\images\AH.png" />
-    <None Include="wwwroot\images\AS.png" />
-    <None Include="wwwroot\images\CardHighlight.png" />
-    <None Include="wwwroot\images\CardHighlight_red.png" />
     <None Include="wwwroot\images\JC.png" />
     <None Include="wwwroot\images\JD.png" />
     <None Include="wwwroot\images\JH.png" />
@@ -120,10 +118,16 @@
     <None Include="wwwroot\images\KS.png" />
     <None Include="wwwroot\images\QC.png" />
     <None Include="wwwroot\images\QD.png" />
-    <None Include="wwwroot\images\QH.png" />
-    <None Include="wwwroot\images\QS.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="wwwroot\images\2S.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\images\AS.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

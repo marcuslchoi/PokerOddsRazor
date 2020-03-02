@@ -21,6 +21,9 @@ namespace PokerOddsRazor.Pages
         public string Card1 { get; set; }
 
         [BindProperty(SupportsGet = true)]
+        public string Card0display { get; set; }
+
+        [BindProperty(SupportsGet = true)]
         public string Flop0 { get; set; }
         [BindProperty(SupportsGet = true)]
         public string Flop1 { get; set; }
@@ -139,6 +142,7 @@ namespace PokerOddsRazor.Pages
                 ChanceRoyalFlush = royalFlushPercent.ToString(),
 
                 Card0 = Hand.MyCard0Id,
+                Card0display = this.GetDisplayName(Hand.MyCard0Id),
                 Card1 = Hand.MyCard1Id,
                 Flop0 = Hand.Flop0,
                 Flop1 = Hand.Flop1,
@@ -148,6 +152,22 @@ namespace PokerOddsRazor.Pages
                 CurrentRound = TableGameMediator.CurrentRound,
                 HandRank = rank
             }); 
+        }
+
+        private string GetDisplayName(string cardId)
+        {
+            string display = "";
+            if (cardId.Contains('S'))
+            {
+                display = cardId.Remove(cardId.Length - 1);
+                display += "spade";
+            }
+            else if(cardId.Contains('H'))
+            {
+                display = cardId.Remove(cardId.Length - 1);
+                display += "heart";
+            }
+            return display;
         }
 
         private void PossiblySetPreviousCardValues()

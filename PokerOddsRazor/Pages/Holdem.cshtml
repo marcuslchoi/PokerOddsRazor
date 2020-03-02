@@ -53,7 +53,7 @@
 
     @if (!String.IsNullOrEmpty(Model.Card0))
     {
-        <img id="myCard0" src="images/@(Model.Card0).png" class="myCard" />
+        <img id="myCard0" src="images/@(Model.Card0display).png" class="myCard" />
     }
     else
     {
@@ -130,7 +130,7 @@
         <img src="images/randomCard.jpg" class="cardButton" />
     </a>
     &nbsp;&nbsp;&nbsp;
-    <a  asp-area="" asp-page="/Holdem">New Hand</a>
+    <a asp-area="" asp-page="/Holdem">New Hand</a>
     <!--
     <div>River</div>
     -->
@@ -145,7 +145,7 @@
 
 <p></p>
 <a id="AS">
-    <img src="images/AS.png" class="cardButton" />
+    <img src="images/aspades.png" class="cardButton" />
 </a>
 <a id="KS">
     <img src="images/KS.png" class="cardButton" />
@@ -166,7 +166,7 @@
     <img src="images/8S.png" class="cardButton" />
 </a>
 <a id="7S">
-    <img src="images/7S.png" class="cardButton" />
+    <img src="images/7spade.png" class="cardButton" />
 </a>
 <a id="6S">
     <img src="images/6S.png" class="cardButton" />
@@ -221,7 +221,7 @@
     <img src="images/3H.png" class="cardButton" />
 </a>
 <a id="2H">
-    <img src="images/2H.png" class="cardButton" />
+    <img src="images/2heart.png" class="cardButton" />
 </a>
 <p></p>
 <a id="AC">
@@ -545,11 +545,25 @@
         //cardButton.disabled = true;
         var cardImage = document.getElementById('myCard' + this.currentCard);
         var cardhiddenElement = document.getElementById('myCardHidden' + this.currentCard);
-        var imgSource = "images/" + cardId + ".png";
+        var imgSource = "images/" + GetDisplayName(cardId) + ".png";
         cardImage.src = imgSource;
         cardhiddenElement.value = cardId;
         this.currentCard++;
         this.PossiblyAutoSubmitForm();
+    }
+
+    function GetDisplayName(cardId)
+    {
+        var displayName;
+        if (cardId.includes("S"))
+            displayName = cardId.replace("S", "spade");
+        else if (cardId.includes("H"))
+            displayName = cardId.replace("H", "heart");
+        else if (cardId.includes("C"))
+            displayName = cardId.replace("C", "club");
+        else if (cardId.includes("D"))
+            displayName = cardId.replace("D", "diamond");
+        return displayName;
     }
 
     function PossiblySetCurrentCardNumber() {
