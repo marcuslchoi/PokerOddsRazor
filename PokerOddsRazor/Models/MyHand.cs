@@ -82,6 +82,11 @@ namespace PokerOddsRazor.Models
             }
         }
 
+        public int numberOfPossStraightsWithMy3Cards = 0;
+        public int numberOfPossStraightsWithMy4Cards = 0;
+        bool checkForStraightCalledOnFlop = false;
+        bool checkForStraightCalledOnTurn = false;
+
         //todo get rid of some of these fields/properties
         public List<string> myPocketCardIds = new List<string>();
         public List<string> tableCardIds = new List<string>();
@@ -115,7 +120,7 @@ namespace PokerOddsRazor.Models
 
         private bool PossiblyAddToMyCardIds(string card)
         {
-            if (card != null && !this.myCardIds.Contains(card))
+            if (!string.IsNullOrEmpty(card) && !this.myCardIds.Contains(card))
             {
                 this.myCardIds.Add(card);
                 return true;
@@ -625,26 +630,8 @@ namespace PokerOddsRazor.Models
             return handRank;
         }
 
-        //CHECK FOR STRAIGHT	
-        public int numberOfPossStraightsWithMy3Cards = 0;
-        public int numberOfPossStraightsWithMy4Cards = 0;
-        bool checkForStraightCalledOnFlop = false;
-        bool checkForStraightCalledOnTurn = false;
-        public double CheckForStraight()
+        private void SetStraightProperties(HashSet<int> myRanksUniqueSet)
         {
-            List<int> myCardRanks = GetCardRanksHighToLow(this.myCardIds);
-
-            //sort rank values in high to low order
-            myCardRanks.Sort();
-            myCardRanks.Reverse();
-
-            //get unique values of ranks and put in HashSet
-            var myRanksUniqueSet = new HashSet<int>(myCardRanks);
-
-            bool isStraight = false;
-
-            double handRank = -1;
-
             //IF PAST PREFLOP ROUND, CHECK IF HAVE 4 CARDS OUT OF STRAIGHT FOR STRAIGHT POSSIBILITY
             //loop through each possible straight
             for (int r = 0; r < Constants.STRAIGHTS.Length; r++)
@@ -661,39 +648,58 @@ namespace PokerOddsRazor.Models
                         count++;
                     }
                 }
-  
-                //Debug.WriteLine ("count: " + count);
+
                 if (count == 4)
                 {
-                    if (!checkForStraightCalledOnFlop)
+                    if (!this.checkForStraightCalledOnFlop)
                     {
-                        numberOfPossStraightsWithMy4Cards++;
+                        this.numberOfPossStraightsWithMy4Cards++;
                     }
-                    else if (myCardRanks.Count == 6 && checkForStraightCalledOnTurn == false)
+                    else if (TableGameMediator.CurrentRound == Rounds.isTurn //myCardRanks.Count == 6
+                        && !this.checkForStraightCalledOnTurn)
                     {
-                        numberOfPossStraightsWithMy4Cards++;
+                        this.numberOfPossStraightsWithMy4Cards++;
                     }
                     //possible high straight
                     if (currentStraight == Constants.HIGHEST_STRAIGHT)
                     {
-                        Is4AlmostHighStraight = true;
+                        this.Is4AlmostHighStraight = true;
                     }
-                    Is4AlmostStraight = true;
+                    this.Is4AlmostStraight = true;
                 }
 
                 //3 cards present in a straight
-                else if (count == 3 && !checkForStraightCalledOnFlop)
+                else if (count == 3 && !this.checkForStraightCalledOnFlop)
                 {
                     numberOfPossStraightsWithMy3Cards++;
                     //possible high straight
-                    if (currentStraight == Constants.HIGHEST_STRAIGHT) 
+                    if (currentStraight == Constants.HIGHEST_STRAIGHT)
                     {
-                        Is3AlmostHighStraight = true;
+                        this.Is3AlmostHighStraight = true;
                     }
 
-                    Is3AlmostStraight = true;
+                    this.Is3AlmostStraight = true;
                 }
             }
+        }
+
+        public double CheckForStraight()
+        {
+            List<int> myCardRanks = GetCardRanksHighToLow(this.myCardIds);
+
+            //sort rank values in high to low order
+            myCardRanks.Sort();
+            myCardRanks.Reverse();
+
+            //get unique values of ranks and put in HashSet
+            var myRanksUniqueSet = new HashSet<int>(myCardRanks);
+
+            bool isStraight = false;
+
+            double handRank = -1;
+
+            this.SetStraightProperties(myRanksUniqueSet);
+            
             //flag that check for straight was called on flop so that number of poss straights w 3 or 4 cards
             //does not increment everytime it is called
             int numberOfPossStraightsWithMy4Cards_fromFlop = 0;
