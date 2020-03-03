@@ -84,8 +84,6 @@ namespace PokerOddsRazor.Models
 
         public int numberOfPossStraightsWithMy3Cards = 0;
         public int numberOfPossStraightsWithMy4Cards = 0;
-        bool checkForStraightCalledOnFlop = false;
-        bool checkForStraightCalledOnTurn = false;
 
         //todo get rid of some of these fields/properties
         public List<string> myPocketCardIds = new List<string>();
@@ -632,6 +630,9 @@ namespace PokerOddsRazor.Models
 
         private void SetStraightProperties(HashSet<int> myRanksUniqueSet)
         {
+            this.numberOfPossStraightsWithMy3Cards = 0;
+            this.numberOfPossStraightsWithMy4Cards = 0;
+
             //IF PAST PREFLOP ROUND, CHECK IF HAVE 4 CARDS OUT OF STRAIGHT FOR STRAIGHT POSSIBILITY
             //loop through each possible straight
             for (int r = 0; r < Constants.STRAIGHTS.Length; r++)
@@ -651,15 +652,15 @@ namespace PokerOddsRazor.Models
 
                 if (count == 4)
                 {
-                    if (!this.checkForStraightCalledOnFlop)
+                    //if (!this.checkForStraightCalledOnFlop)
                     {
                         this.numberOfPossStraightsWithMy4Cards++;
                     }
-                    else if (TableGameMediator.CurrentRound == Rounds.isTurn //myCardRanks.Count == 6
-                        && !this.checkForStraightCalledOnTurn)
-                    {
-                        this.numberOfPossStraightsWithMy4Cards++;
-                    }
+                    //else if (TableGameMediator.CurrentRound == Rounds.isTurn 
+                    //    && !this.checkForStraightCalledOnTurn)
+                    //{
+                    //    this.numberOfPossStraightsWithMy4Cards++;
+                    //}
                     //possible high straight
                     if (currentStraight == Constants.HIGHEST_STRAIGHT)
                     {
@@ -669,9 +670,10 @@ namespace PokerOddsRazor.Models
                 }
 
                 //3 cards present in a straight
-                else if (count == 3 && !this.checkForStraightCalledOnFlop)
+                else if (count == 3)
+                    //&& !this.checkForStraightCalledOnFlop)
                 {
-                    numberOfPossStraightsWithMy3Cards++;
+                    this.numberOfPossStraightsWithMy3Cards++;
                     //possible high straight
                     if (currentStraight == Constants.HIGHEST_STRAIGHT)
                     {
@@ -703,15 +705,13 @@ namespace PokerOddsRazor.Models
             //flag that check for straight was called on flop so that number of poss straights w 3 or 4 cards
             //does not increment everytime it is called
             int numberOfPossStraightsWithMy4Cards_fromFlop = 0;
-            if (myCardRanks.Count == 5)
+            if (TableGameMediator.CurrentRound == Rounds.isFlop)
             {
-                checkForStraightCalledOnFlop = true;
                 numberOfPossStraightsWithMy4Cards_fromFlop = numberOfPossStraightsWithMy4Cards;
             }
             //on turn
-            else if (myCardRanks.Count == 6)
+            else if (TableGameMediator.CurrentRound == Rounds.isTurn)
             {
-                checkForStraightCalledOnTurn = true;
                 //makes sure this increments from 0 instead of from number of poss straights on flop
                 numberOfPossStraightsWithMy4Cards -= numberOfPossStraightsWithMy4Cards_fromFlop;
             }
