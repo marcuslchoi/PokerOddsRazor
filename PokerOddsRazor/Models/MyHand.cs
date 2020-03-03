@@ -82,6 +82,8 @@ namespace PokerOddsRazor.Models
             }
         }
 
+        public HashSet<int> PossRanksToComplete4Straight { get; private set; }
+        //todo remove these?
         public int numberOfPossStraightsWithMy3Cards = 0;
         public int numberOfPossStraightsWithMy4Cards = 0;
 
@@ -633,6 +635,8 @@ namespace PokerOddsRazor.Models
             this.numberOfPossStraightsWithMy3Cards = 0;
             this.numberOfPossStraightsWithMy4Cards = 0;
 
+            this.PossRanksToComplete4Straight = new HashSet<int>(); 
+
             //IF PAST PREFLOP ROUND, CHECK IF HAVE 4 CARDS OUT OF STRAIGHT FOR STRAIGHT POSSIBILITY
             //loop through each possible straight
             for (int r = 0; r < Constants.STRAIGHTS.Length; r++)
@@ -640,27 +644,27 @@ namespace PokerOddsRazor.Models
                 int count = 0;
                 int[] currentStraight = Constants.STRAIGHTS[r];
                 var currStraightSet = new HashSet<int>(currentStraight);
+                var missingRanks = new List<int>();
 
-                //loop through my unique ranks
-                foreach (int uniqueRank in myRanksUniqueSet)
+                //find ranks that I am missing in the current straight
+                foreach(int rank in currStraightSet)
                 {
-                    if (currStraightSet.Contains(uniqueRank))
+                    if (myRanksUniqueSet.Contains(rank))
                     {
                         count++;
+                    }
+                    else
+                    {
+                        missingRanks.Add(rank);
                     }
                 }
 
                 if (count == 4)
                 {
-                    //if (!this.checkForStraightCalledOnFlop)
-                    {
-                        this.numberOfPossStraightsWithMy4Cards++;
-                    }
-                    //else if (TableGameMediator.CurrentRound == Rounds.isTurn 
-                    //    && !this.checkForStraightCalledOnTurn)
-                    //{
-                    //    this.numberOfPossStraightsWithMy4Cards++;
-                    //}
+                    this.numberOfPossStraightsWithMy4Cards++;
+                    //should only be 1 missing rank for current straight
+                    this.PossRanksToComplete4Straight.Add(missingRanks[0]);
+                   
                     //possible high straight
                     if (currentStraight == Constants.HIGHEST_STRAIGHT)
                     {
@@ -671,7 +675,6 @@ namespace PokerOddsRazor.Models
 
                 //3 cards present in a straight
                 else if (count == 3)
-                    //&& !this.checkForStraightCalledOnFlop)
                 {
                     this.numberOfPossStraightsWithMy3Cards++;
                     //possible high straight

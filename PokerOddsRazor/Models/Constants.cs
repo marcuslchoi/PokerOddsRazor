@@ -7,6 +7,7 @@ namespace PokerOddsRazor.Models
 
     public static class Constants
     {
+        public const int SUITS = 4;
         public const int ACE_VAL = 14;
         public const int KING_VAL = 13;
         public const int QUEEN_VAL = 12;

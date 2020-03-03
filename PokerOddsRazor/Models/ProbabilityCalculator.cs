@@ -176,11 +176,6 @@ namespace PokerOddsRazor.Models
             //straight
             else if (MyHand.IsMyPokerHand(rank, PokerHand.STRAIGHT))
             {
-                for (int i = 0; i <= 3; i++)
-                {
-                    //pc.chanceTexts [i].enabled = false;
-                }
-
                 chanceFullHouse = 0;
                 chanceFourKind = 0;
                 chanceStraight = 1;
@@ -188,11 +183,6 @@ namespace PokerOddsRazor.Models
             //flush
             else if (MyHand.IsMyPokerHand(rank, PokerHand.FLUSH))
             {
-                for (int i = 0; i <= 4; i++)
-                {
-                    //pc.chanceTexts [i].enabled = false;
-                }
-
                 chanceFullHouse = 0;
                 chanceFourKind = 0;
                 chanceFlush = 1;
@@ -200,11 +190,6 @@ namespace PokerOddsRazor.Models
             //full house
             else if (MyHand.IsMyPokerHand(rank, PokerHand.FULL_HOUSE))
             {
-                for (int i = 0; i <= 5; i++)
-                {
-                    //pc.chanceTexts [i].enabled = false;
-                }
-
                 if (CurrentRound == Rounds.isFlop)
                 {
                     chanceFourKind = 1d / CardsLeft * 2;
@@ -219,15 +204,8 @@ namespace PokerOddsRazor.Models
             //four of a kind
             else if (MyHand.IsMyPokerHand(rank, PokerHand.FOUR_OF_A_KIND))
             {
-
-                for (int i = 0; i <= 6; i++)
-                {
-
-                    //pc.chanceTexts [i].enabled = false;
-                }
                 //already checked below
                 //chanceStraightFlush = 0;
-
                 chanceFourKind = 1;
             }
             //straight flush
@@ -286,8 +264,8 @@ namespace PokerOddsRazor.Models
             Debug.WriteLine("four flush suit: " + myFourFlushSuit);
             Debug.WriteLine("three flush suit: " + myThreeFlushSuit);
 
-            MyHand my4FlushHand = null; //new MyHand();
-            MyHand my3FlushHand = null; //new MyHand();
+            MyHand my4FlushHand = null; 
+            MyHand my3FlushHand = null;
 
             if (myThreeFlushSuit != null)
             {
@@ -308,133 +286,145 @@ namespace PokerOddsRazor.Models
             bool isLowerThanStraight = MyHand.IsMyPokerHandLower(rank, PokerHand.STRAIGHT);
 
             //chance for flush
-            if (CurrentRound == Rounds.isFlop && isLowerThanFlush)
+            if (isLowerThanFlush)
             {
-                //if there is exactly 3 card flush (also for checking for straight flush)
-                if (myThreeFlushSuit != null && myFourFlushSuit == null)
+                if (CurrentRound == Rounds.isFlop)
                 {
-                    Debug.WriteLine("exactly 3 flush cards");
-                    chanceFlush = 9d / CardsLeft * 8d / (CardsLeft - 1);
+                    //if there is exactly 3 card flush (also for checking for straight flush)
+                    if (myThreeFlushSuit != null && myFourFlushSuit == null)
+                    {
+                        Debug.WriteLine("exactly 3 flush cards");
+                        chanceFlush = 9d / CardsLeft * 8d / (CardsLeft - 1);
 
-                    //Debug.WriteLine ("1INSIDE FLOP CHANCE FLUSH: " + TableGameMediator.currentRound + " " + MyHand.myCardIds.Count);
+                        //Debug.WriteLine ("1INSIDE FLOP CHANCE FLUSH: " + TableGameMediator.currentRound + " " + MyHand.myCardIds.Count);
+                        //Debug.WriteLine ("2INSIDE FLOP CHANCE FLUSH: " + TableGameMediator.currentRound + " " + MyHand.myCardIds.Count);
 
-                    //Debug.WriteLine ("2INSIDE FLOP CHANCE FLUSH: " + TableGameMediator.currentRound + " " + MyHand.myCardIds.Count);
-
+                    }
+                    //if there is a 4+ card flush (also for checking for straight flush)
+                    else if (myFourFlushSuit != null)
+                    {
+                        Debug.WriteLine("four flush");
+                        //9 cards left in deck of same flush suit
+                        //chance of both new cards flushing + chance of exactly 1 card flushing
+                        // 9/47 * 8/46 + (9/47 * 38/46)*2 = 35%
+                        chanceFlush = 9d / CardsLeft * 8d / (CardsLeft - 1) + 2 * (9d / CardsLeft * (CardsLeft - 9d) / (CardsLeft - 1));
+                    }
+                    else
+                    {
+                        chanceFlush = 0;
+                    }
                 }
-                //if there is a 4+ card flush (also for checking for straight flush)
-                else if (myFourFlushSuit != null)
+                else if (CurrentRound == Rounds.isTurn)
                 {
-                    Debug.WriteLine("four flush");
-                    //9 cards left in deck of same flush suit
-                    //chance of both new cards flushing + chance of exactly 1 card flushing
-                    // 9/47 * 8/46 + (9/47 * 38/46)*2 = 35%
-                    chanceFlush = 9d / CardsLeft * 8d / (CardsLeft - 1) + 2 * (9d / CardsLeft * (CardsLeft - 9d) / (CardsLeft - 1));
-                }
-                else
-                {
-                    chanceFlush = 0;
+                    //must have 4 flush cards for possible flush
+                    //Hand my4FlushHand = new Hand ();
+
+                    //if there is a 4 card flush (also for checking for straight flush)
+                    if (myFourFlushSuit != null)
+                    {
+                        Debug.WriteLine("four flush");
+                        //9 cards left in deck of same flush suit
+                        chanceFlush = 9d / CardsLeft;
+                    }
+                    else
+                    {
+                        chanceFlush = 0;
+                    }
                 }
             }
-            else if (CurrentRound == Rounds.isTurn && isLowerThanFlush)
+
+            //CHANCE FOR STRAIGHT
+            if (isLowerThanStraight)
             {
-                //must have 4 flush cards for possible flush
-                //Hand my4FlushHand = new Hand ();
-
-                //if there is a 4 card flush (also for checking for straight flush)
-                if (myFourFlushSuit != null)
+                if (myHand.Is4AlmostStraight)
                 {
+                    //STRAIGHT IS POSSIBLE
+                    //chance with 8 possible cards to finish straight
+                    if (true) //(myHand.numberOfPossStraightsWithMy4Cards == 2)
+                    {
+                        double numPossCards = Constants.SUITS * myHand.PossRanksToComplete4Straight.Count;
+                        if (CurrentRound == Rounds.isFlop)
+                        {
+                            //first card straights and second card either does or doesn't + only 2nd card straights
+                            // 8/47 * 1 + 39/47 * 8/46 = 31.5%
+                            chanceStraight = numPossCards / CardsLeft +
+                                (CardsLeft - numPossCards) / CardsLeft * numPossCards / (CardsLeft - 1);
+                        }
+                        else //turn round
+                        {
+                            chanceStraight = numPossCards / CardsLeft;
+                        }
+                    }
+                    //chance with 4 possible cards to finish straight
+                    //todo is this correct??
+                    else //only 1 possible straight
+                    {
+                        if (CurrentRound == Rounds.isFlop)
+                        {
+                            //flop round with 1 4straight and is3almostStraight
+                            if (myHand.Is3AlmostStraight)
+                            {
+                                //chance of completing the 4 straight + chance of completing the 3 straight
+                                chanceStraight = (4d / CardsLeft + (CardsLeft - 4d) / CardsLeft * 4d / (CardsLeft - 1)) +
+                                                    8d / CardsLeft * 4d / (CardsLeft - 1);
 
-                    Debug.WriteLine("four flush");
-                    //9 cards left in deck of same flush suit
-                    chanceFlush = 9d / CardsLeft;
+                            }
+                            else
+                            {
+                                // 4/47 * 1 + 43/47 * 4/46
+                                chanceStraight = 4d / CardsLeft + (CardsLeft - 4d) / CardsLeft * 4d / (CardsLeft - 1);
+                            }
+                        }
+                        else  //turn round
+                        {
+                            chanceStraight = 4d / CardsLeft;
+                        }
+                    }
                 }
-                else
-                {
-                    chanceFlush = 0;
-                }
-            }
-
-            //CHANCE FOR STRAIGHT if have 4 of 5 straight cards already
-            if (myHand.Is4AlmostStraight && isLowerThanStraight)
-            {
-                //STRAIGHT IS POSSIBLE
-                //chance with 8 possible cards to finish straight
-                if (myHand.numberOfPossStraightsWithMy4Cards == 2)
+                //chance for straight if have 3 of 5 straight cards already (only in flop round)
+                else if (myHand.Is3AlmostStraight)
                 {
                     if (CurrentRound == Rounds.isFlop)
                     {
-                        //first card straights and second card either does or doesn't + only 2nd card straights
-                        // 8/47 * 1 + 39/47 * 8/46 = 31.5%
-                        chanceStraight = 8d / CardsLeft + (CardsLeft - 8d) / CardsLeft * 8d / (CardsLeft - 1);
-                    }
-                    else //turn round
-                    {
-                        chanceStraight = 8d / CardsLeft;
-                    }
-                }
-                //chance with 4 possible cards to finish straight
-                else //only 1 possible straight
-                {
-                    if (CurrentRound == Rounds.isFlop)
-                    {
-                        //flop round with 1 4straight and is3almostStraight
-                        if (myHand.Is3AlmostStraight)
+                        Debug.WriteLine("INSIDE IS3ALMOSTSTRAIGHT " + myHand.numberOfPossStraightsWithMy3Cards);
+                        //STRAIGHT IS POSSIBLE
+                        if (myHand.numberOfPossStraightsWithMy3Cards >= 3)
                         {
-                            //chance of completing the 4 straight + chance of completing the 3 straight
-                            chanceStraight = (4d / CardsLeft + (CardsLeft - 4d) / CardsLeft * 4d / (CardsLeft - 1)) + 8d / CardsLeft * 4d / (CardsLeft - 1);
-
+                            Debug.WriteLine("3 or more diff poss straights");
+                            //both cards must straight.
+                            //first card has 2 poss ranks to make 4 in a row, then 2 poss ranks for 2nd card +
+                            //first card has 2 poss ranks to make 4 in poss straight (with gap), then 1 poss rank (gap card)
+                            // 8/47 * 8/46 + 8/47 * 4/46
+                            chanceStraight = 8d / CardsLeft * 8d / (CardsLeft - 1) + 8d / CardsLeft * 4d / (CardsLeft - 1);
                         }
-                        else
+                        else if (myHand.numberOfPossStraightsWithMy3Cards == 2)
                         {
-                            // 4/47 * 1 + 43/47 * 4/46
-                            chanceStraight = 4d / CardsLeft + (CardsLeft - 4d) / CardsLeft * 4d / (CardsLeft - 1);
+                            //case 2,3,4 (first card 5, then first card 6, then first card Ace)
+                            // 4/47 * 8/46 + 4/47 * 4/46 + 4/47 * 4/46 is the same answer. Also works
+                            //for case of low straight and high straight possibility (Ace included)
+
+                            Debug.WriteLine("2 diff poss straights");
+                            //1 poss rank for 4 in a row (the gap), then 2 poss ranks (2 ways this can happen) 
+                            // 4/47 * 8/46 * 2
+                            chanceStraight = 4d / CardsLeft * 8d / (CardsLeft - 1) * 2;
+                        }
+                        else if (myHand.numberOfPossStraightsWithMy3Cards == 1)
+                        {
+                            Debug.WriteLine("1 poss straight");
+                            //2 poss ranks then 1 poss rank
+                            // 8/47 * 4/46
+                            chanceStraight = 8d / CardsLeft * 4d / (CardsLeft - 1);
                         }
                     }
-                    else  //turn round
+                    else //on the river but only 3 cards in straight
                     {
-                        chanceStraight = 4d / CardsLeft;
+                        chanceStraight = 0;
                     }
                 }
-            }
-            //chance for straight if have 3 of 5 straight cards already (only in flop round)
-            else if (myHand.Is3AlmostStraight &&
-                     CurrentRound == Rounds.isFlop &&
-                     isLowerThanStraight)
-            {
-                Debug.WriteLine("INSIDE IS3ALMOSTSTRAIGHT " + myHand.numberOfPossStraightsWithMy3Cards);
-                //STRAIGHT IS POSSIBLE
-                if (myHand.numberOfPossStraightsWithMy3Cards >= 3)
+                else //no possibility of straight
                 {
-                    Debug.WriteLine("3 or more diff poss straights");
-                    //both cards must straight.
-                    //first card has 2 poss ranks to make 4 in a row, then 2 poss ranks for 2nd card +
-                    //first card has 2 poss ranks to make 4 in poss straight (with gap), then 1 poss rank (gap card)
-                    // 8/47 * 8/46 + 8/47 * 4/46
-                    chanceStraight = 8d / CardsLeft * 8d / (CardsLeft - 1) + 8d / CardsLeft * 4d / (CardsLeft - 1);
+                    chanceStraight = 0;
                 }
-                else if (myHand.numberOfPossStraightsWithMy3Cards == 2)
-                {
-                    //case 2,3,4 (first card 5, then first card 6, then first card Ace)
-                    // 4/47 * 8/46 + 4/47 * 4/46 + 4/47 * 4/46 is the same answer. Also works
-                    //for case of low straight and high straight possibility (Ace included)
-
-                    Debug.WriteLine("2 diff poss straights");
-                    //1 poss rank for 4 in a row (the gap), then 2 poss ranks (2 ways this can happen) 
-                    // 4/47 * 8/46 * 2
-                    chanceStraight = 4d / CardsLeft * 8d / (CardsLeft - 1) * 2;
-                }
-                else if (myHand.numberOfPossStraightsWithMy3Cards == 1)
-                {
-                    Debug.WriteLine("1 poss straight");
-                    //2 poss ranks then 1 poss rank
-                    // 8/47 * 4/46
-                    chanceStraight = 8d / CardsLeft * 4d / (CardsLeft - 1);
-                }
-            }
-            //there are not 4 of 5 straight cards present, or 3 straight in the flop round
-            else if (isLowerThanStraight)
-            {
-                chanceStraight = 0;
             }
 
             //CHANCE FOR STRAIGHT FLUSH
