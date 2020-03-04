@@ -325,7 +325,7 @@ namespace PokerOddsRazor.Models
                 }
 
                 //STRAIGHT FLUSH POSSIBILITY: chance with 2 possible cards to finish straight flush
-                if (my4FlushHand.numberOfPossStraightsWithMy4Cards == 2)
+                if (my4FlushHand.NumberOfPossStraightsWithMy4Cards == 2)
                 {
                     if (CurrentRound == Rounds.isFlop)
                     {
@@ -364,7 +364,7 @@ namespace PokerOddsRazor.Models
                      CurrentRound == Rounds.isFlop)
             {
                 Debug.WriteLine("is3almosthighstraight " + my3FlushHand.Is3AlmostHighStraight);
-                if (my3FlushHand.numberOfPossStraightsWithMy3Cards >= 3)
+                if (my3FlushHand.NumberOfPossStraightsWithMy3Cards >= 3)
                 {
                     Debug.WriteLine("3 or more diff poss straight flushes");
                     //both cards must straight.
@@ -373,14 +373,14 @@ namespace PokerOddsRazor.Models
                     // 2/47 * 2/46 + 2/47 * 1/46
                     chanceStraightFlush = 2d / CardsLeft * 2d / (CardsLeft - 1) + 2d / CardsLeft * 1d / (CardsLeft - 1);
                 }
-                else if (my3FlushHand.numberOfPossStraightsWithMy3Cards == 2)
+                else if (my3FlushHand.NumberOfPossStraightsWithMy3Cards == 2)
                 {
                     Debug.WriteLine("2 diff poss straight flushes");
                     //1 poss rank for 4 in a row (the gap), then 2 poss ranks (2 ways this can happen) 
                     // 1/47 * 2/46 * 2
                     chanceStraightFlush = 1d / CardsLeft * 2d / (CardsLeft - 1) * 2;
                 }
-                else if (my3FlushHand.numberOfPossStraightsWithMy3Cards == 1)
+                else if (my3FlushHand.NumberOfPossStraightsWithMy3Cards == 1)
                 {
                     Debug.WriteLine("1 poss straight flush");
                     //2 poss ranks then 1 poss rank
@@ -511,9 +511,11 @@ namespace PokerOddsRazor.Models
             {
                 if (CurrentRound == Rounds.isFlop)
                 {
-                    Debug.WriteLine("INSIDE IS3ALMOSTSTRAIGHT " + myHand.numberOfPossStraightsWithMy3Cards);
-                    //STRAIGHT IS POSSIBLE
-                    if (myHand.numberOfPossStraightsWithMy3Cards >= 3)
+                    Debug.WriteLine("INSIDE IS3ALMOSTSTRAIGHT " + myHand.NumberOfPossStraightsWithMy3Cards);
+                    //3 cards in a row with 3 possible high cards, ie 7 high, 6 high, and 5 high poss with 3, 4, 5
+                    //other possibilities: 1,4,5,7, or 2,4,5,7 etc
+                    //>=3 because more than 3 doesn't affect the outcome
+                    if (myHand.NumberOfPossStraightsWithMy3Cards >= 3) 
                     {
                         Debug.WriteLine("3 or more diff poss straights");
                         //both cards must straight.
@@ -522,7 +524,8 @@ namespace PokerOddsRazor.Models
                         // 8/47 * 8/46 + 8/47 * 4/46
                         chanceStraight = 8d / CardsLeft * 8d / (CardsLeft - 1) + 8d / CardsLeft * 4d / (CardsLeft - 1);
                     }
-                    else if (myHand.numberOfPossStraightsWithMy3Cards == 2)
+                    //2 cards in a row, ie 3,4,6 can make 6 high or 7 high, or 2,3,4 can make 5 high or 6 high
+                    else if (myHand.NumberOfPossStraightsWithMy3Cards == 2)
                     {
                         //case 2,3,4 (first card 5, then first card 6, then first card Ace)
                         // 4/47 * 8/46 + 4/47 * 4/46 + 4/47 * 4/46 is the same answer. Also works
@@ -533,7 +536,8 @@ namespace PokerOddsRazor.Models
                         // 4/47 * 8/46 * 2
                         chanceStraight = 4d / CardsLeft * 8d / (CardsLeft - 1) * 2;
                     }
-                    else if (myHand.numberOfPossStraightsWithMy3Cards == 1)
+                    //no cards in a row like 1,3,5, or 1,2,3
+                    else if (myHand.NumberOfPossStraightsWithMy3Cards == 1)
                     {
                         Debug.WriteLine("1 poss straight");
                         //2 poss ranks then 1 poss rank

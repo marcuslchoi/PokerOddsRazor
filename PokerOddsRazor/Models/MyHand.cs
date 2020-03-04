@@ -83,9 +83,10 @@ namespace PokerOddsRazor.Models
         }
 
         public HashSet<int> PossRanksToComplete4Straight { get; private set; }
-        //todo remove these?
-        public int numberOfPossStraightsWithMy3Cards = 0;
-        public int numberOfPossStraightsWithMy4Cards = 0;
+        
+        public int NumberOfPossStraightsWithMy3Cards { get; private set; }
+        //todo remove this?
+        public int NumberOfPossStraightsWithMy4Cards { get; private set; }
 
         //todo get rid of some of these fields/properties
         public List<string> myPocketCardIds = new List<string>();
@@ -632,8 +633,8 @@ namespace PokerOddsRazor.Models
 
         private void SetStraightProperties(HashSet<int> myRanksUniqueSet)
         {
-            this.numberOfPossStraightsWithMy3Cards = 0;
-            this.numberOfPossStraightsWithMy4Cards = 0;
+            this.NumberOfPossStraightsWithMy3Cards = 0;
+            this.NumberOfPossStraightsWithMy4Cards = 0;
 
             this.PossRanksToComplete4Straight = new HashSet<int>(); 
 
@@ -661,7 +662,7 @@ namespace PokerOddsRazor.Models
 
                 if (count == 4)
                 {
-                    this.numberOfPossStraightsWithMy4Cards++;
+                    this.NumberOfPossStraightsWithMy4Cards++;
                     //should only be 1 missing rank for current straight
                     this.PossRanksToComplete4Straight.Add(missingRanks[0]);
                    
@@ -676,7 +677,7 @@ namespace PokerOddsRazor.Models
                 //3 cards present in a straight
                 else if (count == 3)
                 {
-                    this.numberOfPossStraightsWithMy3Cards++;
+                    this.NumberOfPossStraightsWithMy3Cards++;
                     //possible high straight
                     if (currentStraight == Constants.HIGHEST_STRAIGHT)
                     {
@@ -710,13 +711,13 @@ namespace PokerOddsRazor.Models
             int numberOfPossStraightsWithMy4Cards_fromFlop = 0;
             if (TableGameMediator.CurrentRound == Rounds.isFlop)
             {
-                numberOfPossStraightsWithMy4Cards_fromFlop = numberOfPossStraightsWithMy4Cards;
+                numberOfPossStraightsWithMy4Cards_fromFlop = NumberOfPossStraightsWithMy4Cards;
             }
             //on turn
             else if (TableGameMediator.CurrentRound == Rounds.isTurn)
             {
                 //makes sure this increments from 0 instead of from number of poss straights on flop
-                numberOfPossStraightsWithMy4Cards -= numberOfPossStraightsWithMy4Cards_fromFlop;
+                NumberOfPossStraightsWithMy4Cards -= numberOfPossStraightsWithMy4Cards_fromFlop;
             }
 
             //check if intRanksUnique is a superset of lowestStraight
