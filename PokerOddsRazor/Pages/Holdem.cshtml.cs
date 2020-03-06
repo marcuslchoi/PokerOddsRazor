@@ -49,6 +49,7 @@ namespace PokerOddsRazor.Pages
         [BindProperty(SupportsGet = true)]
         public string RiverDisplay { get; set; }
 
+        //probabilities
         [BindProperty(SupportsGet = true)]
         public string ChanceHighCard { get; set; }
         [BindProperty(SupportsGet = true)]
