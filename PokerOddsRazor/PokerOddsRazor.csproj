@@ -20,7 +20,6 @@
     <Content Remove="wwwroot\images\CardHighlight_red.png" />
     <Content Remove="wwwroot\images\7S.png" />
     <Content Remove="wwwroot\images\7S.png" />
-    <Content Remove="wwwroot\images\7spade.png" />
     <Content Remove="wwwroot\images\7Spades.png" />
     <Content Remove="wwwroot\images\aSpades.png" />
     <Content Remove="wwwroot\images\7spades.png" />
