@@ -47,8 +47,8 @@
     </style>
 </head>
 
-<h1>Texas Hold'em Odds Calculator</h1>
-<h2 id="roundTitle">This shows the probabilities of obtaining different poker hands during each phase of the game</h2>
+<h1>Poker Hand Odds Calculator</h1>
+<h2 id="roundTitle"></h2>
 <form id="myForm" method="post">
 
     @if (!String.IsNullOrEmpty(Model.Card0))
@@ -130,7 +130,7 @@
         <img src="images/randomCard.jpg" class="cardButton" />
     </a>
     &nbsp;&nbsp;&nbsp;
-    <a asp-area="" asp-page="/Holdem">New Hand</a>
+    <a asp-area="" asp-page="/Holdem">Reset</a>
     <!--
     <div>River</div>
     -->
@@ -478,7 +478,14 @@
 
     function UpdateRoundTitle() {
         @{
-            if (Model.CurrentRound == Models.Rounds.isPreFlop)
+            if (Model.CurrentRound == Models.Rounds.isPreDeal)
+            {
+                <text>
+                document.getElementById('roundTitle').textContent = "This shows the probabilities of obtaining different poker hands during each phase of the game";
+                </text>
+                
+            }
+            else if (Model.CurrentRound == Models.Rounds.isPreFlop)
             {
                 <text>
                 document.getElementById('roundTitle').textContent = "Probabilities on the Flop";
