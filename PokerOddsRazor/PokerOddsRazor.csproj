@@ -25,7 +25,7 @@
     <Content Remove="wwwroot\images\7spades.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="wwwroot\images\2S.png">
